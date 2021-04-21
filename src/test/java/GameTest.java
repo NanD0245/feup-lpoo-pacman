@@ -7,7 +7,6 @@ class GameTest {
     @Test
     public void testInit(){
         Game pacman = new Game();
-
-        Assertions.assertFalse(pacman.init());
+        Assertions.assertTrue(pacman.init());
     }
 }
