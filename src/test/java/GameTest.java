@@ -8,6 +8,6 @@ class GameTest {
     public void testInit(){
         Game pacman = new Game();
 
-        Assertions.assertTrue(pacman.init());
+        Assertions.assertFalse(pacman.init());
     }
 }
