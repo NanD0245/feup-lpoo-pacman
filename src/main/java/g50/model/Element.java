@@ -1,4 +1,4 @@
-package g50.model.element;
+package g50.model;
 
 public abstract class Element {
     private int x;

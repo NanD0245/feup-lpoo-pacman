@@ -1,10 +1,10 @@
-package g50.model.element.map.mapBuilder;
+package g50.model.map.mapbuilder;
 
-import g50.model.element.Element;
+import g50.model.Element;
 
 import java.util.List;
 
-public class FileBuilder implements MapBuilder{
+public class FileBuilder implements MapBuilder {
 
     private String filename;
 
