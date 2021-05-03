@@ -1,6 +1,6 @@
 package g50.model.map;
 
-import g50.model.Element;
+import g50.model.element.Element;
 import g50.model.map.mapbuilder.DefaultBuilder;
 import g50.model.map.mapbuilder.FileBuilder;
 import g50.model.map.mapbuilder.MapBuilder;
