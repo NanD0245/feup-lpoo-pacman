@@ -4,7 +4,7 @@ public class PacMan extends MovableElement {
     private int lives;
 
     PacMan(int x, int y) {
-        super("Pac-Man", x, y);
+        super("Pac-Man", x, y, Orientation.LEFT);
         this.lives = 3;
     }
 
