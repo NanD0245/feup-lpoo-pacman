@@ -18,26 +18,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FileBuilder implements MapBuilder {
+public class FileMapBuilder implements MapBuilder {
 
     private String filename;
     private BufferedReader buffer;
-    private static final Map<Character, FixedElement> charToElement;
-    static{
-        charToElement = new HashMap<>();
-        charToElement.put(' ', new Empty(-1, -1));
-        charToElement.put('@', new PowerPellet(-1,-1));
-        charToElement.put('W', new Wall(-1,-1));
-        charToElement.put('P', new PacDot(-1,-1));
-        charToElement.put('1', new Target(-1, -1, "Pinky"));
-        charToElement.put('2', new Target(-1, -1, "Blinky"));
-        charToElement.put('3', new Target(-1, -1, "Clyde"));
-        charToElement.put('4', new Target(-1, -1, "Inky"));
-        charToElement.put('D', new Door(-1, -1));
-        charToElement.put('S', new SpawnArea(-1, -1));
-    }
+    private static final Map<Character, FixedElement> charToElement = Map.of(
+        ' ', new Empty(-1, -1),
+        '@', new PowerPellet(-1,-1),
+        'W', new Wall(-1,-1),
+        'P', new PacDot(-1,-1),
+        '1', new Target(-1, -1, "Pinky"),
+        '2', new Target(-1, -1, "Blinky"),
+        '3', new Target(-1, -1, "Clyde"),
+        '4', new Target(-1, -1, "Inky"),
+        'D', new Door(-1, -1),
+        'S', new SpawnArea(-1, -1)
+    );
 
-    public FileBuilder(String filename){
+    public FileMapBuilder(String filename){
         this.filename = filename;
     }
 
