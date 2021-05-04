@@ -3,7 +3,7 @@ package g50.model.element.movable;
 public class PacMan extends MovableElement {
     private int lives;
 
-    PacMan(int x, int y) {
+    public PacMan(int x, int y) {
         super("Pac-Man", x, y, Orientation.LEFT);
         this.lives = 3;
     }

@@ -10,6 +10,8 @@ public class Game {
         try{
             map.build();
             System.out.println(map.getMap());
+            System.out.println(map.getGhosts());
+            System.out.println(map.getPacman());
         } catch (IOException e) {
             e.printStackTrace();
         }
