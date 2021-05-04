@@ -6,7 +6,7 @@ import java.io.IOException;
 public class Game {
 
     public void init(){
-        Map map = new Map(new File("src/main/resources/maps/default.txt").getAbsolutePath());
+        Map map = new Map();
         try{
             map.build();
             System.out.println(map.getMap());

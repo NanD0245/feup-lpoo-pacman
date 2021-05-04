@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DefaultBuilder implements MapBuilder {
 
-    private static final String defaultFilename = "resources/maps/default.txt";
+    private static final String defaultFilename = "src/main/resources/maps/default.txt";
     private static final FileBuilder builder = new FileBuilder(defaultFilename);
 
     @Override
