@@ -6,4 +6,5 @@ public abstract class FixedElement extends Element {
     public FixedElement(int x, int y) {
         super(x,y);
     }
+    public abstract FixedElement generate(int x, int y);
 }
