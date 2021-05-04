@@ -22,6 +22,7 @@ public class FileMapBuilder implements MapBuilder {
 
     private String filename;
     private BufferedReader buffer;
+
     private static final Map<Character, FixedElement> charToElement = Map.of(
         ' ', new Empty(-1, -1),
         '@', new PowerPellet(-1,-1),
@@ -42,47 +43,17 @@ public class FileMapBuilder implements MapBuilder {
     @Override
     public List<List<FixedElement>> getBuild(PacMan pacman, List<Ghost> ghosts) throws IOException {
         this.buffer = new BufferedReader(new FileReader(this.filename));
-        List<List<FixedElement>> fixedElementsMap = new ArrayList<>();
+        List<List<FixedElement>> map = new ArrayList<>();
         try{
             String gridSize = this.buffer.readLine();
             String[] values = gridSize.split("x", 2);
-
+            
             int columns = Integer.parseInt(values[0]), rows = Integer.parseInt(values[1]);
-
-            String c;
             Map<String, Target> targets = new HashMap<>();
-
-            for(int row = 0; row < rows ; row++){
-                c = this.buffer.readLine();
-                List<FixedElement> fixedElementsRow = new ArrayList<>();
-                for(int column = 0; column < columns; column++){
-
-                    char charAt = ' ';
-                    if(column < c.length())
-                        charAt = c.charAt(column);
-
-                    // Gets the generator of the correspondent char
-                    FixedElement newElement = charToElement.get(charAt).generate(column, row);
-                    fixedElementsRow.add(newElement);
-
-                    // Sets a target name to the target location on a map for
-                    // ghost target generation
-                    if(newElement instanceof Target) {
-                        Target target = (Target) newElement;
-                        targets.put(target.getTargetName(), target);
-                    }
-                }
-                fixedElementsMap.add(fixedElementsRow);
-            }
-
-            while((!this.buffer.readLine().equals("SPAWN POSITIONS")));
-
-            while((c = this.buffer.readLine()) != null && c.length() > 0){
-                String[] entityCoords = c.split(" ", 3);
-                int x = Integer.parseInt(entityCoords[1]), y = Integer.parseInt(entityCoords[2]);
-                if(entityCoords[0].equals("PacMan")) pacman.setCoordinates(x,y);
-                else ghosts.add(new Ghost(entityCoords[0], x, y, Orientation.UP, targets.get(entityCoords[0])));
-            }
+            
+            map = generateMap(targets, rows, columns);
+            
+            startUpEntities(pacman, ghosts, targets);
 
             this.buffer.close();
 
@@ -90,7 +61,51 @@ public class FileMapBuilder implements MapBuilder {
             System.out.println("File not compatible with map generation. More details below.");
             System.out.println(e.getMessage());
         }
+        
+        return map;
+    }
 
+    public List<List<FixedElement>> generateMap(Map<String, Target> targets, int rows, int columns) throws IOException {
+        List<List<FixedElement>> fixedElementsMap = new ArrayList<>();
+        String c;
+
+        for(int row = 0; row < rows ; row++){
+            c = this.buffer.readLine();
+            List<FixedElement> fixedElementsRow = new ArrayList<>();
+            for(int column = 0; column < columns; column++){
+
+                char charAt = ' ';
+                if(column < c.length())
+                    charAt = c.charAt(column);
+
+                // Gets the generator of the correspondent char
+                FixedElement newElement = charToElement.get(charAt).generate(column, row);
+                fixedElementsRow.add(newElement);
+
+                // Sets a target name to the target location on a map for
+                // ghost target generation
+                if(newElement instanceof Target) {
+                    Target target = (Target) newElement;
+                    targets.put(target.getTargetName(), target);
+                }
+            }
+            fixedElementsMap.add(fixedElementsRow);
+        }
         return fixedElementsMap;
     }
+
+    public void startUpEntities(PacMan pacman, List<Ghost> ghosts, Map<String, Target> targets) throws IOException {
+
+        String c;
+
+        while((!this.buffer.readLine().equals("SPAWN POSITIONS")));
+
+        while((c = this.buffer.readLine()) != null && c.length() > 0){
+            String[] entityCoords = c.split(" ", 3);
+            int x = Integer.parseInt(entityCoords[1]), y = Integer.parseInt(entityCoords[2]);
+            if(entityCoords[0].equals("PacMan")) pacman.setCoordinates(x,y);
+            else ghosts.add(new Ghost(entityCoords[0], x, y, Orientation.UP, targets.get(entityCoords[0])));
+        }
+    }
+
 }
