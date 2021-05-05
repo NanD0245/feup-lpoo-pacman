@@ -1,6 +1,8 @@
 package g50.gui;
 
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.*;
 import com.googlecode.lanterna.terminal.*;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
@@ -67,22 +69,24 @@ public class LanternaGUI implements GUI{
 
     @Override
     public void drawCharacter(char c, Position position, String color) {
-
+        this.drawText("" + c, position, color);
     }
 
     @Override
     public void drawText(String text, Position position, String color) {
-
+        TextGraphics tg = screen.newTextGraphics();
+        tg.setForegroundColor(TextColor.Factory.fromString(color));
+        tg.putString(position.getX(), position.getY() + 1, text);
     }
 
     @Override
     public void drawCharacter(char c, Position position) {
-
+        this.drawText("" + c, position, "#FFFFFF");
     }
 
     @Override
     public void drawText(String text, Position position) {
-
+        this.drawText(text, position, "#FFFFFF");
     }
 
     @Override
