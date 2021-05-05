@@ -1,5 +1,6 @@
 package g50.model.element.movable;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public enum Orientation {

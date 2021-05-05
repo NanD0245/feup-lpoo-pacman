@@ -17,4 +17,8 @@ public abstract class MovableElement extends Element {
     public Orientation getOrientation() { return this.orientation; }
 
     public void setOrientation(Orientation orientation) { this.orientation = orientation; }
+
+    public void setCoordinates(int x, int y){
+        this.position.setPosition(x,y);
+    }
 }

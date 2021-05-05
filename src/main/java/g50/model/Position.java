@@ -33,6 +33,11 @@ public class Position {
         }
     }
 
+    public void setPosition(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

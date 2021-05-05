@@ -6,6 +6,5 @@ public abstract class Collectable extends FixedElement {
     public Collectable(int x, int y) {
         super(x,y);
     }
-
     public abstract int getPoints();
 }
