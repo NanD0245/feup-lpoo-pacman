@@ -1,17 +1,19 @@
-import g50.model.map.Map;
+import g50.model.map.GameMap;
+import g50.model.map.mapbuilder.DefaultGameMapBuilder;
+import g50.model.map.mapbuilder.GameMapBuilder;
 
-import java.io.File;
 import java.io.IOException;
 
 public class Game {
 
     public void init(){
-        Map map = new Map();
+        GameMapBuilder builder = new DefaultGameMapBuilder();
+        GameMap gameMap;
         try{
-            map.build();
-            System.out.println(map.getMap());
-            System.out.println(map.getGhosts());
-            System.out.println(map.getPacman());
+            gameMap = builder.getBuild();
+            System.out.println(gameMap.getMap());
+            System.out.println(gameMap.getGhosts());
+            System.out.println(gameMap.getPacman());
         } catch (IOException e) {
             e.printStackTrace();
         }

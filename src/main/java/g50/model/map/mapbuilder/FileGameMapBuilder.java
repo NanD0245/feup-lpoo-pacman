@@ -1,6 +1,5 @@
 package g50.model.map.mapbuilder;
 
-import g50.model.element.Element;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.collectable.PacDot;
 import g50.model.element.fixed.collectable.PowerPellet;
@@ -8,9 +7,9 @@ import g50.model.element.fixed.nonCollectable.*;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.Ghost;
+import g50.model.map.GameMap;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FileMapBuilder implements MapBuilder {
+public class FileGameMapBuilder implements GameMapBuilder {
 
     private String filename;
     private BufferedReader buffer;
@@ -36,12 +35,14 @@ public class FileMapBuilder implements MapBuilder {
         'S', new SpawnArea(-1, -1)
     );
 
-    public FileMapBuilder(String filename){
+    public FileGameMapBuilder(String filename){
         this.filename = filename;
     }
 
     @Override
-    public List<List<FixedElement>> getBuild(PacMan pacman, List<Ghost> ghosts) throws IOException {
+    public GameMap getBuild() throws IOException {
+        List<Ghost> ghosts = new ArrayList<>();
+        PacMan pacman = new PacMan(-1, -1);
         this.buffer = new BufferedReader(new FileReader(this.filename));
         List<List<FixedElement>> map = new ArrayList<>();
         try{
@@ -62,7 +63,7 @@ public class FileMapBuilder implements MapBuilder {
             System.out.println(e.getMessage());
         }
         
-        return map;
+        return new GameMap(map, ghosts, pacman);
     }
 
     public List<List<FixedElement>> generateMap(Map<String, Target> targets, int rows, int columns) throws IOException {
