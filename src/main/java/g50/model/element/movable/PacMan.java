@@ -13,4 +13,6 @@ public class PacMan extends MovableElement {
     public void increaseLives() { this.lives++; }
 
     public int getLives() { return this.lives; }
+
+    public boolean isAlive() { return this.lives > 0; }
 }
