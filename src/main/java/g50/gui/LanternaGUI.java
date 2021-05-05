@@ -6,6 +6,7 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.*;
 import com.googlecode.lanterna.terminal.*;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
+import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
 import g50.model.Position;
 
 import java.awt.*;
@@ -20,8 +21,9 @@ public class LanternaGUI implements GUI{
 
     private final Screen screen;
 
-    public LanternaGUI(int width, int height) throws IOException {
-        Terminal terminal = createTerminal(width, height);
+    public LanternaGUI(int width, int height) throws IOException, URISyntaxException, FontFormatException {
+        AWTTerminalFontConfiguration fontConfig = loadFontConfig("fonts/square.ttf", 25);
+        Terminal terminal = createTerminal(width, height, fontConfig);
         this.screen = createScreen(terminal);
     }
 
@@ -40,16 +42,22 @@ public class LanternaGUI implements GUI{
         terminalFactory.setForceAWTOverSwing(true);
         terminalFactory.setTerminalEmulatorFontConfiguration(fontConfig);
         Terminal terminal = terminalFactory.createTerminal();
-        // TO DO: add event handlers
+
+        enableCloseButton(terminal);
+
         return terminal;
     }
 
-    private Terminal createTerminal(int width, int height)
-            throws IOException {
-        // TO DO: chain
-        DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory()
-                .setInitialTerminalSize(new TerminalSize(width, height + 1));
-        return terminalFactory.createTerminal();
+    private void enableCloseButton(Terminal terminal) {
+        ((AWTTerminalFrame)terminal).addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                try {
+                    close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private AWTTerminalFontConfiguration loadFontConfig(String path, int size)
@@ -59,7 +67,7 @@ public class LanternaGUI implements GUI{
         File fontFile = new File(resource.toURI());
         Font font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
         GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
-        return AWTTerminalFontConfiguration.newInstance(font.deriveFont(Font.PLAIN, 25));
+        return AWTTerminalFontConfiguration.newInstance(font.deriveFont(Font.PLAIN, size));
     }
 
     @Override
@@ -74,8 +82,7 @@ public class LanternaGUI implements GUI{
 
     @Override
     public void drawText(String text, Position position, String color) {
-        TextGraphics tg = screen.newTextGraphics();
-        tg.setForegroundColor(TextColor.Factory.fromString(color));
+        TextGraphics tg = this.screen.newTextGraphics();
         tg.putString(position.getX(), position.getY() + 1, text);
     }
 

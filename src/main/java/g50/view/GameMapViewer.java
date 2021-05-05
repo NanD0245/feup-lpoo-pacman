@@ -40,7 +40,6 @@ public class GameMapViewer {
 
                 // REWORK WITH A FACTORY/FILTER
                 if (element instanceof Wall){
-                    System.out.println("hello");
                     new WallViewer(this.gui).draw(position);
                 }
                 if (element instanceof PacDot) new PacDotViewer(this.gui).draw(position);
