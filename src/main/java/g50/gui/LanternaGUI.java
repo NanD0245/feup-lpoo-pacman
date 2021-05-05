@@ -108,13 +108,13 @@ public class LanternaGUI implements GUI{
 
     private ACTION getAction(KeyEvent keyEvent){
         if (keyEvent == null) return ACTION.NONE;
-        return switch (keyEvent.getKeyCode()) {
-            case KeyEvent.VK_DOWN -> ACTION.DOWN;
-            case KeyEvent.VK_UP -> ACTION.UP;
-            case KeyEvent.VK_LEFT -> ACTION.LEFT;
-            case KeyEvent.VK_RIGHT -> ACTION.RIGHT;
-            default -> ACTION.NONE;
-        };
+        switch (keyEvent.getKeyCode()) {
+            case KeyEvent.VK_DOWN: return ACTION.DOWN;
+            case KeyEvent.VK_UP: return ACTION.UP;
+            case KeyEvent.VK_LEFT: return ACTION.LEFT;
+            case KeyEvent.VK_RIGHT: return ACTION.RIGHT;
+            default: return ACTION.NONE;
+        }
     }
 
     @Override
