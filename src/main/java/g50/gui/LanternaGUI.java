@@ -16,10 +16,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Map;
 
 public class LanternaGUI implements GUI{
 
     private final Screen screen;
+    //private final Map<ACTION, Boolean> currentActions;
 
     public LanternaGUI(int width, int height) throws IOException, URISyntaxException, FontFormatException {
         AWTTerminalFontConfiguration fontConfig = loadFontConfig("fonts/square.ttf", 25);
@@ -44,6 +46,7 @@ public class LanternaGUI implements GUI{
         Terminal terminal = terminalFactory.createTerminal();
 
         enableCloseButton(terminal);
+        setupActionListeners(terminal);
 
         return terminal;
     }
@@ -70,8 +73,12 @@ public class LanternaGUI implements GUI{
         return AWTTerminalFontConfiguration.newInstance(font.deriveFont(Font.PLAIN, size));
     }
 
+    private void setupActionListeners(Terminal terminal){
+
+    }
+
     @Override
-    public ACTION getNextAction() {
+    public Map<ACTION, Boolean> getCurrentActions(){
         return null;
     }
 

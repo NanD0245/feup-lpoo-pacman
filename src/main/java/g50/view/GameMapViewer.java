@@ -5,6 +5,7 @@ import g50.model.Position;
 import g50.model.element.Element;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.collectable.PacDot;
+import g50.model.element.fixed.collectable.PowerPellet;
 import g50.model.element.fixed.collectable.fruit.Fruit;
 import g50.model.element.fixed.nonCollectable.Wall;
 import g50.model.element.movable.PacMan;
@@ -43,6 +44,7 @@ public class GameMapViewer {
                     new WallViewer(this.gui).draw(position);
                 }
                 if (element instanceof PacDot) new PacDotViewer(this.gui).draw(position);
+                if (element instanceof PowerPellet) new PowerPelletViewer(this.gui).draw(position);
             }
         }
 

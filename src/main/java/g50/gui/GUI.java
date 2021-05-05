@@ -3,10 +3,11 @@ package g50.gui;
 import g50.model.Position;
 
 import java.io.IOException;
+import java.util.Map;
 
 public interface GUI {
     enum ACTION {UP, RIGHT, DOWN, LEFT, NONE, QUIT};
-    ACTION getNextAction();
+    Map<ACTION, Boolean> getCurrentActions();
     void drawCharacter(char c, Position position, String color);
     void drawText(String text, Position position, String color);
     void drawCharacter(char c, Position position);
