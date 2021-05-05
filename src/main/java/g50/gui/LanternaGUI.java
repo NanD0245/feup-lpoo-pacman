@@ -1,7 +1,6 @@
 package g50.gui;
 
 import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.*;
 import com.googlecode.lanterna.terminal.*;
@@ -10,23 +9,28 @@ import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
 import g50.model.Position;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 public class LanternaGUI implements GUI{
 
     private final Screen screen;
-    //private final Map<ACTION, Boolean> currentActions;
+    private final Map<ACTION, Boolean> currentActions;
 
     public LanternaGUI(int width, int height) throws IOException, URISyntaxException, FontFormatException {
         AWTTerminalFontConfiguration fontConfig = loadFontConfig("fonts/square.ttf", 25);
         Terminal terminal = createTerminal(width, height, fontConfig);
         this.screen = createScreen(terminal);
+        this.currentActions = initCurrentActions();
+        setupActionListeners(terminal);
     }
 
     private Screen createScreen(Terminal terminal) throws IOException {
@@ -73,13 +77,49 @@ public class LanternaGUI implements GUI{
         return AWTTerminalFontConfiguration.newInstance(font.deriveFont(Font.PLAIN, size));
     }
 
-    private void setupActionListeners(Terminal terminal){
+    private Map<ACTION, Boolean> initCurrentActions(){
+        Map<ACTION, Boolean> actions = new HashMap<ACTION, Boolean>();
+        for (ACTION action : ACTION.values()){
+            actions.put(action, Boolean.FALSE);
+        }
+        return actions;
+    }
 
+    private void setupActionListeners(Terminal terminal){
+        ((AWTTerminalFrame)terminal).getComponent(0).addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent keyEvent) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent keyEvent) {
+                ACTION action = getAction(keyEvent);
+                currentActions.put(action, Boolean.TRUE);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent keyEvent) {
+                ACTION action = getAction(keyEvent);
+                currentActions.put(action, Boolean.FALSE);
+            }
+        });
+    }
+
+    private ACTION getAction(KeyEvent keyEvent){
+        if (keyEvent == null) return ACTION.NONE;
+        return switch (keyEvent.getKeyCode()) {
+            case KeyEvent.VK_DOWN -> ACTION.DOWN;
+            case KeyEvent.VK_UP -> ACTION.UP;
+            case KeyEvent.VK_LEFT -> ACTION.LEFT;
+            case KeyEvent.VK_RIGHT -> ACTION.RIGHT;
+            default -> ACTION.NONE;
+        };
     }
 
     @Override
     public Map<ACTION, Boolean> getCurrentActions(){
-        return null;
+        return this.currentActions;
     }
 
     @Override

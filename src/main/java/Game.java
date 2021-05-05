@@ -22,7 +22,6 @@ public class Game {
             GUI gui = new LanternaGUI(gameMap.getColumns(),gameMap.getLines());
             GameMapViewer viewer = new GameMapViewer(gui, gameMap);
             viewer.draw();
-            gui.refresh();
         } catch (IOException e) {
             e.printStackTrace();
         }

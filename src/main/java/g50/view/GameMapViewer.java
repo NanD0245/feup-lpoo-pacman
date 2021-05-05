@@ -27,12 +27,6 @@ public class GameMapViewer {
     public void draw() throws IOException {
         this.gui.clear();
 
-        final PacManViewer pacManViewer = new PacManViewer(this.gui);
-        final WallViewer wallViewer = new WallViewer(this.gui);
-        final PacDotViewer pacDotViewer = new PacDotViewer(this.gui);
-        final PowerPelletViewer powerPelletViewer = new PowerPelletViewer(this.gui);
-        final FruitViewer fruitViewer = new FruitViewer(this.gui);
-
         final List<List<FixedElement>> map = this.gameMap.getMap();
         for (int line = 0; line < this.gameMap.getLines(); line++){
             for (int column = 0; column < this.gameMap.getColumns(); column++){
@@ -45,6 +39,7 @@ public class GameMapViewer {
                 }
                 if (element instanceof PacDot) new PacDotViewer(this.gui).draw(position);
                 if (element instanceof PowerPellet) new PowerPelletViewer(this.gui).draw(position);
+                if (element instanceof Fruit) new FruitViewer(this.gui).draw(position);
             }
         }
 
@@ -53,6 +48,6 @@ public class GameMapViewer {
             new GhostViewer(this.gui).draw(ghost.getPosition());
         }
 
-        //this.gui.close();
+        this.gui.refresh();
     }
 }
