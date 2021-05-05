@@ -66,7 +66,7 @@ public class FileGameMapBuilder implements GameMapBuilder {
         return new GameMap(map, ghosts, pacman);
     }
 
-    public List<List<FixedElement>> generateMap(Map<String, Target> targets, int rows, int columns) throws IOException {
+    private List<List<FixedElement>> generateMap(Map<String, Target> targets, int rows, int columns) throws IOException {
         List<List<FixedElement>> fixedElementsMap = new ArrayList<>();
         String c;
 
@@ -95,7 +95,7 @@ public class FileGameMapBuilder implements GameMapBuilder {
         return fixedElementsMap;
     }
 
-    public void startUpEntities(PacMan pacman, List<Ghost> ghosts, Map<String, Target> targets) throws IOException {
+    private void startUpEntities(PacMan pacman, List<Ghost> ghosts, Map<String, Target> targets) throws IOException {
 
         String c;
 
@@ -104,7 +104,7 @@ public class FileGameMapBuilder implements GameMapBuilder {
         while((c = this.buffer.readLine()) != null && c.length() > 0){
             String[] entityCoords = c.split(" ", 3);
             int x = Integer.parseInt(entityCoords[1]), y = Integer.parseInt(entityCoords[2]);
-            if(entityCoords[0].equals("PacMan")) pacman.setCoordinates(x,y);
+            if(entityCoords[0].toLowerCase().equals(("PacMan").toLowerCase())) pacman.setCoordinates(x,y);
             else ghosts.add(new Ghost(entityCoords[0], x, y, Orientation.UP, targets.get(entityCoords[0])));
         }
     }

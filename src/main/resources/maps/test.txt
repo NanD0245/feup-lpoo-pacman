@@ -1,0 +1,11 @@
+4x4
+
+ 1 2
+WWWW
+WP@W
+4 3
+
+SPAWN POSITIONS
+Blinky 2 2
+Pinky 3 3
+Pacman 2 3
