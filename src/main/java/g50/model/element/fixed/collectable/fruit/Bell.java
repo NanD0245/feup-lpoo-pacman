@@ -4,7 +4,7 @@ import g50.model.element.fixed.FixedElement;
 
 public class Bell extends Fruit {
     public Bell(int x, int y) {
-        super(x, y);
+        super(x, y, 3000);
     }
 
     @Override
@@ -12,6 +12,4 @@ public class Bell extends Fruit {
         return new Bell(x,y);
     }
 
-    @Override
-    public int getPoints() { return 3000; }
 }

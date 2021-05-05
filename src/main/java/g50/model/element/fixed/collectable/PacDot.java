@@ -4,7 +4,7 @@ import g50.model.element.fixed.FixedElement;
 
 public class PacDot extends Collectable{
     public PacDot(int x, int y) {
-        super(x,y);
+        super(x,y,10);
     }
 
     @Override
@@ -12,5 +12,4 @@ public class PacDot extends Collectable{
         return new PacDot(x,y);
     }
 
-    public int getPoints() { return 10; }
 }

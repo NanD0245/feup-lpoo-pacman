@@ -4,7 +4,7 @@ import g50.model.element.fixed.FixedElement;
 
 public class Apple extends Fruit {
     public Apple(int x, int y) {
-        super(x, y);
+        super(x, y, 700);
     }
 
     @Override
@@ -12,6 +12,4 @@ public class Apple extends Fruit {
         return new Apple(x,y);
     }
 
-    @Override
-    public int getPoints() { return 700; }
 }
