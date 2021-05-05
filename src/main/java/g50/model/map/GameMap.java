@@ -8,9 +8,9 @@ import java.util.List;
 
 public class GameMap {
 
-    private List<List<FixedElement>> map;
-    private List<Ghost> ghosts;
-    private PacMan pacman;
+    private final List<List<FixedElement>> map;
+    private final List<Ghost> ghosts;
+    private final PacMan pacman;
 
     public GameMap(List<List<FixedElement>> map, List<Ghost> ghosts, PacMan pacman){
         this.map = map;
@@ -20,6 +20,14 @@ public class GameMap {
 
     public List<List<FixedElement>> getMap(){
         return this.map;
+    }
+
+    public int getColumns(){
+        return getMap().get(0).size();
+    }
+
+    public int getLines(){
+        return getMap().size();
     }
 
     public List<Ghost> getGhosts(){
