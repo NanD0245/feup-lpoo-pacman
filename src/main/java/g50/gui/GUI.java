@@ -2,6 +2,8 @@ package g50.gui;
 
 import g50.model.Position;
 
+import java.io.IOException;
+
 public interface GUI {
     enum ACTION {UP, RIGHT, DOWN, LEFT, NONE, QUIT};
     ACTION getNextAction();
@@ -10,6 +12,6 @@ public interface GUI {
     void drawCharacter(char c, Position position);
     void drawText(String text, Position position);
     void clear();
-    void refresh();
-    void close();
+    void refresh() throws IOException;
+    void close() throws IOException;
 }
