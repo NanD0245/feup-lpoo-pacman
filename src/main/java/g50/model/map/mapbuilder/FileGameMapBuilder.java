@@ -1,5 +1,6 @@
 package g50.model.map.mapbuilder;
 
+import g50.model.Position;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.collectable.PacDot;
 import g50.model.element.fixed.collectable.PowerPellet;
@@ -23,16 +24,16 @@ public class FileGameMapBuilder implements GameMapBuilder {
     private BufferedReader buffer;
 
     private static final Map<Character, FixedElement> charToElement = Map.of(
-        ' ', new Empty(-1, -1),
-        '@', new PowerPellet(-1,-1),
-        'W', new Wall(-1,-1),
-        'P', new PacDot(-1,-1),
-        '1', new Target(-1, -1, "Pinky"),
-        '2', new Target(-1, -1, "Blinky"),
-        '3', new Target(-1, -1, "Clyde"),
-        '4', new Target(-1, -1, "Inky"),
-        'D', new Door(-1, -1),
-        'S', new SpawnArea(-1, -1)
+        ' ', new Empty(new Position(-1,-1)),
+        '@', new PowerPellet(new Position(-1,-1)),
+        'W', new Wall(new Position(-1,-1)),
+        'P', new PacDot(new Position(-1,-1)),
+        '1', new Target(new Position(-1,-1), "Pinky"),
+        '2', new Target(new Position(-1,-1), "Blinky"),
+        '3', new Target(new Position(-1,-1), "Clyde"),
+        '4', new Target(new Position(-1,-1), "Inky"),
+        'D', new Door(new Position(-1,-1)),
+        'S', new SpawnArea(new Position(-1,-1))
     );
 
     public FileGameMapBuilder(String filename){
@@ -42,7 +43,7 @@ public class FileGameMapBuilder implements GameMapBuilder {
     @Override
     public GameMap getBuild() throws IOException {
         List<Ghost> ghosts = new ArrayList<>();
-        PacMan pacman = new PacMan(-1, -1);
+        PacMan pacman = new PacMan(new Position(-1, -1));
         this.buffer = new BufferedReader(new FileReader(this.filename));
         List<List<FixedElement>> map = new ArrayList<>();
         try{
@@ -80,7 +81,7 @@ public class FileGameMapBuilder implements GameMapBuilder {
                     charAt = c.charAt(column);
 
                 // Gets the generator of the correspondent char
-                FixedElement newElement = charToElement.get(charAt).generate(column, row);
+                FixedElement newElement = charToElement.get(charAt).generate(new Position(column, row));
                 fixedElementsRow.add(newElement);
 
                 // Sets a target name to the target location on a map for
@@ -105,7 +106,7 @@ public class FileGameMapBuilder implements GameMapBuilder {
             String[] entityCoords = c.split(" ", 3);
             int x = Integer.parseInt(entityCoords[1]), y = Integer.parseInt(entityCoords[2]);
             if(entityCoords[0].toLowerCase().equals(("PacMan").toLowerCase())) pacman.setCoordinates(x,y);
-            else ghosts.add(new Ghost(entityCoords[0], x, y, Orientation.UP, targets.get(entityCoords[0])));
+            else ghosts.add(new Ghost(entityCoords[0], new Position(x, y), Orientation.UP, targets.get(entityCoords[0])));
         }
     }
 

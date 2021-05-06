@@ -23,11 +23,11 @@ public class GameMapTest {
 
         List<Ghost> ghosts = new ArrayList<>();
 
-        Ghost newGhost = new Ghost("Test", 0, 0, Orientation.UP, new Target(0, 0, "Test"));
+        Ghost newGhost = new Ghost("Test", new Position(0, 0), Orientation.UP, new Target(new Position(0, 0), "Test"));
 
         ghosts.add(newGhost);
 
-        GameMap map = new GameMap(newList, ghosts, new PacMan(1, 1));
+        GameMap map = new GameMap(newList, ghosts, new PacMan(new Position(1, 1)));
 
         Assertions.assertEquals(map.getPacman().getPosition(), new Position(1,1));
         Assertions.assertEquals(map.getGhosts().size(), 1);

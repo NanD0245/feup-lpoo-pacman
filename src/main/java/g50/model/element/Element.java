@@ -5,8 +5,8 @@ import g50.model.Position;
 public abstract class Element {
     protected Position position;
 
-    public Element(int x, int y) {
-        this.position = new Position(x,y);
+    public Element(Position position) {
+        this.position = position;
     }
 
     public Position getPosition() {
