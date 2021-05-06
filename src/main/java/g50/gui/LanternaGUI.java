@@ -83,7 +83,9 @@ public class LanternaGUI implements GUI{
             @Override
             public void keyPressed(KeyEvent keyEvent) {
                 ACTION action = getAction(keyEvent);
-                notifyObservers(action);
+                if (action != ACTION.OTHER){
+                    notifyObservers(action);
+                }
             }
 
             @Override
