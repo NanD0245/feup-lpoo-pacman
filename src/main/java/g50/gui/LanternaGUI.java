@@ -17,20 +17,21 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LanternaGUI implements GUI{
 
     private final Screen screen;
-    private final Map<ACTION, Boolean> currentActions;
+    private final List<GUIObserver> observers;
 
     public LanternaGUI(int width, int height) throws IOException, URISyntaxException, FontFormatException {
         AWTTerminalFontConfiguration fontConfig = loadFontConfig("fonts/square.ttf", 25);
         Terminal terminal = createTerminal(width, height, fontConfig);
         this.screen = createScreen(terminal);
-        this.currentActions = initCurrentActions();
-        setupActionListeners(terminal);
+        this.observers = new ArrayList<>();
+        setupWindowClosing(terminal);
+        setupActionNotifiers(terminal);
     }
 
     private Screen createScreen(Terminal terminal) throws IOException {
@@ -47,15 +48,10 @@ public class LanternaGUI implements GUI{
                 .setInitialTerminalSize(new TerminalSize(width, height + 1));
         terminalFactory.setForceAWTOverSwing(true);
         terminalFactory.setTerminalEmulatorFontConfiguration(fontConfig);
-        Terminal terminal = terminalFactory.createTerminal();
-
-        enableCloseButton(terminal);
-        setupActionListeners(terminal);
-
-        return terminal;
+        return terminalFactory.createTerminal();
     }
 
-    private void enableCloseButton(Terminal terminal) {
+    private void setupWindowClosing(Terminal terminal) {
         ((AWTTerminalFrame)terminal).addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
                 try {
@@ -77,15 +73,7 @@ public class LanternaGUI implements GUI{
         return AWTTerminalFontConfiguration.newInstance(font.deriveFont(Font.PLAIN, size));
     }
 
-    private Map<ACTION, Boolean> initCurrentActions(){
-        Map<ACTION, Boolean> actions = new HashMap<ACTION, Boolean>();
-        for (ACTION action : ACTION.values()){
-            actions.put(action, Boolean.FALSE);
-        }
-        return actions;
-    }
-
-    private void setupActionListeners(Terminal terminal){
+    private void setupActionNotifiers(Terminal terminal){
         ((AWTTerminalFrame)terminal).getComponent(0).addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent keyEvent) {
@@ -95,31 +83,36 @@ public class LanternaGUI implements GUI{
             @Override
             public void keyPressed(KeyEvent keyEvent) {
                 ACTION action = getAction(keyEvent);
-                currentActions.put(action, Boolean.TRUE);
+                notifyObservers(action);
             }
 
             @Override
             public void keyReleased(KeyEvent keyEvent) {
-                ACTION action = getAction(keyEvent);
-                currentActions.put(action, Boolean.FALSE);
+
             }
         });
     }
 
     private ACTION getAction(KeyEvent keyEvent){
-        if (keyEvent == null) return ACTION.NONE;
+        if (keyEvent == null) return ACTION.OTHER;
         switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_DOWN: return ACTION.DOWN;
             case KeyEvent.VK_UP: return ACTION.UP;
             case KeyEvent.VK_LEFT: return ACTION.LEFT;
             case KeyEvent.VK_RIGHT: return ACTION.RIGHT;
-            default: return ACTION.NONE;
+            default: return ACTION.OTHER;
+        }
+    }
+
+    private void notifyObservers(ACTION action) {
+        for (GUIObserver observer : this.observers){
+            observer.addPendingAction(action);
         }
     }
 
     @Override
-    public Map<ACTION, Boolean> getCurrentActions(){
-        return this.currentActions;
+    public void addObserver(GUIObserver observer) {
+        this.observers.add(observer);
     }
 
     @Override
