@@ -21,4 +21,5 @@ public abstract class MovableElement extends Element {
     public void setCoordinates(int x, int y){
         this.position.setPosition(x,y);
     }
+
 }
