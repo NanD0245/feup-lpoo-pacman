@@ -105,7 +105,7 @@ public class FileGameMapBuilder implements GameMapBuilder {
         while((c = this.buffer.readLine()) != null && c.length() > 0){
             String[] entityCoords = c.split(" ", 3);
             int x = Integer.parseInt(entityCoords[1]), y = Integer.parseInt(entityCoords[2]);
-            if(entityCoords[0].toLowerCase().equals(("PacMan").toLowerCase())) pacman.setCoordinates(x,y);
+            if(entityCoords[0].toLowerCase().equals(("PacMan").toLowerCase())) pacman.setPosition(new Position(x,y));
             else ghosts.add(new Ghost(entityCoords[0], new Position(x, y), Orientation.UP, targets.get(entityCoords[0])));
         }
     }

@@ -61,7 +61,7 @@ public class GameMap {
         return elem instanceof Collectable || elem instanceof Empty;
     }
 
-    public List<Orientation> getNewAvailableOrientations(Orientation currentOrientation, Position pos){
+    public List<Orientation> getAvailableOrientations(Position pos){
 
         int x = pos.getX(), y = pos.getY();
         FixedElement elem = getElement(pos);
@@ -76,11 +76,14 @@ public class GameMap {
         List<Orientation> newOrientations = new ArrayList<Orientation>();
 
         for(Orientation orientation: surroundings.keySet()){
-            if(orientation == currentOrientation) continue;
             if(isEmptyOrCollectable(surroundings.get(orientation))) newOrientations.add(orientation);
         }
 
         return newOrientations;
+    }
+
+    public boolean isIntersection(Position pos){
+        return getAvailableOrientations(pos).size() > 2;
     }
 
 }
