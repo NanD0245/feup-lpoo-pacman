@@ -13,7 +13,7 @@ public class PacManTest {
 
     @BeforeEach
     public void initTest() {
-        this.pacMan = new PacMan(0,0);
+        this.pacMan = new PacMan(new Position(0,0));
     }
 
     @Test

@@ -1,10 +1,15 @@
 package g50.model.element.fixed.collectable;
 
+import g50.model.Position;
 import g50.model.element.fixed.FixedElement;
 
 public abstract class Collectable extends FixedElement {
-    public Collectable(int x, int y) {
-        super(x,y);
+    private final int points;
+
+    public Collectable(Position position, int points) {
+        super(position);
+        this.points = points;
     }
-    public abstract int getPoints();
+
+    public int getPoints() { return this.points; }
 }
