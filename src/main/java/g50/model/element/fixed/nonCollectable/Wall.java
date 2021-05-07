@@ -1,14 +1,15 @@
 package g50.model.element.fixed.nonCollectable;
 
+import g50.model.Position;
 import g50.model.element.fixed.FixedElement;
 
 public class Wall extends NonCollectable {
-     public Wall(int x, int y) {
-         super(x,y);
+     public Wall(Position position) {
+         super(position);
      }
 
     @Override
-    public FixedElement generate(int x, int y) {
-        return new Wall(x,y);
+    public FixedElement generate(Position position) {
+        return new Wall(position);
     }
 }

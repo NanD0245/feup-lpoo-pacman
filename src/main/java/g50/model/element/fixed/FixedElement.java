@@ -1,10 +1,11 @@
 package g50.model.element.fixed;
 
+import g50.model.Position;
 import g50.model.element.Element;
 
 public abstract class FixedElement extends Element {
-    public FixedElement(int x, int y) {
-        super(x,y);
+    public FixedElement(Position position) {
+        super(position);
     }
-    public abstract FixedElement generate(int x, int y);
+    public abstract FixedElement generate(Position position);
 }
