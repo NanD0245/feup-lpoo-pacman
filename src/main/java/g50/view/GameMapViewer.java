@@ -18,10 +18,12 @@ import java.util.List;
 public class GameMapViewer {
     private final GUI gui;
     private final GameMap gameMap;
+    private final ElementViewerFactory viewerFactory;
 
     public GameMapViewer(GUI gui, GameMap gameMap){
         this.gui = gui;
         this.gameMap = gameMap;
+        this.viewerFactory = new ElementViewerFactory();
     }
 
     public void draw() throws IOException {
@@ -32,20 +34,13 @@ public class GameMapViewer {
             for (int column = 0; column < this.gameMap.getColumns(); column++){
                 Position position = new Position(column, line);
                 Element element = map.get(line).get(column);
-
-                // REWORK WITH A FACTORY/FILTER
-                if (element instanceof Wall){
-                    new WallViewer(this.gui).draw(position);
-                }
-                if (element instanceof PacDot) new PacDotViewer(this.gui).draw(position);
-                if (element instanceof PowerPellet) new PowerPelletViewer(this.gui).draw(position);
-                if (element instanceof Fruit) new FruitViewer(this.gui).draw(position);
+                this.viewerFactory.getViewer(this.gui, element).draw(position);
             }
         }
 
-        new PacManViewer(this.gui).draw(this.gameMap.getPacman().getPosition());
+        this.viewerFactory.getViewer(this.gui, this.gameMap.getPacman()).draw(this.gameMap.getPacman().getPosition());
         for (Ghost ghost : this.gameMap.getGhosts()){
-            new GhostViewer(this.gui).draw(ghost.getPosition());
+            this.viewerFactory.getViewer(this.gui, ghost).draw(ghost.getPosition());
         }
 
         this.gui.refresh();

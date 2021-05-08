@@ -3,22 +3,16 @@ package g50.view;
 import g50.gui.GUI;
 import g50.model.Position;
 
-public abstract class ElementViewer {
-    private final String color;
-    private final char character;
+public class ElementViewer {
     private final GUI gui;
+    private final ViewProperty viewProperty;
 
-    public ElementViewer(GUI gui, String color, char character) {
-        this.color = color;
-        this.character = character;
+    public ElementViewer(GUI gui, ViewProperty viewProperty) {
         this.gui = gui;
-    }
-
-    public ElementViewer(GUI gui, char character){
-        this(gui, "#FFFFFF", character);
+        this.viewProperty = viewProperty;
     }
 
     void draw(Position position){
-        this.gui.drawCharacter(this.character, position, this.color);
+        this.gui.drawCharacter(this.viewProperty.getCharacter(), position, this.viewProperty.getColor());
     }
 }
