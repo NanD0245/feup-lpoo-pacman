@@ -37,7 +37,10 @@ public class PacManController implements Controller{
         Orientation actionOrientation = actionToOrientation.get(action);
         if(actionOrientation == null || actionOrientation == controllable.getOrientation()) return;
 
-        if(oris.contains(actionOrientation)) controllable.setOrientation(actionOrientation);
+        if(oris.contains(actionOrientation)){
+            controllable.setOrientation(actionOrientation);
+            if(nextBufferedOrientation == actionOrientation.getOpposite()) nextBufferedOrientation = null;
+        }
         else this.nextBufferedOrientation = actionOrientation;
     }
 
