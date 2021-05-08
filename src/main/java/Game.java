@@ -1,3 +1,4 @@
+import g50.controller.GameController;
 import g50.gui.GUI;
 import g50.gui.LanternaGUI;
 import g50.model.map.GameMap;
@@ -19,9 +20,12 @@ public class Game {
             System.out.println(gameMap.getMap());
             System.out.println(gameMap.getGhosts());
             System.out.println(gameMap.getPacman());
+            GameController controller = new GameController(gameMap);
+            controller.setUp(60);
             GUI gui = new LanternaGUI(gameMap.getColumns(),gameMap.getLines());
             GameMapViewer viewer = new GameMapViewer(gui, gameMap);
-            viewer.draw();
+            //viewer.draw();
+            //controller.terminate();
         } catch (IOException e) {
             e.printStackTrace();
         }

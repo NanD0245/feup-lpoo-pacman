@@ -23,6 +23,23 @@ public abstract class MovableElement extends Element {
         this.position.setPosition(pos);
     }
 
+    public void move(Orientation orientation) {
+        switch (orientation){
+            case UP:
+                moveUp();
+                break;
+            case DOWN:
+                moveDown();
+                break;
+            case LEFT:
+                moveLeft();
+                break;
+            case RIGHT:
+                moveRight();
+                break;
+        }
+    }
+
     public void moveUp(){ setPosition(this.position.getUp()); }
 
     public void moveDown() { setPosition(this.position.getDown()); }

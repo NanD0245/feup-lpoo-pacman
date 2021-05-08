@@ -8,22 +8,55 @@ import g50.model.map.GameMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class GameController implements GUIObserver {
+public class GameController implements GUIObserver, Controller {
 
     private final GameMap map;
     private final List<GhostController> ghostsController;
     private final PacManController pacManController;
+    private int framerate = 60;
+    private Timer timer;
+    private TimerTask updater;
 
-    GameController(GameMap map, List<Ghost> ghosts, PacMan pacman){
+    public GameController(GameMap map){
         this.map = map;
-        this.ghostsController = new ArrayList<GhostController>();
-        for(Ghost ghost: ghosts) this.ghostsController.add(new GhostController(map, ghost));
-        this.pacManController = new PacManController(map, pacman);
+        this.ghostsController = new ArrayList<>();
+        for(Ghost ghost: map.getGhosts()) this.ghostsController.add(new GhostController(this.map, ghost));
+        this.pacManController = new PacManController(map);
+    }
+
+    public void setUp(){
+        setUp(framerate);
+    }
+
+    public void setUp(int framerate){
+        this.framerate = framerate;
+        updater = new TimerTask() {
+            @Override
+            public void run() {
+                update();
+            }
+        };
+        timer = new Timer();
+        timer.schedule(updater, 1000/framerate, 1000/framerate);
+    }
+
+    public void terminate() {
+        timer.cancel();
     }
 
     @Override
     public void addPendingAction(GUI.ACTION action) {
+        if(action == GUI.ACTION.QUIT) terminate();
         pacManController.addPendingAction(action);
+    }
+
+
+    @Override
+    public void update() {
+        pacManController.update();
+        for(GhostController ghostController: ghostsController) ghostController.update();
     }
 }

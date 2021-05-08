@@ -10,11 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class PacManController {
+public class PacManController implements Controller{
 
     private final PacMan controllable;
     private final GameMap map;
     private Orientation nextBufferedOrientation;
+
     private static final Map<GUI.ACTION, Orientation> actionToOrientation = Map.of(
             GUI.ACTION.UP, Orientation.UP,
             GUI.ACTION.DOWN, Orientation.DOWN,
@@ -24,9 +25,9 @@ public class PacManController {
             GUI.ACTION.QUIT, null
     );
 
-    public PacManController(GameMap map, PacMan controllable){
+    public PacManController(GameMap map){
         this.map = map;
-        this.controllable = controllable;
+        this.controllable = map.getPacman();
     }
 
     public void addPendingAction(GUI.ACTION action) {
@@ -36,5 +37,15 @@ public class PacManController {
 
         if(oris.contains(actionOrientation)) controllable.setOrientation(actionOrientation);
         else this.nextBufferedOrientation = actionOrientation;
+    }
+
+    @Override
+    public void update() {
+        List<Orientation> oris = map.getAvailableOrientations(controllable.getPosition());
+
+        if(oris.contains(nextBufferedOrientation))
+            controllable.move(nextBufferedOrientation);
+        else if(oris.contains(controllable.getOrientation()))
+            controllable.move(controllable.getOrientation());
     }
 }
