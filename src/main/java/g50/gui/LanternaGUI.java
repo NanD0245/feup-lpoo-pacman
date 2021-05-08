@@ -56,6 +56,7 @@ public class LanternaGUI implements GUI{
             public void windowClosing(WindowEvent we) {
                 try {
                     close();
+                    notifyObservers(ACTION.QUIT);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

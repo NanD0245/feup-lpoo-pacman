@@ -20,4 +20,9 @@ public class Target extends NonCollectable{
     public FixedElement generate(Position position) {
         return new Target(position, targetName);
     }
+
+    @Override
+    public boolean isWalkable() {
+        return false;
+    }
 }

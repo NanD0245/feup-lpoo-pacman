@@ -11,5 +11,10 @@ public abstract class Collectable extends FixedElement {
         this.points = points;
     }
 
+    @Override
+    public boolean isWalkable(){
+        return true;
+    }
+
     public int getPoints() { return this.points; }
 }
