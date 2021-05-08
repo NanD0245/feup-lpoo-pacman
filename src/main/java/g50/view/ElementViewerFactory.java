@@ -12,20 +12,11 @@ import g50.model.element.movable.ghost.Ghost;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ElementViewerFactory {
-    private final HashMap<Class<? extends Element>, ViewProperty> properties;
+public abstract class ElementViewerFactory {
+    protected final HashMap<Class<? extends Element>, ViewProperty> properties;
 
     public ElementViewerFactory() {
         this.properties = new HashMap<>();
-        properties.put(PacMan.class, new ViewProperty('P'));
-        properties.put(Ghost.class, new ViewProperty('G'));
-        properties.put(Wall.class, new ViewProperty('='));
-        properties.put(EmptySpace.class, new ViewProperty(' '));
-        properties.put(PacDot.class, new ViewProperty('.'));
-        properties.put(PowerPellet.class, new ViewProperty('o'));
-        properties.put(SpawnArea.class, new ViewProperty(' '));
-        properties.put(Door.class, new ViewProperty(' '));
-        properties.put(Target.class, new ViewProperty(' '));
     }
 
     public ElementViewer getViewer(GUI gui, Element element){

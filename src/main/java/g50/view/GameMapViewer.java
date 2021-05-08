@@ -23,7 +23,7 @@ public class GameMapViewer {
     public GameMapViewer(GUI gui, GameMap gameMap){
         this.gui = gui;
         this.gameMap = gameMap;
-        this.viewerFactory = new ElementViewerFactory();
+        this.viewerFactory = new DefaultElementViewerFactory();
     }
 
     public void draw() throws IOException {
