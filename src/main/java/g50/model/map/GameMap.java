@@ -46,9 +46,9 @@ public class GameMap {
     }
 
     public FixedElement getElement(Position pos){
-        int x = pos.getX(), y = pos.getY();
+        int x = (pos.getX() + getColumns())  % getColumns();
+        int y = (pos.getY() + getLines()) % getLines();
         FixedElement elem;
-        if(x >= getColumns() || y >= getLines() || x < 0 || y < 0) return null;
         elem = map.get(y).get(x);
         return elem;
     }

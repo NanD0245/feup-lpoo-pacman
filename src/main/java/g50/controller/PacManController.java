@@ -45,11 +45,10 @@ public class PacManController implements Controller{
     public void update(int frame) {
         if(frame % velocity != 0) return;
         List<Orientation> oris = map.getAvailableOrientations(controllable.getPosition());
-        System.out.println(oris);
         if(oris.contains(nextBufferedOrientation)) {
-            controllable.move(nextBufferedOrientation);
+            controllable.move(nextBufferedOrientation, map.getColumns(), map.getLines());
             nextBufferedOrientation = null;
         } else if(oris.contains(controllable.getOrientation()))
-            controllable.move(controllable.getOrientation());
+            controllable.move(controllable.getOrientation(), map.getColumns(), map.getLines());
     }
 }
