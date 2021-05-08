@@ -14,7 +14,7 @@ public class GhostController implements Controller{
     }
 
     @Override
-    public void update() {
+    public void update(int frame) {
 
     }
 }

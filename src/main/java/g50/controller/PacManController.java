@@ -6,6 +6,7 @@ import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.model.map.GameMap;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -15,15 +16,16 @@ public class PacManController implements Controller{
     private final PacMan controllable;
     private final GameMap map;
     private Orientation nextBufferedOrientation;
+    private int velocity = 15;
 
-    private static final Map<GUI.ACTION, Orientation> actionToOrientation = Map.of(
-            GUI.ACTION.UP, Orientation.UP,
-            GUI.ACTION.DOWN, Orientation.DOWN,
-            GUI.ACTION.LEFT, Orientation.LEFT,
-            GUI.ACTION.RIGHT, Orientation.RIGHT,
-            GUI.ACTION.OTHER, null,
-            GUI.ACTION.QUIT, null
-    );
+    private static final Map<GUI.ACTION, Orientation> actionToOrientation = new HashMap<>() {{
+                put(GUI.ACTION.UP, Orientation.UP);
+                put(GUI.ACTION.DOWN, Orientation.DOWN);
+                put(GUI.ACTION.LEFT, Orientation.LEFT);
+                put(GUI.ACTION.RIGHT, Orientation.RIGHT);
+                put(GUI.ACTION.OTHER, null);
+                put(GUI.ACTION.QUIT, null);
+    }};
 
     public PacManController(GameMap map){
         this.map = map;
@@ -32,6 +34,7 @@ public class PacManController implements Controller{
 
     public void addPendingAction(GUI.ACTION action) {
         List<Orientation> oris = map.getAvailableOrientations(controllable.getPosition());
+        System.out.println(oris);
         Orientation actionOrientation = actionToOrientation.get(action);
         if(actionOrientation == null || actionOrientation == controllable.getOrientation()) return;
 
@@ -40,12 +43,14 @@ public class PacManController implements Controller{
     }
 
     @Override
-    public void update() {
+    public void update(int frame) {
+        if(frame % velocity != 0) return;
         List<Orientation> oris = map.getAvailableOrientations(controllable.getPosition());
-
-        if(oris.contains(nextBufferedOrientation))
+        System.out.println(oris);
+        if(oris.contains(nextBufferedOrientation)) {
             controllable.move(nextBufferedOrientation);
-        else if(oris.contains(controllable.getOrientation()))
+            nextBufferedOrientation = null;
+        } else if(oris.contains(controllable.getOrientation()))
             controllable.move(controllable.getOrientation());
     }
 }

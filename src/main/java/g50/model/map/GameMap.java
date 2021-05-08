@@ -68,8 +68,8 @@ public class GameMap {
         if(!isEmptyOrCollectable(elem)) return new ArrayList<Orientation>();
 
         Map<Orientation, FixedElement> surroundings = Map.of(
-                Orientation.UP, getElement(new Position(x, y+1)),
-                Orientation.DOWN, getElement(new Position(x, y-1)),
+                Orientation.UP, getElement(new Position(x, y-1)),
+                Orientation.DOWN, getElement(new Position(x, y+1)),
                 Orientation.LEFT, getElement(new Position(x-1, y)),
                 Orientation.RIGHT, getElement(new Position(x+1, y)));
 

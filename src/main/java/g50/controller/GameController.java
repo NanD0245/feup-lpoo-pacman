@@ -5,7 +5,9 @@ import g50.gui.GUIObserver;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
+import g50.view.GameMapViewer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -19,9 +21,11 @@ public class GameController implements GUIObserver, Controller {
     private int framerate = 60;
     private Timer timer;
     private TimerTask updater;
+    private final GameMapViewer viewer;
 
-    public GameController(GameMap map){
+    public GameController(GameMap map, GameMapViewer viewer){
         this.map = map;
+        this.viewer = viewer;
         this.ghostsController = new ArrayList<>();
         for(Ghost ghost: map.getGhosts()) this.ghostsController.add(new GhostController(this.map, ghost));
         this.pacManController = new PacManController(map);
@@ -34,9 +38,11 @@ public class GameController implements GUIObserver, Controller {
     public void setUp(int framerate){
         this.framerate = framerate;
         updater = new TimerTask() {
+            int frame = 0;
             @Override
             public void run() {
-                update();
+                frame++;
+                update(frame);
             }
         };
         timer = new Timer();
@@ -55,8 +61,13 @@ public class GameController implements GUIObserver, Controller {
 
 
     @Override
-    public void update() {
-        pacManController.update();
-        for(GhostController ghostController: ghostsController) ghostController.update();
+    public void update(int frame) {
+        pacManController.update(frame);
+        for(GhostController ghostController: ghostsController) ghostController.update(frame);
+        try{
+            viewer.draw();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

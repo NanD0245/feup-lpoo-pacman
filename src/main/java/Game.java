@@ -20,10 +20,11 @@ public class Game {
             System.out.println(gameMap.getMap());
             System.out.println(gameMap.getGhosts());
             System.out.println(gameMap.getPacman());
-            GameController controller = new GameController(gameMap);
-            controller.setUp(60);
             GUI gui = new LanternaGUI(gameMap.getColumns(),gameMap.getLines());
             GameMapViewer viewer = new GameMapViewer(gui, gameMap);
+            GameController controller = new GameController(gameMap, viewer);
+            gui.addObserver(controller);
+            controller.setUp(60);
             //viewer.draw();
             //controller.terminate();
         } catch (IOException e) {

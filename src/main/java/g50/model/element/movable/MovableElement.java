@@ -40,12 +40,24 @@ public abstract class MovableElement extends Element {
         }
     }
 
-    public void moveUp(){ setPosition(this.position.getUp()); }
+    public void moveUp(){
+        setOrientation(Orientation.UP);
+        setPosition(this.position.getUp());
+    }
 
-    public void moveDown() { setPosition(this.position.getDown()); }
+    public void moveDown() {
+        setOrientation(Orientation.DOWN);
+        setPosition(this.position.getDown());
+    }
 
-    public void moveLeft() { setPosition(this.position.getLeft()); }
+    public void moveLeft() {
+        setOrientation(Orientation.LEFT);
+        setPosition(this.position.getLeft());
+    }
 
-    public void moveRight() { setPosition(this.position.getRight()); }
+    public void moveRight() {
+        setOrientation(Orientation.RIGHT);
+        setPosition(this.position.getRight());
+    }
 
 }
