@@ -8,4 +8,5 @@ public abstract class FixedElement extends Element {
         super(position);
     }
     public abstract FixedElement generate(Position position);
+    public abstract boolean isWalkable();
 }

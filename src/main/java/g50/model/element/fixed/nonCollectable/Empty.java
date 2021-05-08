@@ -12,4 +12,9 @@ public class Empty extends NonCollectable {
     public FixedElement generate(Position position) {
         return new Empty(position);
     }
+
+    @Override
+    public boolean isWalkable() {
+        return true;
+    }
 }

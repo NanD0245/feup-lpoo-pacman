@@ -12,4 +12,9 @@ public class Door extends NonCollectable{
     public FixedElement generate(Position position) {
         return new Door(position);
     }
+
+    @Override
+    public boolean isWalkable() {
+        return false;
+    }
 }

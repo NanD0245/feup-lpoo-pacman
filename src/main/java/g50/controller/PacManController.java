@@ -6,27 +6,30 @@ import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.model.map.GameMap;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class PacManController {
+public class PacManController implements Controller{
 
     private final PacMan controllable;
     private final GameMap map;
     private Orientation nextBufferedOrientation;
-    private static final Map<GUI.ACTION, Orientation> actionToOrientation = Map.of(
-            GUI.ACTION.UP, Orientation.UP,
-            GUI.ACTION.DOWN, Orientation.DOWN,
-            GUI.ACTION.LEFT, Orientation.LEFT,
-            GUI.ACTION.RIGHT, Orientation.RIGHT,
-            GUI.ACTION.OTHER, null,
-            GUI.ACTION.QUIT, null
-    );
+    private int velocity = 15;
 
-    public PacManController(GameMap map, PacMan controllable){
+    private static final Map<GUI.ACTION, Orientation> actionToOrientation = new HashMap<>() {{
+                put(GUI.ACTION.UP, Orientation.UP);
+                put(GUI.ACTION.DOWN, Orientation.DOWN);
+                put(GUI.ACTION.LEFT, Orientation.LEFT);
+                put(GUI.ACTION.RIGHT, Orientation.RIGHT);
+                put(GUI.ACTION.OTHER, null);
+                put(GUI.ACTION.QUIT, null);
+    }};
+
+    public PacManController(GameMap map){
         this.map = map;
-        this.controllable = controllable;
+        this.controllable = map.getPacman();
     }
 
     public void addPendingAction(GUI.ACTION action) {
@@ -34,7 +37,21 @@ public class PacManController {
         Orientation actionOrientation = actionToOrientation.get(action);
         if(actionOrientation == null || actionOrientation == controllable.getOrientation()) return;
 
-        if(oris.contains(actionOrientation)) controllable.setOrientation(actionOrientation);
+        if(oris.contains(actionOrientation)){
+            controllable.setOrientation(actionOrientation);
+            if(nextBufferedOrientation == actionOrientation.getOpposite()) nextBufferedOrientation = null;
+        }
         else this.nextBufferedOrientation = actionOrientation;
+    }
+
+    @Override
+    public void update(int frame) {
+        if(frame % velocity != 0) return;
+        List<Orientation> oris = map.getAvailableOrientations(controllable.getPosition());
+        if(oris.contains(nextBufferedOrientation)) {
+            controllable.move(nextBufferedOrientation, map.getColumns(), map.getLines());
+            nextBufferedOrientation = null;
+        } else if(oris.contains(controllable.getOrientation()))
+            controllable.move(controllable.getOrientation(), map.getColumns(), map.getLines());
     }
 }

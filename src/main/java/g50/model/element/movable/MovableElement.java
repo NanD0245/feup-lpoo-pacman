@@ -23,12 +23,49 @@ public abstract class MovableElement extends Element {
         this.position.setPosition(pos);
     }
 
-    public void moveUp(){ setPosition(this.position.getUp()); }
+    public void move(Orientation orientation, int maxCol, int maxRow) {
+        switch (orientation){
+            case UP:
+                moveUp(maxRow);
+                break;
+            case DOWN:
+                moveDown(maxRow);
+                break;
+            case LEFT:
+                moveLeft(maxCol);
+                break;
+            case RIGHT:
+                moveRight(maxCol);
+                break;
+        }
+    }
 
-    public void moveDown() { setPosition(this.position.getDown()); }
+    public void moveUp(int maxRow){
+        setOrientation(Orientation.UP);
+        Position pos = this.position.getUp();
+        if(pos.getY() < 0) pos.setPosition(pos.getX(), maxRow - 1);
+        setPosition(pos);
+    }
 
-    public void moveLeft() { setPosition(this.position.getLeft()); }
+    public void moveDown(int maxRow) {
+        setOrientation(Orientation.DOWN);
+        Position pos = this.position.getDown();
+        if(pos.getY() >= maxRow) pos.setPosition(pos.getX(), 0);
+        setPosition(pos);
+    }
 
-    public void moveRight() { setPosition(this.position.getRight()); }
+    public void moveLeft(int maxCol) {
+        setOrientation(Orientation.LEFT);
+        Position pos = this.position.getLeft();
+        if(pos.getX() < 0) pos.setPosition(maxCol - 1, pos.getY());
+        setPosition(pos);
+    }
+
+    public void moveRight(int maxCol) {
+        setOrientation(Orientation.RIGHT);
+        Position pos = this.position.getRight();
+        if(pos.getX() >= maxCol) pos.setPosition(0, pos.getY());
+        setPosition(pos);
+    }
 
 }

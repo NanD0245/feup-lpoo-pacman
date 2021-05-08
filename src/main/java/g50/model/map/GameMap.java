@@ -9,6 +9,7 @@ import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.Ghost;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,38 +46,30 @@ public class GameMap {
     }
 
     public FixedElement getElement(Position pos){
-        int x = pos.getX(), y = pos.getY();
+        int x = (pos.getX() + getColumns())  % getColumns();
+        int y = (pos.getY() + getLines()) % getLines();
         FixedElement elem;
-
-        try{
-            elem = map.get(y).get(x);
-        } catch (ArrayIndexOutOfBoundsException e){
-            System.err.println("Invalid position on game map");
-            return null;
-        }
+        elem = map.get(y).get(x);
         return elem;
-    }
-
-    public boolean isEmptyOrCollectable(FixedElement elem){
-        return elem instanceof Collectable || elem instanceof Empty;
     }
 
     public List<Orientation> getAvailableOrientations(Position pos){
 
         int x = pos.getX(), y = pos.getY();
         FixedElement elem = getElement(pos);
-        if(!isEmptyOrCollectable(elem)) return new ArrayList<Orientation>();
+        if(!elem.isWalkable()) return new ArrayList<Orientation>();
 
-        Map<Orientation, FixedElement> surroundings = Map.of(
-                Orientation.UP, getElement(new Position(x, y+1)),
-                Orientation.DOWN, getElement(new Position(x, y-1)),
-                Orientation.LEFT, getElement(new Position(x-1, y)),
-                Orientation.RIGHT, getElement(new Position(x+1, y)));
+        Map<Orientation, FixedElement> surroundings = new HashMap<>() {{
+                    put(Orientation.UP, getElement(new Position(x, y-1)));
+                    put(Orientation.DOWN, getElement(new Position(x, y+1)));
+                    put(Orientation.LEFT, getElement(new Position(x-1, y)));
+                    put(Orientation.RIGHT, getElement(new Position(x+1, y)));
+        }};
 
         List<Orientation> newOrientations = new ArrayList<Orientation>();
 
         for(Orientation orientation: surroundings.keySet()){
-            if(isEmptyOrCollectable(surroundings.get(orientation))) newOrientations.add(orientation);
+            if(surroundings.get(orientation).isWalkable()) newOrientations.add(orientation);
         }
 
         return newOrientations;

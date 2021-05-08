@@ -13,4 +13,9 @@ public class SpawnArea extends NonCollectable{
     public FixedElement generate(Position position) {
         return new SpawnArea(position);
     }
+
+    @Override
+    public boolean isWalkable() {
+        return true;
+    }
 }
