@@ -12,7 +12,7 @@ import java.util.function.Function;
 
 public class PacManController {
 
-    private final PacMan controllabe;
+    private final PacMan controllable;
     private final GameMap map;
     private Orientation nextBufferedOrientation;
     private static final Map<GUI.ACTION, Orientation> actionToOrientation = Map.of(
@@ -24,17 +24,17 @@ public class PacManController {
             GUI.ACTION.QUIT, null
     );
 
-    public PacManController(GameMap map, PacMan controllabe){
+    public PacManController(GameMap map, PacMan controllable){
         this.map = map;
-        this.controllabe = controllabe;
+        this.controllable = controllable;
     }
 
     public void addPendingAction(GUI.ACTION action) {
-        List<Orientation> oris = map.getAvailableOrientations(controllabe.getPosition());
+        List<Orientation> oris = map.getAvailableOrientations(controllable.getPosition());
         Orientation actionOrientation = actionToOrientation.get(action);
-        if(actionOrientation == null || actionOrientation == controllabe.getOrientation()) return;
+        if(actionOrientation == null || actionOrientation == controllable.getOrientation()) return;
 
-        if(oris.contains(actionOrientation)) controllabe.setOrientation(actionOrientation);
+        if(oris.contains(actionOrientation)) controllable.setOrientation(actionOrientation);
         else this.nextBufferedOrientation = actionOrientation;
     }
 }
