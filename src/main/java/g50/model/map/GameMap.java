@@ -3,7 +3,7 @@ package g50.model.map;
 import g50.model.Position;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.collectable.Collectable;
-import g50.model.element.fixed.nonCollectable.Empty;
+import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.Ghost;
@@ -58,7 +58,7 @@ public class GameMap {
     }
 
     public boolean isEmptyOrCollectable(FixedElement elem){
-        return elem instanceof Collectable || elem instanceof Empty;
+        return elem instanceof Collectable || elem instanceof EmptySpace;
     }
 
     public List<Orientation> getAvailableOrientations(Position pos){

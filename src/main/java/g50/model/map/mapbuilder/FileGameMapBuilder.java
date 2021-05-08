@@ -24,7 +24,7 @@ public class FileGameMapBuilder implements GameMapBuilder {
     private BufferedReader buffer;
 
     private static final Map<Character, FixedElement> charToElement = Map.of(
-        ' ', new Empty(new Position(-1,-1)),
+        ' ', new EmptySpace(new Position(-1,-1)),
         '@', new PowerPellet(new Position(-1,-1)),
         'W', new Wall(new Position(-1,-1)),
         'P', new PacDot(new Position(-1,-1)),
