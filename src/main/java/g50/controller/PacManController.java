@@ -34,7 +34,6 @@ public class PacManController implements Controller{
 
     public void addPendingAction(GUI.ACTION action) {
         List<Orientation> oris = map.getAvailableOrientations(controllable.getPosition());
-        System.out.println(oris);
         Orientation actionOrientation = actionToOrientation.get(action);
         if(actionOrientation == null || actionOrientation == controllable.getOrientation()) return;
 
