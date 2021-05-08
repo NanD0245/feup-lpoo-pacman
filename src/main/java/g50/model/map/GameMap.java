@@ -53,15 +53,11 @@ public class GameMap {
         return elem;
     }
 
-    public boolean isEmptyOrCollectable(FixedElement elem){
-        return (elem instanceof Collectable || elem instanceof Empty);
-    }
-
     public List<Orientation> getAvailableOrientations(Position pos){
 
         int x = pos.getX(), y = pos.getY();
         FixedElement elem = getElement(pos);
-        if(!isEmptyOrCollectable(elem)) return new ArrayList<Orientation>();
+        if(!elem.isWalkable()) return new ArrayList<Orientation>();
 
         Map<Orientation, FixedElement> surroundings = new HashMap<>() {{
                     put(Orientation.UP, getElement(new Position(x, y-1)));
@@ -73,7 +69,7 @@ public class GameMap {
         List<Orientation> newOrientations = new ArrayList<Orientation>();
 
         for(Orientation orientation: surroundings.keySet()){
-            if(isEmptyOrCollectable(surroundings.get(orientation))) newOrientations.add(orientation);
+            if(surroundings.get(orientation).isWalkable()) newOrientations.add(orientation);
         }
 
         return newOrientations;

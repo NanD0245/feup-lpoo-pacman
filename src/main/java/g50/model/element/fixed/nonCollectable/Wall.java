@@ -12,4 +12,9 @@ public class Wall extends NonCollectable {
     public FixedElement generate(Position position) {
         return new Wall(position);
     }
+
+    @Override
+    public boolean isWalkable() {
+        return false;
+    }
 }
