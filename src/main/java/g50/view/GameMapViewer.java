@@ -13,12 +13,12 @@ import java.util.List;
 public class GameMapViewer {
     private final GUI gui;
     private final GameMap gameMap;
-    private final ElementViewerBuilder viewerFactory;
+    private final ElementViewerBuilder viewerBuilder;
 
     public GameMapViewer(GUI gui, GameMap gameMap){
         this.gui = gui;
         this.gameMap = gameMap;
-        this.viewerFactory = new DefaultElementViewerBuilder();
+        this.viewerBuilder = new DefaultElementViewerBuilder();
     }
 
     public void draw() throws IOException {
@@ -29,13 +29,13 @@ public class GameMapViewer {
             for (int column = 0; column < this.gameMap.getColumns(); column++){
                 Position position = new Position(column, line);
                 Element element = map.get(line).get(column);
-                this.viewerFactory.getViewer(this.gui, element).draw(position);
+                this.viewerBuilder.getViewer(this.gui, element).draw(position);
             }
         }
 
-        this.viewerFactory.getViewer(this.gui, this.gameMap.getPacman()).draw(this.gameMap.getPacman().getPosition());
+        this.viewerBuilder.getViewer(this.gui, this.gameMap.getPacman()).draw(this.gameMap.getPacman().getPosition());
         for (Ghost ghost : this.gameMap.getGhosts()){
-            this.viewerFactory.getViewer(this.gui, ghost).draw(ghost.getPosition());
+            this.viewerBuilder.getViewer(this.gui, ghost).draw(ghost.getPosition());
         }
 
         this.gui.refresh();

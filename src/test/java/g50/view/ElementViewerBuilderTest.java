@@ -19,7 +19,7 @@ class ElementViewerBuilderTest {
     }
 
     @Test
-    public void defaultFactoryPacman(){
+    public void defaultBuilderPacMan(){
         ViewProperty pacmanViewProperty = Mockito.mock(ViewProperty.class);
         Mockito.when(pacmanViewProperty.getCharacter()).thenReturn('P');
         Mockito.when(pacmanViewProperty.getColor()).thenReturn("#FFFFFF");
@@ -29,24 +29,24 @@ class ElementViewerBuilderTest {
     }
 
     @Test
-    public void customFactory(){
+    public void customBuilder(){
         ViewProperty ghostViewProperty = Mockito.mock(ViewProperty.class);
         Mockito.when(ghostViewProperty.getCharacter()).thenReturn('G');
         Mockito.when(ghostViewProperty.getColor()).thenReturn("#FFFFFF");
-        CustomElementViewerBuilder elementViewerFactory = new CustomElementViewerBuilder();
+        CustomElementViewerBuilder elementViewerBuilder = new CustomElementViewerBuilder();
 
-        assertEquals(elementViewerFactory.getViewer(mockGUI, new Ghost(null, null, null, null)),
+        assertEquals(elementViewerBuilder.getViewer(mockGUI, new Ghost(null, null, null, null)),
                 new ElementViewer(mockGUI, new ViewProperty("#FFFFFF", '?')));
-        elementViewerFactory.addViewer(Ghost.class, new ViewProperty("#FFFF00", 'G'));
-        assertEquals(elementViewerFactory.getViewer(mockGUI, new Ghost(null,null,null,null)),
+        elementViewerBuilder.addViewer(Ghost.class, new ViewProperty("#FFFF00", 'G'));
+        assertEquals(elementViewerBuilder.getViewer(mockGUI, new Ghost(null,null,null,null)),
                 new ElementViewer(mockGUI, new ViewProperty("#FFFF00", 'G')));
 
-        elementViewerFactory.addViewer(PacMan.class, new ViewProperty("#F0FFF0", 'P'));
-        assertEquals(elementViewerFactory.getViewer(mockGUI, new PacMan(null)),
+        elementViewerBuilder.addViewer(PacMan.class, new ViewProperty("#F0FFF0", 'P'));
+        assertEquals(elementViewerBuilder.getViewer(mockGUI, new PacMan(null)),
                 new ElementViewer(mockGUI, new ViewProperty("#F0FFF0", 'P')));
 
-        elementViewerFactory.removeViewer(PacMan.class);
-        assertEquals(elementViewerFactory.getViewer(mockGUI, new PacMan(null)),
+        elementViewerBuilder.removeViewer(PacMan.class);
+        assertEquals(elementViewerBuilder.getViewer(mockGUI, new PacMan(null)),
                 new ElementViewer(mockGUI, new ViewProperty("#FFFFFF", '?')));
     }
 }
