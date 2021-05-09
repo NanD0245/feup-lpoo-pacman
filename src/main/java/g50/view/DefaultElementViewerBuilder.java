@@ -6,10 +6,8 @@ import g50.model.element.fixed.nonCollectable.*;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.Ghost;
 
-import java.util.HashMap;
-
-public class DefaultElementViewerFactory extends ElementViewerFactory{
-    public DefaultElementViewerFactory(){
+public class DefaultElementViewerBuilder extends ElementViewerBuilder {
+    public DefaultElementViewerBuilder(){
         super();
         this.properties.put(PacMan.class, new ViewProperty('P'));
         this.properties.put(Ghost.class, new ViewProperty('G'));

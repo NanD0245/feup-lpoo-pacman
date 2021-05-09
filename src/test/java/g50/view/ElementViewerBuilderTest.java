@@ -1,7 +1,6 @@
 package g50.view;
 
 import g50.gui.GUI;
-import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.Ghost;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,7 @@ import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ElementViewerFactoryTest {
+class ElementViewerBuilderTest {
 
     private GUI mockGUI;
 
@@ -24,8 +23,8 @@ class ElementViewerFactoryTest {
         ViewProperty pacmanViewProperty = Mockito.mock(ViewProperty.class);
         Mockito.when(pacmanViewProperty.getCharacter()).thenReturn('P');
         Mockito.when(pacmanViewProperty.getColor()).thenReturn("#FFFFFF");
-        ElementViewerFactory elementViewerFactory = new DefaultElementViewerFactory();
-        assertEquals(elementViewerFactory.getViewer(mockGUI, new PacMan(null)),
+        ElementViewerBuilder elementViewerBuilder = new DefaultElementViewerBuilder();
+        assertEquals(elementViewerBuilder.getViewer(mockGUI, new PacMan(null)),
                 new ElementViewer(mockGUI, new ViewProperty("#FFFFFF", 'P')));
     }
 
@@ -34,7 +33,7 @@ class ElementViewerFactoryTest {
         ViewProperty ghostViewProperty = Mockito.mock(ViewProperty.class);
         Mockito.when(ghostViewProperty.getCharacter()).thenReturn('G');
         Mockito.when(ghostViewProperty.getColor()).thenReturn("#FFFFFF");
-        CustomElementViewerFactory elementViewerFactory = new CustomElementViewerFactory();
+        CustomElementViewerBuilder elementViewerFactory = new CustomElementViewerBuilder();
 
         assertEquals(elementViewerFactory.getViewer(mockGUI, new Ghost(null, null, null, null)),
                 new ElementViewer(mockGUI, new ViewProperty("#FFFFFF", '?')));

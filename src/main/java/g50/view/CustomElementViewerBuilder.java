@@ -2,7 +2,7 @@ package g50.view;
 
 import g50.model.element.Element;
 
-public class CustomElementViewerFactory extends ElementViewerFactory{
+public class CustomElementViewerBuilder extends ElementViewerBuilder {
     public void addViewer(Class<? extends Element> elementClass, ViewProperty viewProperty){
         this.properties.put(elementClass, viewProperty);
     }

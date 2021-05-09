@@ -4,11 +4,6 @@ import g50.gui.GUI;
 import g50.model.Position;
 import g50.model.element.Element;
 import g50.model.element.fixed.FixedElement;
-import g50.model.element.fixed.collectable.PacDot;
-import g50.model.element.fixed.collectable.PowerPellet;
-import g50.model.element.fixed.collectable.fruit.Fruit;
-import g50.model.element.fixed.nonCollectable.Wall;
-import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
 
@@ -18,12 +13,12 @@ import java.util.List;
 public class GameMapViewer {
     private final GUI gui;
     private final GameMap gameMap;
-    private final ElementViewerFactory viewerFactory;
+    private final ElementViewerBuilder viewerFactory;
 
     public GameMapViewer(GUI gui, GameMap gameMap){
         this.gui = gui;
         this.gameMap = gameMap;
-        this.viewerFactory = new DefaultElementViewerFactory();
+        this.viewerFactory = new DefaultElementViewerBuilder();
     }
 
     public void draw() throws IOException {

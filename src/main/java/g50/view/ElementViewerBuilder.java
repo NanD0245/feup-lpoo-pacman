@@ -12,10 +12,10 @@ import g50.model.element.movable.ghost.Ghost;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class ElementViewerFactory {
+public abstract class ElementViewerBuilder {
     protected final HashMap<Class<? extends Element>, ViewProperty> properties;
 
-    public ElementViewerFactory() {
+    public ElementViewerBuilder() {
         this.properties = new HashMap<>();
     }
 
