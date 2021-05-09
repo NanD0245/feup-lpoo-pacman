@@ -1,14 +1,2 @@
-# lpoo-2021-g50
-lpoo-2021-g50 created by GitHub Classroom
-
-# Planning
-Game (score aqui?)
-Maze (MazeBuilder; estados -> notify ghosts; timer interno; texto+geraçao aleatoria?)
-ELEMENT:
-Wall
-Pacman (life)
-Ghost
-Collectable
-    Pac-Dot
-    Power Pellet
-    Fruit
+# sudo PacMan
+A clone of the classic PacMan game played in the arcade machines of the good old days, spiced up with some easter eggs related to the package manager of your favorite Linux distro.
