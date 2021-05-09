@@ -1,10 +1,15 @@
 package g50.model.element;
 
+import g50.model.Position;
+
 public abstract class Element {
-    private int x;
-    private int y;
+    protected Position position;
 
-    public int getX() { return x; }
+    public Element(Position position) {
+        this.position = position;
+    }
 
-    public int getY() { return y; }
+    public Position getPosition() {
+        return position;
+    }
 }

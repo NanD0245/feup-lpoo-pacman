@@ -1,8 +1,10 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'info.solidsoft.pitest' version '1.5.1'
 }
 
-group 'org.example'
+group 'g50'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -10,11 +12,22 @@ repositories {
 }
 
 dependencies {
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    implementation 'junit:junit:4.12'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+        testImplementation 'org.mockito:mockito-core:3.7.7'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    implementation group: 'com.googlecode.lanterna', name: 'lanterna', version: '3.1.1'
+}
+
+application {
+    mainClass.set("Application")
 }
 
 test {
     useJUnitPlatform()
+}
+
+pitest {
+    junit5PluginVersion = '0.12'
+    excludedMethods = ['max','min']
 }
