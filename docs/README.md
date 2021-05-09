@@ -58,15 +58,21 @@ Responsible for the flow of the application:
 ### Multiple views
 Each game element shall be drawn on the screen with the appropriate character and color. While it isn’t feasible to include this data in the model (should we ever switch to a 3D-based viewer framework, that would be highly uncomfortable), it is also lazy to create a different viewer class for each element just to hold different data, and act exactly the same way. To solve this issue, we opted to let a builder create the correct element viewer instance given the class of the given drawable element.
 
-
+<p align="center">
+  <img src="images/view.png" alt="Multiple Views">
+</p>
 
 ### Polling from the GUI
 As seen in the classes, we could poll the input receiver (in our case, the GUI) for the last user action each frame and act upon it. However, with this approach we would lose some precision and possibly some key inputs. We found that the Lanterna framework provides methods for handling interrupts from the keyboard, and used this mechanism to inform any generic GUI observer of an action in “real time”. In our case, the game controller is the observer, acting upon the inputs to move the pacman.
 
-
+<p align="center">
+  <img src="images/controller.png" alt="Polling from the GUI">
+</p>
 
 ### Game Map Builder
 To avoid long lines of hard coded insertions in the game map class, it makes sense to have a separate class to do this job in a generic way (read from a file) and return the assembled GameMap object.
 
-
+<p align="center">
+  <img src="images/mapbuilder.png" alt="Game Map Builder">
+</p>
 
