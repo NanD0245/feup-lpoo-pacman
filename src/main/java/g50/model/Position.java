@@ -25,14 +25,12 @@ public class Position {
 
     public Position getRandom() {
         int n = (int) (Math.random() * 4);
-        Position pos;
         switch (n) {
-            case 0: pos = getUp();
-            case 1: pos = getRight();
-            case 2: pos = getDown();
-            default: pos = getLeft();
+            case 0: return getUp();
+            case 1: return getRight();
+            case 2: return getDown();
+            default: return getLeft();
         }
-        return pos;
     }
 
     public void setPosition(int x, int y){
