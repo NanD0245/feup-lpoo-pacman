@@ -1,12 +1,11 @@
 package g50.controller;
 
-import com.googlecode.lanterna.gui2.EmptySpace;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
 import g50.model.Position;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.collectable.Collectable;
-import g50.model.element.fixed.nonCollectable.Empty;
+import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.model.map.GameMap;
@@ -57,7 +56,7 @@ public class PacManController implements Controller{
         FixedElement currentElement = map.getElement(currentPos);
 
         if(currentElement instanceof Collectable)
-            map.setElement(new Empty(currentPos), currentPos);
+            map.setElement(new EmptySpace(currentPos), currentPos);
 
         moveToNewPosition(map.getAvailableOrientations(controllable.getPosition()));
     }
