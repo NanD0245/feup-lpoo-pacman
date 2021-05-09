@@ -3,8 +3,9 @@
 ## sudo PacMan
 
 A clone of the classic PacMan game played in the arcade machines of the good old days, spiced up with some easter eggs related to the package manager of your favorite Linux distro.
-
-<img src="images/pacman-gif.gif" alt="PacMan Game" style="display: block;margin-left: auto;margin-right: auto; width: 50%;">
+<p align="center">
+  <img src="images/pacman-gif.gif" alt="PacMan Game">
+</p>
 
 ## Current development state
 Implemented:
@@ -22,8 +23,9 @@ To be implemented:
 - Package manager easter eggs
 
 ## Architectural Design
-
-<img src="images/mvc-architecture.png" alt="Model View Controller" style="display: block;margin-left: auto;margin-right: auto; width: 50%;">
+<p align="center">
+  <img src="images/mvc-architecture.png" alt="Model View Controller">
+</p>
 
 The architectural design followed in this project was the MVC (particularly the definition represented above).
 Each of its components is briefly described below.
@@ -43,8 +45,9 @@ Responsible for the flow of the application:
 ## Testing
 
 ### Coverage/Mutations
-
-<img src="images/pitest.png" alt="PiTest" style="display: block;margin-left: auto;margin-right: auto; width: 50%;">
+<p align="center">
+  <img src="images/pitest.png" alt="PiTest">
+</p>
 
 ### Particular test highlights
 - ElementViewFactory: provided this class’ methods require knowledge from other classes (namely, the ViewProperty and the GUI), stubs were used to ensure the correct decouple of the tests, and dummy parameters were injected where needed (namely, to create a model entity to be drawn).
