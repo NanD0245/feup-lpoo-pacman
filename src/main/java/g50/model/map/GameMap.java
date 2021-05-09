@@ -79,4 +79,7 @@ public class GameMap {
         return getAvailableOrientations(pos).size() > 2;
     }
 
+    public void setElement(FixedElement elem, Position pos) {
+        map.get(pos.getY()).set(pos.getX(), elem);
+    }
 }

@@ -64,9 +64,9 @@ public class GameController implements GUIObserver, Controller {
     public void update(int frame) {
         pacManController.update(frame);
         for(GhostController ghostController: ghostsController) ghostController.update(frame);
-        try{
+        try {
             viewer.draw();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
