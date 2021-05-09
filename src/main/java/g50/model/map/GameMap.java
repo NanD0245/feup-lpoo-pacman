@@ -3,7 +3,7 @@ package g50.model.map;
 import g50.model.Position;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.collectable.Collectable;
-import g50.model.element.fixed.nonCollectable.Empty;
+import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.Ghost;
@@ -59,7 +59,7 @@ public class GameMap {
         FixedElement elem = getElement(pos);
         if(!elem.isWalkable()) return new ArrayList<Orientation>();
 
-        Map<Orientation, FixedElement> surroundings = new HashMap<>() {{
+        Map<Orientation, FixedElement> surroundings = new HashMap<Orientation, FixedElement>() {{
                     put(Orientation.UP, getElement(new Position(x, y-1)));
                     put(Orientation.DOWN, getElement(new Position(x, y+1)));
                     put(Orientation.LEFT, getElement(new Position(x-1, y)));
