@@ -1,5 +1,7 @@
 package g50.controller;
 
+import g50.controller.menu.GameOverMenuController;
+import g50.controller.menu.MainMenuController;
 import g50.controller.menu.MenuController;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
@@ -8,8 +10,12 @@ import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
 import g50.model.map.mapbuilder.DefaultGameMapBuilder;
 import g50.model.map.mapbuilder.GameMapBuilder;
+import g50.model.menu.GameOverMenu;
+import g50.model.menu.MainMenu;
 import g50.model.menu.Menu;
 import g50.view.GameMapViewer;
+import g50.view.menu.GameOverViewer;
+import g50.view.menu.MainMenuViewer;
 import g50.view.menu.MenuViewer;
 
 import java.awt.*;
@@ -29,12 +35,14 @@ public class ApplicationController implements GUIObserver, Controller {
     private final GUI gui;
 
     public ApplicationController(GUI gui) throws IOException, URISyntaxException, FontFormatException {
-        Menu menu = new Menu();
+        //MainMenu menu = new MainMenu();
+        GameOverMenu menu = new GameOverMenu();
         GameMap map = new DefaultGameMapBuilder().getBuild();
         this.gui = gui;
         this.gui.addObserver(this);
         this.gameController = new GameController(gui, new GameMapViewer(), map, 0);
-        this.menuController = new MenuController(new MenuViewer(gui), menu);
+        //this.menuController = new MainMenuController(new MainMenuViewer(gui), menu);
+        this.menuController = new GameOverMenuController(new GameOverViewer(gui), menu);
     }
 
     public void setUp(){

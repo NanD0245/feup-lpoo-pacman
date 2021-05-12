@@ -3,14 +3,12 @@ package g50.model.menu;
 import java.util.Arrays;
 import java.util.List;
 
-public class Menu {
-    private final List<String> entries;
-    private int currentEntry;
+public abstract class Menu {
+    protected final List<String> entries;
+    protected int currentEntry;
 
-    //enum ENTRIES {START, CONTROLS, CREDITS, HIGHSCORE, EXIT};
-
-    public Menu() {
-        this.entries = Arrays.asList("START", "CONTROLS", "CREDITS", "HIGH-SCORE", "EXIT");
+    public Menu(List<String> entries) {
+        this.entries = entries;
         this.currentEntry = 0;
     }
 
@@ -26,14 +24,6 @@ public class Menu {
 
     public String getEntry(int i) {
         return entries.get(i);
-    }
-
-    public boolean isSelectedStart() {
-        return (currentEntry == 0);
-    }
-
-    public boolean isSelectedExit() {
-        return (currentEntry == 4);
     }
 
     public int getCurrentEntry() {

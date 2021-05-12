@@ -1,5 +1,6 @@
 package g50.gui;
 
+import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
@@ -130,6 +131,15 @@ public class LanternaGUI implements GUI{
         TextGraphics tg = this.screen.newTextGraphics();
         tg.setForegroundColor(TextColor.Factory.fromString(color));
         tg.putString(position.getX(), position.getY() + 1, text);
+    }
+
+    @Override
+    public void drawBlinkText(String text, Position position, String color) {
+        TextGraphics tg = this.screen.newTextGraphics();
+        tg.enableModifiers(SGR.BLINK);
+        tg.setForegroundColor(TextColor.Factory.fromString(color));
+        tg.putString(position.getX(), position.getY() + 1, text);
+        tg.disableModifiers(SGR.BLINK);
     }
 
     @Override

@@ -10,6 +10,7 @@ public interface GUI {
     void addObserver(GUIObserver observer);
     void drawCharacter(char c, Position position, String color);
     void drawText(String text, Position position, String color);
+    void drawBlinkText(String text, Position position, String color);
     void drawCharacter(char c, Position position);
     void drawText(String text, Position position);
     void clear();
