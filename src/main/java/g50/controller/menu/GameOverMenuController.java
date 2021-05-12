@@ -20,13 +20,4 @@ public class GameOverMenuController extends MenuController<GameOverMenu> {
 
         }
     }
-
-    @Override
-    public void update(int frame) {
-        try {
-            menuViewer.draw(menu);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

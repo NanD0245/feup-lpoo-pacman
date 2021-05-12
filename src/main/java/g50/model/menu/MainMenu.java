@@ -11,9 +11,7 @@ public class MainMenu extends Menu {
         return (currentEntry == 0);
     }
 
-    public boolean isSelectedControls() {
-        return (currentEntry == 1);
-    }
+    public boolean isSelectedControls() { return (currentEntry == 1); }
 
     public boolean isSelectedCredits() {
         return (currentEntry == 2);

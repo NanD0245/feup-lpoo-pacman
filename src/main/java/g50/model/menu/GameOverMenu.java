@@ -5,6 +5,6 @@ import java.util.Collections;
 
 public class GameOverMenu extends Menu {
     public GameOverMenu() {
-        super(Arrays.asList("GAME OVER", "PRESS ENTER TO RETURN"));
+        super(Collections.singletonList("PRESS ENTER TO RETURN"));
     }
 }

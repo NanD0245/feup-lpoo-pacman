@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class MenuViewer {
+public abstract class MenuViewer<T> {
     protected List<ElementViewer> elementViewers;
     protected GUI gui;
     public MenuViewer(GUI gui) {
@@ -23,5 +23,5 @@ public abstract class MenuViewer {
 
     public abstract void initViewerBuilder(GUI gui);
 
-    public abstract void draw(Menu menu) throws IOException;
+    public abstract void draw(T menu) throws IOException;
 }

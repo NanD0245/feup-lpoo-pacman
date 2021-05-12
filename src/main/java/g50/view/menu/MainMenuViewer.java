@@ -2,13 +2,14 @@ package g50.view.menu;
 
 import g50.gui.GUI;
 import g50.model.Position;
+import g50.model.menu.MainMenu;
 import g50.model.menu.Menu;
 import g50.view.ElementViewer;
 import g50.view.ViewProperty;
 
 import java.io.IOException;
 
-public class MainMenuViewer extends MenuViewer {
+public class MainMenuViewer extends MenuViewer<MainMenu> {
     public MainMenuViewer(GUI gui) {
         super(gui);
     }
@@ -22,7 +23,7 @@ public class MainMenuViewer extends MenuViewer {
         this.elementViewers.add(new ElementViewer(gui, new ViewProperty("#FFB852",'G')));
     }
 
-    public void draw(Menu menu) throws IOException {
+    public void draw(MainMenu menu) throws IOException {
         gui.clear();
 
         gui.drawText("PAC-MAN" ,new Position(10,5), "#FFFF00");

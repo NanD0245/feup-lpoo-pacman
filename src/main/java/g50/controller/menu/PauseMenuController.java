@@ -1,15 +1,15 @@
 package g50.controller.menu;
 
 import g50.gui.GUI;
-import g50.model.menu.MainMenu;
+import g50.model.menu.PauseMenu;
 import g50.view.menu.MenuViewer;
 
 import java.io.IOException;
 
-public class MainMenuController extends MenuController <MainMenu>{
+public class PauseMenuController extends MenuController<PauseMenu> {
 
-    public MainMenuController(MenuViewer menuViewer, MainMenu menu) {
-        super(menuViewer,menu);
+    public PauseMenuController(MenuViewer menuViewer, PauseMenu menu) {
+        super(menuViewer, menu);
     }
 
     @Override
@@ -22,9 +22,9 @@ public class MainMenuController extends MenuController <MainMenu>{
                 menu.nextEntry();
                 break;
             case SELECT:
+                if (menu.isSelectedResume())
                 if (menu.isSelectedExit())
-                if (menu.isSelectedStart())
-                    break;
+                break;
         }
     }
 }
