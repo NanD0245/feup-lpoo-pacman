@@ -1,5 +1,5 @@
 package g50.controller.ghost_strategy;
 
-public class BlinkyStrategy implements GhostStrategy{
+public class BlinkyStrategy extends GhostStrategy {
 
 }

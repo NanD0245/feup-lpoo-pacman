@@ -8,10 +8,7 @@ import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.Ghost;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameMap {
 
@@ -53,26 +50,48 @@ public class GameMap {
         return elem;
     }
 
-    public List<Orientation> getAvailableOrientations(Position pos){
+    public Map<Orientation, FixedElement> getSurroundings(Position pos){
 
         int x = pos.getX(), y = pos.getY();
-        FixedElement elem = getElement(pos);
-        if(!elem.isWalkable()) return new ArrayList<Orientation>();
-
-        Map<Orientation, FixedElement> surroundings = new HashMap<Orientation, FixedElement>() {{
-                    put(Orientation.UP, getElement(new Position(x, y-1)));
-                    put(Orientation.DOWN, getElement(new Position(x, y+1)));
-                    put(Orientation.LEFT, getElement(new Position(x-1, y)));
-                    put(Orientation.RIGHT, getElement(new Position(x+1, y)));
+        return new HashMap<Orientation, FixedElement>() {{
+            put(Orientation.UP, getElement(new Position(x, y-1)));
+            put(Orientation.DOWN, getElement(new Position(x, y+1)));
+            put(Orientation.LEFT, getElement(new Position(x-1, y)));
+            put(Orientation.RIGHT, getElement(new Position(x+1, y)));
         }};
+    }
+
+    public List<Orientation> getAvailableOrientations(Position pos){
+
+        FixedElement elem = getElement(pos);
+        if(!elem.isWalkable()) return new ArrayList<>();
+
+        Map<Orientation, FixedElement> surroundings = getSurroundings(pos);
 
         List<Orientation> newOrientations = new ArrayList<Orientation>();
 
         for(Orientation orientation: surroundings.keySet()){
-            if(surroundings.get(orientation).isWalkable()) newOrientations.add(orientation);
+            FixedElement element = surroundings.get(orientation);
+            if(element.isWalkable()) newOrientations.add(orientation);
         }
 
         return newOrientations;
+    }
+
+    public List<Position> getNeighbours(Position pos){
+        FixedElement elem = getElement(pos);
+        if(!elem.isWalkable()) return new ArrayList<>();
+
+        Map<Orientation, FixedElement> surroundings = getSurroundings(pos);
+
+        List<Position> newPositions = new ArrayList<Position>();
+
+        for(Orientation orientation: surroundings.keySet()){
+            FixedElement element = surroundings.get(orientation);
+            if(element.isWalkable()) newPositions.add(element.getPosition());
+        }
+
+        return newPositions;
     }
 
     public boolean isIntersection(Position pos){
@@ -81,5 +100,94 @@ public class GameMap {
 
     public void setElement(FixedElement elem, Position pos) {
         map.get(pos.getY()).set(pos.getX(), elem);
+    }
+
+
+
+    public Orientation getOrientationOfShortestPath(Position origin, Position destiny){
+
+        List<Position> path = new ArrayList<>();
+        PriorityQueue<Entry> pq = new PriorityQueue<>();
+        Set<Entry> closedSet = new HashSet<>();
+        pq.add(new Entry(origin, destiny));
+
+        while(pq.size() > 0){
+            Entry currentEntry = pq.poll();
+            if(currentEntry.getKey().equals(destiny)){
+                while(!currentEntry.getKey().equals(origin)){
+                    path.add(0, currentEntry.getKey());
+                    currentEntry = currentEntry.getParent();
+                }
+                break;
+            }
+
+            for(Position neighbour: getNeighbours(currentEntry.getKey())){
+                if(closedSet.contains(currentEntry)) continue;
+                Entry newEntry = new Entry(neighbour, destiny);
+                newEntry.setDistance(currentEntry.getDistance() + 1);
+                newEntry.setParent(currentEntry);
+                if(!pq.contains(newEntry)) pq.add(newEntry);
+            }
+            closedSet.add(currentEntry);
+        }
+
+        return Orientation.UP;
+    }
+}
+
+class Entry implements Comparable<Entry>{
+    private final Position key;
+    private Integer distance = 0;
+    private Entry parent = null;
+    private final Position destiny;
+
+    public Entry(Position key, Position destiny){
+        this.key = key;
+        this.destiny = destiny;
+    }
+
+    public void setParent(Entry entry){
+        this.parent = entry;
+    }
+
+    public void setDistance(Integer distance){
+        this.distance = distance;
+    }
+
+    @Override
+    public int compareTo(Entry o) {
+        return (this.distance + getHeuristicFactor(this.key, this.destiny)) -
+                (o.distance + getHeuristicFactor(o.key, o.destiny));
+    }
+
+    private int getHeuristicFactor(Position pos1, Position pos2){
+        int deltaX = Math.abs(pos1.getX() - pos2.getX());
+        int deltaY = Math.abs(pos1.getY() - pos2.getY());
+        return deltaX + deltaY;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Entry entry = (Entry) o;
+        return Objects.equals(key, entry.key);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key);
+    }
+
+    public Position getKey() {
+        return key;
+    }
+
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public Entry getParent() {
+        return parent;
     }
 }
