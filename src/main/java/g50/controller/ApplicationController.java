@@ -49,12 +49,13 @@ public class ApplicationController implements GUIObserver, Controller {
         timer.schedule(task, 1000/frameRate, 1000/frameRate);
     }
 
-    public void terminate() {
+    public void terminate() throws IOException {
         timer.cancel();
+        this.gui.close();
     }
 
     @Override
-    public void addPendingAction(GUI.ACTION action) {
+    public void addPendingAction(GUI.ACTION action) throws IOException {
         if(action == GUI.ACTION.QUIT) terminate();
         gameController.addPendingAction(action);
     }
