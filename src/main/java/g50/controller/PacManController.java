@@ -22,13 +22,13 @@ public class PacManController implements Controller{
     private Orientation nextBufferedOrientation;
     private int velocity = 15;
 
-    private static final Map<GUI.ACTION, Orientation> actionToOrientation = new HashMap<>() {{
-                put(GUI.ACTION.UP, Orientation.UP);
-                put(GUI.ACTION.DOWN, Orientation.DOWN);
-                put(GUI.ACTION.LEFT, Orientation.LEFT);
-                put(GUI.ACTION.RIGHT, Orientation.RIGHT);
-                put(GUI.ACTION.OTHER, null);
-                put(GUI.ACTION.QUIT, null);
+    private static final Map<GUI.KBD_ACTION, Orientation> actionToOrientation = new HashMap<>() {{
+                put(GUI.KBD_ACTION.UP, Orientation.UP);
+                put(GUI.KBD_ACTION.DOWN, Orientation.DOWN);
+                put(GUI.KBD_ACTION.LEFT, Orientation.LEFT);
+                put(GUI.KBD_ACTION.RIGHT, Orientation.RIGHT);
+                put(GUI.KBD_ACTION.OTHER, null);
+                put(GUI.KBD_ACTION.QUIT, null);
     }};
 
     public PacManController(GameMap map){
@@ -36,7 +36,7 @@ public class PacManController implements Controller{
         this.controllable = map.getPacman();
     }
 
-    public void addPendingAction(GUI.ACTION action) {
+    public void addPendingKBDAction(GUI.KBD_ACTION action) {
         List<Orientation> oris = map.getAvailableOrientations(controllable.getPosition());
         Orientation actionOrientation = actionToOrientation.get(action);
         if(actionOrientation == null || actionOrientation == controllable.getOrientation()) return;

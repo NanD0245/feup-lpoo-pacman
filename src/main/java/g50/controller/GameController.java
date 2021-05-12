@@ -54,9 +54,9 @@ public class GameController implements GUIObserver, Controller {
     }
 
     @Override
-    public void addPendingAction(GUI.ACTION action) {
-        if(action == GUI.ACTION.QUIT) terminate();
-        pacManController.addPendingAction(action);
+    public void addPendingKBDAction(GUI.KBD_ACTION action) {
+        if(action == GUI.KBD_ACTION.QUIT) terminate();
+        pacManController.addPendingKBDAction(action);
     }
 
 

@@ -12,7 +12,7 @@ public class MenuController implements Controller , GUIObserver {
         this.menu = menu;
     }
 
-    public void addPendingAction(GUI.ACTION action) {
+    public void addPendingKBDAction(GUI.KBD_ACTION action) {
         switch (action) {
             case UP:
                 menu.previousEntry();
