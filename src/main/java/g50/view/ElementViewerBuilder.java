@@ -9,7 +9,9 @@ import g50.model.element.fixed.nonCollectable.*;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.Ghost;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class ElementViewerBuilder {
@@ -27,5 +29,14 @@ public abstract class ElementViewerBuilder {
             }
         }
         return new ElementViewer(gui, new ViewProperty('?'));
+    }
+
+    public List<ElementViewer> getListViewer(GUI gui) {
+        List<ElementViewer> list = new ArrayList<>();
+        for (Map.Entry<Class<? extends Element>, ViewProperty> entry :
+                properties.entrySet()){
+            list.add(new ElementViewer(gui, entry.getValue()));
+        }
+        return list;
     }
 }

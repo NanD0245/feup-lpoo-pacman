@@ -7,6 +7,8 @@ public class Menu {
     private final List<String> entries;
     private int currentEntry;
 
+    //enum ENTRIES {START, CONTROLS, CREDITS, HIGHSCORE, EXIT};
+
     public Menu() {
         this.entries = Arrays.asList("START", "CONTROLS", "CREDITS", "HIGH-SCORE", "EXIT");
         this.currentEntry = 0;

@@ -14,7 +14,7 @@ public class ElementViewer {
         this.viewProperty = viewProperty;
     }
 
-    void draw(Position position){
+    public void draw(Position position){
         this.gui.drawCharacter(this.viewProperty.getCharacter(), position, this.viewProperty.getColor());
     }
 

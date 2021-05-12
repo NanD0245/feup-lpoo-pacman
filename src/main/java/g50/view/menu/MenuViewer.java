@@ -2,31 +2,53 @@ package g50.view.menu;
 
 import g50.gui.GUI;
 import g50.model.Position;
+import g50.model.element.fixed.collectable.PowerPellet;
+import g50.model.element.movable.PacMan;
+import g50.model.element.movable.ghost.Ghost;
 import g50.model.menu.Menu;
+import g50.view.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuViewer {
-    Menu menu;
-    private final GUI gui;
-
-    public MenuViewer(GUI gui, Menu menu) {
-        this.menu = menu;
+    List<ElementViewer> elementViewers;
+    GUI gui;
+    public MenuViewer(GUI gui) {
+        this.elementViewers = new ArrayList<>();
         this.gui = gui;
+        initViewerBuilder(gui);
     }
 
-    public void draw() throws IOException {
-        this.gui.clear();
+    public void initViewerBuilder(GUI gui) {
+        this.elementViewers.add(new ElementViewer(gui, new ViewProperty("#DEA185",'o')));
+        this.elementViewers.add(new ElementViewer(gui, new ViewProperty("#FFFF00",'P')));
+        this.elementViewers.add(new ElementViewer(gui, new ViewProperty("#FF0000",'G')));
+        this.elementViewers.add(new ElementViewer(gui, new ViewProperty("#FFB8FF",'G')));
+        this.elementViewers.add(new ElementViewer(gui, new ViewProperty("#00FFFF",'G')));
+        this.elementViewers.add(new ElementViewer(gui, new ViewProperty("#FFB852",'G')));
+    }
 
-        gui.drawText("PAC-MAN" ,new Position(5,5), "#FFFF00");
+    public void draw(Menu menu) throws IOException {
+        gui.clear();
+
+        gui.drawText("PAC-MAN" ,new Position(10,5), "#FFFF00");
+
+
+        for (int i = 0; i < elementViewers.size(); i++)
+            elementViewers.get(i).draw(new Position(11+i, 7));
 
         int selected = menu.getCurrentEntry();
 
         for (int i = 0; i < menu.getNumberEntries(); i++) {
-            gui.drawText(menu.getEntry(i), new Position(5,7+2*i),
-                    (selected == i) ? "#FFFF00" : "#FFFFFF");
+            if (selected == i)
+            gui.drawText(">" + menu.getEntry(i), new Position(5 - 1,12+2*i), "#FFFF00");
+            else {
+                gui.drawText(menu.getEntry(i), new Position(5, 12 + 2 * i), "#FFFFFF");
+            }
         }
 
-        this.gui.refresh();
+        gui.refresh();
     }
 }

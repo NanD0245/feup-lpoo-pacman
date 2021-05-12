@@ -1,6 +1,7 @@
 package g50.gui;
 
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.*;
 import com.googlecode.lanterna.terminal.*;
@@ -127,6 +128,7 @@ public class LanternaGUI implements GUI{
     @Override
     public void drawText(String text, Position position, String color) {
         TextGraphics tg = this.screen.newTextGraphics();
+        tg.setForegroundColor(TextColor.Factory.fromString(color));
         tg.putString(position.getX(), position.getY() + 1, text);
     }
 
