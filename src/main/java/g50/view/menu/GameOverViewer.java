@@ -13,11 +13,6 @@ public class GameOverViewer extends MenuViewer<GameOverMenu> {
     }
 
     @Override
-    public void initViewerBuilder(GUI gui) {
-
-    }
-
-    @Override
     public void draw(GameOverMenu menu) throws IOException {
         gui.clear();
 

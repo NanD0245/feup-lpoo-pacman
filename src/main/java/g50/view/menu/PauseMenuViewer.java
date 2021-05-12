@@ -14,11 +14,6 @@ public class PauseMenuViewer extends MenuViewer<PauseMenu> {
     }
 
     @Override
-    public void initViewerBuilder(GUI gui) {
-
-    }
-
-    @Override
     public void draw(PauseMenu menu) throws IOException {
         gui.clear();
 

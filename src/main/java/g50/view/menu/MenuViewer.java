@@ -18,10 +18,7 @@ public abstract class MenuViewer<T> {
     public MenuViewer(GUI gui) {
         this.elementViewers = new ArrayList<>();
         this.gui = gui;
-        initViewerBuilder(gui);
     }
-
-    public abstract void initViewerBuilder(GUI gui);
 
     public abstract void draw(T menu) throws IOException;
 }

@@ -12,6 +12,7 @@ import java.io.IOException;
 public class MainMenuViewer extends MenuViewer<MainMenu> {
     public MainMenuViewer(GUI gui) {
         super(gui);
+        initViewerBuilder(gui);
     }
 
     public void initViewerBuilder(GUI gui) {
