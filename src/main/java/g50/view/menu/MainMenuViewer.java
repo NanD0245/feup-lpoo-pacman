@@ -3,8 +3,6 @@ package g50.view.menu;
 import g50.gui.GUI;
 import g50.model.Position;
 import g50.model.menu.MainMenu;
-import g50.model.menu.Menu;
-import g50.view.ElementViewer;
 import g50.view.ViewProperty;
 
 import java.io.IOException;
@@ -22,6 +20,7 @@ public class MainMenuViewer extends MenuViewer<MainMenu> {
 
     public void initViewerBuilder() {
         this.elementViewers.add(new ViewProperty("#DEA185",'o'));
+        this.elementViewers.add(new ViewProperty("#DEA185",'.'));
         this.elementViewers.add(new ViewProperty("#FFFF00",'P'));
         this.elementViewers.add(new ViewProperty("#FF0000",'G'));
         this.elementViewers.add(new ViewProperty("#FFB8FF",'G'));
@@ -37,7 +36,7 @@ public class MainMenuViewer extends MenuViewer<MainMenu> {
 
         for (int i = 0; i < elementViewers.size(); i++)
             gui.drawText(String.valueOf(elementViewers.get(i).getCharacter()),
-                    new Position(11+i, 7),
+                    new Position(10+i, 8),
                     elementViewers.get(i).getColor());
 
         int selected = menu.getCurrentEntry();

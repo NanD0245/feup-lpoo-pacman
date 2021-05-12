@@ -3,7 +3,6 @@ package g50.view.menu;
 
 import g50.gui.GUI;
 import g50.model.Position;
-import g50.model.menu.Menu;
 import g50.model.menu.PauseMenu;
 
 import java.io.IOException;
