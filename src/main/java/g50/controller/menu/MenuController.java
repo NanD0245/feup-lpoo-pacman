@@ -8,11 +8,13 @@ import g50.model.menu.Menu;
 
 import java.io.IOException;
 
-public abstract class MenuController<T> implements Controller , GUIObserver {
+public abstract class MenuController<G,T> implements Controller , GUIObserver {
+    GUI gui;
     T menu;
-    MenuViewer menuViewer;
+    G menuViewer;
 
-    public MenuController(MenuViewer menuViewer, T menu) {
+    public MenuController(GUI gui, G menuViewer, T menu) {
+        this.gui = gui;
         this.menu = menu;
         this.menuViewer = menuViewer;
     }
@@ -21,11 +23,5 @@ public abstract class MenuController<T> implements Controller , GUIObserver {
     public abstract void addPendingKBDAction(GUI.KBD_ACTION action);
 
     @Override
-    public void update(int frame) {
-        try {
-            menuViewer.draw((Menu)menu);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    public abstract void update(int frame);
 }

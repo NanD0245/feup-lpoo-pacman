@@ -1,9 +1,6 @@
 package g50.controller;
 
-import g50.controller.menu.GameOverMenuController;
-import g50.controller.menu.MainMenuController;
-import g50.controller.menu.MenuController;
-import g50.controller.menu.PauseMenuController;
+import g50.controller.menu.*;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
 import g50.model.element.movable.PacMan;
@@ -11,15 +8,10 @@ import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
 import g50.model.map.mapbuilder.DefaultGameMapBuilder;
 import g50.model.map.mapbuilder.GameMapBuilder;
-import g50.model.menu.GameOverMenu;
-import g50.model.menu.MainMenu;
+import g50.model.menu.*;
 import g50.model.menu.Menu;
-import g50.model.menu.PauseMenu;
 import g50.view.GameMapViewer;
-import g50.view.menu.GameOverViewer;
-import g50.view.menu.MainMenuViewer;
-import g50.view.menu.MenuViewer;
-import g50.view.menu.PauseMenuViewer;
+import g50.view.menu.*;
 
 import java.awt.*;
 import java.io.IOException;
@@ -38,16 +30,19 @@ public class ApplicationController implements GUIObserver, Controller {
     private final GUI gui;
 
     public ApplicationController(GUI gui) throws IOException, URISyntaxException, FontFormatException {
-        //MainMenu menu = new MainMenu();
+        MainMenu menu = new MainMenu();
         //GameOverMenu menu = new GameOverMenu();
-        PauseMenu menu = new PauseMenu();
+        //PauseMenu menu = new PauseMenu();
+        //ControlsMenu menu = new ControlsMenu();
         GameMap map = new DefaultGameMapBuilder().getBuild();
         this.gui = gui;
         this.gui.addObserver(this);
         this.gameController = new GameController(gui, new GameMapViewer(), map, 0);
-        //this.menuController = new MainMenuController(new MainMenuViewer(gui), menu);
-        //this.menuController = new GameOverMenuController(new GameOverViewer(gui), menu);
-        this.menuController = new PauseMenuController(new PauseMenuViewer(gui), menu);
+
+        this.menuController = new MainMenuController(gui, new MainMenuViewer(), menu);
+        //this.menuController = new GameOverMenuController(gui, new GameOverViewer(), menu);
+        //this.menuController = new PauseMenuController(gui, new PauseMenuViewer(), menu);
+        //this.menuController = new ControlsMenuController(gui, new ControlsMenuViewer(), menu);
     }
 
     public void setUp(){
@@ -76,7 +71,7 @@ public class ApplicationController implements GUIObserver, Controller {
     public void addPendingKBDAction(GUI.KBD_ACTION action) {
         if(action == GUI.KBD_ACTION.QUIT) terminate();
         //gameController.addPendingAction(action);
-        menuController.addPendingKBDAction(action);
+        this.menuController.addPendingKBDAction(action);
     }
 
     @Override

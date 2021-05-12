@@ -4,7 +4,8 @@ import java.util.Arrays;
 
 public class MainMenu extends Menu {
     public MainMenu() {
-        super(Arrays.asList("START", "CONTROLS", "CREDITS", "HIGH-SCORE", "EXIT"));
+        super("PAC-MAN", Arrays.asList(ENTRIES.START, ENTRIES.CONTROLS,
+                ENTRIES.CREDITS, ENTRIES.HIGH_SCORE, ENTRIES.EXIT));
     }
 
     public boolean isSelectedStart() {
@@ -20,6 +21,7 @@ public class MainMenu extends Menu {
     public boolean isSelectedHighScore() {
         return (currentEntry == 3);
     }
+
     public boolean isSelectedExit() {
         return (currentEntry == 4);
     }

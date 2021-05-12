@@ -8,38 +8,45 @@ import g50.view.ElementViewer;
 import g50.view.ViewProperty;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainMenuViewer extends MenuViewer<MainMenu> {
-    public MainMenuViewer(GUI gui) {
-        super(gui);
-        initViewerBuilder(gui);
+    protected List<ViewProperty> elementViewers;
+
+    public MainMenuViewer() {
+        super();
+        this.elementViewers = new ArrayList<>();
+        initViewerBuilder();
     }
 
-    public void initViewerBuilder(GUI gui) {
-        this.elementViewers.add(new ElementViewer(gui, new ViewProperty("#DEA185",'o')));
-        this.elementViewers.add(new ElementViewer(gui, new ViewProperty("#FFFF00",'P')));
-        this.elementViewers.add(new ElementViewer(gui, new ViewProperty("#FF0000",'G')));
-        this.elementViewers.add(new ElementViewer(gui, new ViewProperty("#FFB8FF",'G')));
-        this.elementViewers.add(new ElementViewer(gui, new ViewProperty("#00FFFF",'G')));
-        this.elementViewers.add(new ElementViewer(gui, new ViewProperty("#FFB852",'G')));
+    public void initViewerBuilder() {
+        this.elementViewers.add(new ViewProperty("#DEA185",'o'));
+        this.elementViewers.add(new ViewProperty("#FFFF00",'P'));
+        this.elementViewers.add(new ViewProperty("#FF0000",'G'));
+        this.elementViewers.add(new ViewProperty("#FFB8FF",'G'));
+        this.elementViewers.add(new ViewProperty("#00FFFF",'G'));
+        this.elementViewers.add(new ViewProperty("#FFB852",'G'));
     }
 
-    public void draw(MainMenu menu) throws IOException {
+    public void draw(GUI gui, MainMenu menu) throws IOException {
         gui.clear();
 
-        gui.drawText("PAC-MAN" ,new Position(10,5), "#FFFF00");
+        gui.drawText(menu.getTitle(),new Position(10,5), "#FFFF00");
 
 
         for (int i = 0; i < elementViewers.size(); i++)
-            elementViewers.get(i).draw(new Position(11+i, 7));
+            gui.drawText(String.valueOf(elementViewers.get(i).getCharacter()),
+                    new Position(11+i, 7),
+                    elementViewers.get(i).getColor());
 
         int selected = menu.getCurrentEntry();
 
         for (int i = 0; i < menu.getNumberEntries(); i++) {
             if (selected == i)
-                gui.drawText(">" + menu.getEntry(i), new Position(5 - 1,12+2*i), "#FFFF00");
+                gui.drawText('>' + map.get(menu.getEntry(i)), new Position(5 - 1,15 + 3 * i), "#FFFF00");
             else {
-                gui.drawText(menu.getEntry(i), new Position(5, 12 + 2 * i), "#FFFFFF");
+                gui.drawText(map.get(menu.getEntry(i)), new Position(5, 15 + 3 * i), "#FFFFFF");
             }
         }
 

@@ -9,23 +9,19 @@ import g50.model.menu.PauseMenu;
 import java.io.IOException;
 
 public class PauseMenuViewer extends MenuViewer<PauseMenu> {
-    public PauseMenuViewer(GUI gui) {
-        super(gui);
-    }
-
     @Override
-    public void draw(PauseMenu menu) throws IOException {
+    public void draw(GUI gui, PauseMenu menu) throws IOException {
         gui.clear();
 
-        gui.drawText("PAUSE", new Position(11, 7), "#FFFF00");
+        gui.drawText(menu.getTitle(), new Position(11, 7), "#FFFF00");
 
         int selected = menu.getCurrentEntry();
 
         for (int i = 0; i < menu.getNumberEntries(); i++) {
             if (i == selected)
-                gui.drawText('>' + menu.getEntry(i), new Position(5-1, 14 + 2*i), "#FFFF00");
+                gui.drawText('>' + map.get(menu.getEntry(i)), new Position(5-1, 14 + 2*i), "#FFFF00");
             else {
-                gui.drawText(menu.getEntry(i), new Position(5, 14 + 2*i));
+                gui.drawText(map.get(menu.getEntry(i)), new Position(5, 14 + 2*i));
             }
         }
 

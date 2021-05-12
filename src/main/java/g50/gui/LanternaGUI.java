@@ -106,6 +106,7 @@ public class LanternaGUI implements GUI{
             case KeyEvent.VK_LEFT: return KBD_ACTION.LEFT;
             case KeyEvent.VK_RIGHT: return KBD_ACTION.RIGHT;
             case KeyEvent.VK_ENTER: return KBD_ACTION.SELECT;
+            case KeyEvent.VK_ESCAPE: return KBD_ACTION.ESQ;
             default: return KBD_ACTION.OTHER;
         }
     }
