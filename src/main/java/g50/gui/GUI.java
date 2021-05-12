@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Map;
 
 public interface GUI {
-    enum ACTION {UP, RIGHT, DOWN, LEFT, QUIT, OTHER};
+    enum ACTION {UP, RIGHT, DOWN, LEFT, QUIT, SELECT, OTHER};
     void addObserver(GUIObserver observer);
     void drawCharacter(char c, Position position, String color);
     void drawText(String text, Position position, String color);
