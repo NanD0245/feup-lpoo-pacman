@@ -1,17 +1,15 @@
 package g50.controller;
 
+import g50.controller.ghost_strategy.*;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
 import g50.model.element.movable.PacMan;
-import g50.model.element.movable.ghost.Ghost;
+import g50.model.element.movable.ghost.*;
 import g50.model.map.GameMap;
 import g50.view.GameMapViewer;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class GameController implements GUIObserver, Controller {
 
@@ -27,8 +25,15 @@ public class GameController implements GUIObserver, Controller {
         this.map = map;
         this.viewer = viewer;
         this.ghostsController = new ArrayList<>();
-        for(Ghost ghost: map.getGhosts()) this.ghostsController.add(new GhostController(this.map, ghost));
+        setUpGhosts();
         this.pacManController = new PacManController(map);
+    }
+
+    public void setUpGhosts(){
+
+        for(Ghost ghost: map.getGhosts()) {
+            this.ghostsController.add(new GhostController(this.map, ghost, new BlinkyStrategy(this.map, ghost)));
+        }
     }
 
     public void setUp(){

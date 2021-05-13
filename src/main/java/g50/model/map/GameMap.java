@@ -102,14 +102,21 @@ public class GameMap {
         map.get(pos.getY()).set(pos.getX(), elem);
     }
 
+    public Orientation getDirection(Position pos1, Position pos2){
+        int xOffset = pos2.getX() - pos1.getX();
+        int yOffset = pos2.getY() - pos1.getY();
+        if(xOffset != 0) return xOffset == 1 ? Orientation.RIGHT : Orientation.LEFT;
+        else return yOffset == 1 ? Orientation.DOWN : Orientation.UP;
+    }
 
-
-    public Orientation getOrientationOfShortestPath(Position origin, Position destiny){
+    public Orientation getOrientationOfShortestPath(Position origin, Position destiny, Orientation currentOrientation){
 
         List<Position> path = new ArrayList<>();
         PriorityQueue<Entry> pq = new PriorityQueue<>();
         Set<Entry> closedSet = new HashSet<>();
         pq.add(new Entry(origin, destiny));
+
+        boolean firstNode = true;
 
         while(pq.size() > 0){
             Entry currentEntry = pq.poll();
@@ -120,18 +127,29 @@ public class GameMap {
                 }
                 break;
             }
+            List<Position> neighbours = getNeighbours(currentEntry.getKey());
 
-            for(Position neighbour: getNeighbours(currentEntry.getKey())){
-                if(closedSet.contains(currentEntry)) continue;
+            for(Position neighbour: neighbours) {
                 Entry newEntry = new Entry(neighbour, destiny);
+                if (closedSet.contains(newEntry)) continue;
+                if (firstNode && getDirection(currentEntry.getKey(), neighbour).equals(currentOrientation.getOpposite())) {
+                    firstNode = false;
+                    closedSet.add(newEntry);
+                    continue;
+                }
                 newEntry.setDistance(currentEntry.getDistance() + 1);
                 newEntry.setParent(currentEntry);
-                if(!pq.contains(newEntry)) pq.add(newEntry);
+                if (!pq.contains(newEntry)) pq.add(newEntry);
             }
             closedSet.add(currentEntry);
         }
-
-        return Orientation.UP;
+        if(path.size() <= 1) {
+            List<Orientation> oris = getAvailableOrientations(origin);
+            oris.remove(currentOrientation);
+            if(oris.size() >= 1) return oris.get(0);
+            else return null;
+        }
+        return getDirection(origin, path.get(0));
     }
 }
 

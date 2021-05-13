@@ -55,8 +55,11 @@ public class PacManController implements Controller{
         Position currentPos = controllable.getPosition();
         FixedElement currentElement = map.getElement(currentPos);
 
-        if(currentElement instanceof Collectable)
-            map.setElement(new EmptySpace(currentPos), currentPos);
+        if(currentElement instanceof Collectable){
+            Position newPos = new Position(currentPos);
+            map.setElement(new EmptySpace(newPos), newPos);
+        }
+
 
         moveToNewPosition(map.getAvailableOrientations(controllable.getPosition()));
     }

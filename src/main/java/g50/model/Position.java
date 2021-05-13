@@ -2,13 +2,18 @@ package g50.model;
 
 import java.util.Objects;
 
-public class Position {
+public class Position implements Cloneable {
     protected int x;
     protected int y;
 
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Position(Position pos){
+        this.x = pos.getX();
+        this.y = pos.getY();
     }
 
     public int getX() { return x; }
@@ -55,4 +60,5 @@ public class Position {
     public int hashCode() {
         return Objects.hash(x, y);
     }
+
 }

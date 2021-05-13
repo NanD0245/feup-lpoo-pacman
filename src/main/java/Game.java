@@ -26,7 +26,6 @@ public class Game {
             GameController controller = new GameController(gameMap, viewer);
             gui.addObserver(controller);
             controller.setUp(60);
-            gameMap.getOrientationOfShortestPath(new Position(13, 25), new Position(13, 13));
             //viewer.draw();
             //controller.terminate();
         } catch (IOException e) {
