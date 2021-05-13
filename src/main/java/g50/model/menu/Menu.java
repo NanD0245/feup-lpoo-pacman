@@ -7,7 +7,7 @@ public abstract class Menu {
     protected int currentEntry;
     protected String title;
 
-    public enum ENTRIES {START, CONTROLS, CREDITS, HIGH_SCORE, EXIT, RESUME, RETURN_ENTER}
+    public enum ENTRIES {START, CONTROLS, HIGH_SCORE, EXIT, RESUME, RETURN_ENTER}
 
     public Menu(String title, List<ENTRIES> entries) {
         this.entries = entries;

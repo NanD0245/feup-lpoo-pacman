@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class MainMenu extends Menu {
     public MainMenu() {
         super("PAC-MAN", Arrays.asList(ENTRIES.START, ENTRIES.CONTROLS,
-                ENTRIES.CREDITS, ENTRIES.HIGH_SCORE, ENTRIES.EXIT));
+               ENTRIES.HIGH_SCORE, ENTRIES.EXIT));
     }
 
     public boolean isSelectedStart() {

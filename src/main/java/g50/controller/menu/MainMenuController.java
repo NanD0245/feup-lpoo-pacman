@@ -3,10 +3,11 @@ package g50.controller.menu;
 import g50.gui.GUI;
 import g50.model.menu.MainMenu;
 import g50.view.menu.MainMenuViewer;
+import g50.view.menu.MenuViewer;
 
 public class MainMenuController extends MenuController <MainMenu>{
 
-    public MainMenuController(GUI gui, MainMenuViewer menuViewer, MainMenu menu) {
+    public MainMenuController(GUI gui, MenuViewer<MainMenu> menuViewer, MainMenu menu) {
         super(gui, menuViewer,menu);
     }
 

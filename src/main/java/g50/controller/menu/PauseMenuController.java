@@ -2,11 +2,12 @@ package g50.controller.menu;
 
 import g50.gui.GUI;
 import g50.model.menu.PauseMenu;
+import g50.view.menu.MenuViewer;
 import g50.view.menu.PauseMenuViewer;
 
 public class PauseMenuController extends MenuController<PauseMenu> {
 
-    public PauseMenuController(GUI gui, PauseMenuViewer menuViewer, PauseMenu menu) {
+    public PauseMenuController(GUI gui, MenuViewer<PauseMenu> menuViewer, PauseMenu menu) {
         super(gui, menuViewer, menu);
     }
 

@@ -12,7 +12,6 @@ public abstract class MenuViewer<T> {
     protected static final Map<Menu.ENTRIES, String> map = new HashMap<>() {{
         put(Menu.ENTRIES.START, "START");
         put(Menu.ENTRIES.CONTROLS, "CONTROLS");
-        put(Menu.ENTRIES.CREDITS, "CREDITS");
         put(Menu.ENTRIES.HIGH_SCORE, "HIGH-SCORE");
         put(Menu.ENTRIES.EXIT, "EXIT");
         put(Menu.ENTRIES.RESUME, "RESUME");

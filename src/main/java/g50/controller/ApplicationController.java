@@ -33,7 +33,8 @@ public class ApplicationController implements GUIObserver, Controller {
         //MainMenu menu = new MainMenu();
         //GameOverMenu menu = new GameOverMenu();
         //PauseMenu menu = new PauseMenu();
-        ControlsMenu menu = new ControlsMenu();
+        //ControlsMenu menu = new ControlsMenu();
+        CreditsMenu menu = new CreditsMenu();
         GameMap map = new DefaultGameMapBuilder().getBuild();
         this.gui = gui;
         this.gui.addObserver(this);
@@ -42,7 +43,8 @@ public class ApplicationController implements GUIObserver, Controller {
         //this.menuController = new MainMenuController(gui, new MainMenuViewer(), menu);
         //this.menuController = new GameOverMenuController(gui, new GameOverViewer(), menu);
         //this.menuController = new PauseMenuController(gui, new PauseMenuViewer(), menu);
-        this.menuController = new ControlsMenuController(gui, new ControlsMenuViewer(), menu);
+        //this.menuController = new ControlsMenuController(gui, new ControlsMenuViewer(), menu);
+        this.menuController = new CreditsMenuController(gui, new CreditsMenuViewer(), menu);
     }
 
     public void setUp(){
