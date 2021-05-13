@@ -143,9 +143,9 @@ public class GameMap {
             }
             closedSet.add(currentEntry);
         }
-        if(path.size() <= 1) {
+        if(path.size() < 1) {
             List<Orientation> oris = getAvailableOrientations(origin);
-            oris.remove(currentOrientation);
+            oris.remove(currentOrientation.getOpposite());
             if(oris.size() >= 1) return oris.get(0);
             else return null;
         }

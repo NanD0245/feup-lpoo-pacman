@@ -35,15 +35,27 @@ public abstract class GhostStrategy {
 
     public Orientation inCage(){
         List<Orientation> availableOris =  map.getAvailableOrientations(ghost.getPosition());
-        return availableOris.get(new Random().nextInt(availableOris.size()));
+        if(!availableOris.contains(ghost.getOrientation()))
+            ghost.setOrientation(ghost.getOrientation().getOpposite());
+        return ghost.getOrientation();
     }
 
     public Orientation getNextOrientation(GhostState state){
-        switch (state) {
-            case CHASE: return inChase();
-            case SCATTER: return inScatter();
-            case FRIGHTENED: return inFrightned();
-            default: return inCage();
+        if(state.equals(GhostState.INCAGE)) return inCage();
+        List<Orientation> oris = map.getAvailableOrientations(ghost.getPosition());
+        if (map.isIntersection(ghost.getPosition())) {
+            switch (state) {
+                case CHASE: return inChase();
+                case SCATTER: return inScatter();
+                default: return inFrightned();
+            }
+        } else {
+            if(oris.contains(ghost.getOrientation())) return ghost.getOrientation();
+            oris.remove(ghost.getOrientation().getOpposite());
+            if(oris.size() > 0) return oris.get(0);
+            else return null;
         }
+
+
     }
 }

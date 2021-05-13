@@ -32,7 +32,14 @@ public class GameController implements GUIObserver, Controller {
     public void setUpGhosts(){
 
         for(Ghost ghost: map.getGhosts()) {
-            this.ghostsController.add(new GhostController(this.map, ghost, new BlinkyStrategy(this.map, ghost)));
+            if(ghost instanceof InkyGhost)
+                this.ghostsController.add(new GhostController(this.map, ghost, GhostState.INCAGE, new InkyStrategy(this.map, ghost)));
+            else if(ghost instanceof ClydeGhost)
+                this.ghostsController.add(new GhostController(this.map, ghost, GhostState.INCAGE, new ClydeStrategy(this.map, ghost)));
+            else if(ghost instanceof PinkyGhost)
+                this.ghostsController.add(new GhostController(this.map, ghost, GhostState.INCAGE, new PinkyStrategy(this.map, ghost)));
+            else this.ghostsController.add(new GhostController(this.map, ghost, GhostState.CHASE, new BlinkyStrategy(this.map, ghost)));
+
         }
     }
 

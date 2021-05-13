@@ -17,10 +17,10 @@ public class GhostController implements Controller{
     private GhostStrategy strategy;
     private int velocity = 25;
 
-    public GhostController(GameMap map, Ghost ghost, GhostStrategy strategy){
+    public GhostController(GameMap map, Ghost ghost, GhostState state, GhostStrategy strategy){
         this.map = map;
         this.controllable = ghost;
-        this.state = GhostState.CHASE;
+        this.state = state;
         this.strategy = strategy;
     }
 
@@ -28,15 +28,9 @@ public class GhostController implements Controller{
     public void update(int frame) {
         if (frame % velocity != 0) return;
 
-        Orientation newOrientation = null;
-        if (map.isIntersection(controllable.getPosition())) {
-            controllable.setOrientation(strategy.getNextOrientation(state));
-        } else {
-            List<Orientation> oris = map.getAvailableOrientations(controllable.getPosition());
-            oris.remove(controllable.getOrientation().getOpposite());
-            if(oris.size() > 0) controllable.setOrientation(oris.get(0));
-            else return;
-        }
+        Orientation newOrientation = strategy.getNextOrientation(state);
+        if(newOrientation == null) return;
+        else controllable.setOrientation(newOrientation);
         controllable.move(controllable.getOrientation(), map.getColumns(), map.getLines());
     }
 }

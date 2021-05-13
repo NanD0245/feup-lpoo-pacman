@@ -116,14 +116,15 @@ public abstract class GameMapBuilder {
             String name = entityCoords[0];
             int x = Integer.parseInt(entityCoords[1]), y = Integer.parseInt(entityCoords[2]);
             if(entityCoords[0].toLowerCase().equals(("PacMan").toLowerCase())) pacman.setPosition(new Position(x,y));
-            else{
+            else {
                 Constructor ghostConstructor = null;
-                if(getGhost.containsKey(entityCoords[0]))
+                if (getGhost.containsKey(entityCoords[0]))
                     ghostConstructor = getGhost.get(entityCoords[0]).getConstructor(String.class, Position.class, Orientation.class, Target.class);
-                if(ghostConstructor == null)
-                    ghosts.add(new BlinkyGhost(name, new Position(x,y), Orientation.UP, targets.get(name)));
-                else
-                    ghosts.add((Ghost) ghostConstructor.newInstance(name, new Position(x,y), Orientation.UP, targets.get(name)));
+                if (ghostConstructor == null)
+                    ghosts.add(new BlinkyGhost(name, new Position(x, y), Orientation.UP, targets.get(name)));
+                else {
+                    ghosts.add((Ghost) ghostConstructor.newInstance(name, new Position(x, y), Orientation.UP, targets.get(name)));
+                }
             }
         }
     }

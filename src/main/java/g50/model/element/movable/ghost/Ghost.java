@@ -10,6 +10,7 @@ public abstract class Ghost extends MovableElement {
 
     public Ghost(String name, Position position, Orientation orientation, Target target) {
         super(name, position, orientation);
+        this.target = target;
     }
 
     public Target getTarget() {
