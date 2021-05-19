@@ -20,11 +20,13 @@ public class GameController implements GUIObserver, Controller {
     private Timer timer;
     private TimerTask updater;
     private final GameMapViewer viewer;
+    private final GameState gameState;
 
     public GameController(GameMap map, GameMapViewer viewer){
         this.map = map;
         this.viewer = viewer;
         this.ghostsController = new ArrayList<>();
+        this.gameState = new GameState();
         setUpGhosts();
         this.pacManController = new PacManController(map);
     }
@@ -32,14 +34,17 @@ public class GameController implements GUIObserver, Controller {
     public void setUpGhosts(){
 
         for(Ghost ghost: map.getGhosts()) {
+            GhostController newGhostController;
             if(ghost instanceof InkyGhost)
-                this.ghostsController.add(new GhostController(this.map, ghost, GhostState.INCAGE, new InkyStrategy(this.map, ghost)));
+                newGhostController = new GhostController(this.map, ghost, GhostState.INCAGE, new InkyStrategy(this.map, ghost));
             else if(ghost instanceof ClydeGhost)
-                this.ghostsController.add(new GhostController(this.map, ghost, GhostState.INCAGE, new ClydeStrategy(this.map, ghost)));
+                newGhostController = new GhostController(this.map, ghost, GhostState.INCAGE, new ClydeStrategy(this.map, ghost));
             else if(ghost instanceof PinkyGhost)
-                this.ghostsController.add(new GhostController(this.map, ghost, GhostState.INCAGE, new PinkyStrategy(this.map, ghost)));
-            else this.ghostsController.add(new GhostController(this.map, ghost, GhostState.CHASE, new BlinkyStrategy(this.map, ghost)));
+                newGhostController = new GhostController(this.map, ghost, GhostState.INCAGE, new PinkyStrategy(this.map, ghost));
+            else newGhostController = new GhostController(this.map, ghost, GhostState.CHASE, new BlinkyStrategy(this.map, ghost));
 
+            this.ghostsController.add(newGhostController);
+            this.gameState.addObserver(newGhostController);
         }
     }
 
@@ -74,12 +79,26 @@ public class GameController implements GUIObserver, Controller {
 
     @Override
     public void update(int frame) {
+        gameState.update(frame, framerate);
         pacManController.update(frame);
-        for(GhostController ghostController: ghostsController) ghostController.update(frame);
+
+        controlGhosts(frame);
+
         try {
             viewer.draw();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    private void controlGhosts(int frame) {
+
+        for(GhostController ghostController: ghostsController){
+            ghostController.update(frame);
+        }
+    }
+
+    @Override
+    public void notify(GameState.CurrentState state) { }
+
 }

@@ -1,5 +1,7 @@
 package g50.model;
 
+import g50.model.element.movable.Orientation;
+
 import java.util.Objects;
 
 public class Position implements Cloneable {
@@ -38,6 +40,15 @@ public class Position implements Cloneable {
         }
     }
 
+    public Position getAdjacent(Orientation orientation){
+        switch (orientation){
+            case UP: return getUp();
+            case RIGHT: return getRight();
+            case DOWN: return getDown();
+            default: return getLeft();
+        }
+    }
+
     public void setPosition(int x, int y){
         this.x = x;
         this.y = y;
@@ -59,6 +70,12 @@ public class Position implements Cloneable {
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
+    }
+
+    public static double calculateDistance(Position pos1, Position pos2){
+        double deltaX = Math.pow(pos1.getX() - pos2.getX(), 2);
+        double deltaY = Math.pow(pos1.getY() - pos2.getY(), 2);
+        return Math.sqrt(deltaX + deltaY);
     }
 
 }

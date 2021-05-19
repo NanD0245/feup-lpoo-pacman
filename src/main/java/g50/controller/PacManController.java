@@ -5,6 +5,7 @@ import g50.gui.GUIObserver;
 import g50.model.Position;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.collectable.Collectable;
+import g50.model.element.fixed.nonCollectable.Door;
 import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
@@ -59,13 +60,15 @@ public class PacManController implements Controller{
             Position newPos = new Position(currentPos);
             map.setElement(new EmptySpace(newPos), newPos);
         }
-
-
-        moveToNewPosition(map.getAvailableOrientations(controllable.getPosition()));
+        moveToNewPosition(map.getAvailableOrientations(controllable.getPosition()), currentPos);
     }
 
-    private void moveToNewPosition(List<Orientation> oris){
-        if(oris.contains(nextBufferedOrientation)) {
+    @Override
+    public void notify(GameState.CurrentState state) { }
+
+    private void moveToNewPosition(List<Orientation> oris, Position currentPos){
+        if(oris.contains(nextBufferedOrientation)
+        && !(map.getElement(currentPos.getAdjacent(nextBufferedOrientation)) instanceof Door)){
             controllable.move(nextBufferedOrientation, map.getColumns(), map.getLines());
             nextBufferedOrientation = null;
         } else if(oris.contains(controllable.getOrientation()))

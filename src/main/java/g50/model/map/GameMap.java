@@ -6,20 +6,28 @@ import g50.model.element.fixed.collectable.Collectable;
 import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
+import g50.model.element.movable.ghost.BlinkyGhost;
 import g50.model.element.movable.ghost.Ghost;
 
 import java.util.*;
+
+import static g50.model.Position.calculateDistance;
 
 public class GameMap {
 
     private final List<List<FixedElement>> map;
     private final List<Ghost> ghosts;
     private final PacMan pacman;
+    private Position ghostStartPos;
 
-    public GameMap(List<List<FixedElement>> map, List<Ghost> ghosts, PacMan pacman){
+    public GameMap(List<List<FixedElement>> map, List<Ghost> ghosts, PacMan pacman) {
         this.map = map;
         this.ghosts = ghosts;
         this.pacman = pacman;
+        for(Ghost ghost: ghosts)
+            if(this.ghostStartPos == null
+                    || ghost instanceof BlinkyGhost)
+                this.ghostStartPos = new Position(ghost.getPosition());
     }
 
     public List<List<FixedElement>> getMap(){
@@ -151,6 +159,10 @@ public class GameMap {
         }
         return getDirection(origin, path.get(0));
     }
+
+    public Position getGhostStartPos(){
+        return this.ghostStartPos;
+    }
 }
 
 class Entry implements Comparable<Entry>{
@@ -174,14 +186,8 @@ class Entry implements Comparable<Entry>{
 
     @Override
     public int compareTo(Entry o) {
-        return (this.distance + getHeuristicFactor(this.key, this.destiny)) -
-                (o.distance + getHeuristicFactor(o.key, o.destiny));
-    }
-
-    private int getHeuristicFactor(Position pos1, Position pos2){
-        int deltaX = Math.abs(pos1.getX() - pos2.getX());
-        int deltaY = Math.abs(pos1.getY() - pos2.getY());
-        return deltaX + deltaY;
+        return (int)((this.distance + calculateDistance(this.key, this.destiny)) -
+                (o.distance + calculateDistance(o.key, o.destiny)));
     }
 
     @Override
