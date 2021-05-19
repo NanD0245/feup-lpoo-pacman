@@ -7,5 +7,4 @@ public abstract class NonCollectable extends FixedElement {
     NonCollectable(Position position) {
         super(position);
     }
-
 }

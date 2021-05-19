@@ -2,6 +2,7 @@ package g50.model.element.fixed.collectable;
 
 import g50.model.Position;
 import g50.model.element.fixed.FixedElement;
+import g50.model.element.fixed.nonCollectable.EmptySpace;
 
 public abstract class Collectable extends FixedElement {
     private final int points;
@@ -15,6 +16,7 @@ public abstract class Collectable extends FixedElement {
     public boolean isWalkable(){
         return true;
     }
+
 
     public int getPoints() { return this.points; }
 }

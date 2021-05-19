@@ -53,13 +53,16 @@ public class PacManController implements Controller{
     public void update(int frame) {
         if(frame % velocity != 0) return;
 
-        Position currentPos = controllable.getPosition();
-        FixedElement currentElement = map.getElement(currentPos);
+        FixedElement currentElement = map.getElement(map.getPacman().getPosition());
 
         if(currentElement instanceof Collectable){
-            Position newPos = new Position(currentPos);
+            Position newPos = new Position(map.getPacman().getPosition());
             map.setElement(new EmptySpace(newPos), newPos);
+            // add score
+            // if it is a power pallet do smthg
         }
+
+        Position currentPos = controllable.getPosition();
         moveToNewPosition(map.getAvailableOrientations(controllable.getPosition()), currentPos);
     }
 

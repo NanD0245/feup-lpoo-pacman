@@ -3,6 +3,10 @@ package g50.controller;
 import g50.controller.ghost_strategy.*;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
+import g50.model.Position;
+import g50.model.element.fixed.FixedElement;
+import g50.model.element.fixed.collectable.Collectable;
+import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.*;
 import g50.model.map.GameMap;
@@ -33,15 +37,23 @@ public class GameController implements GUIObserver, Controller {
 
     public void setUpGhosts(){
 
+        BlinkyGhost currentBlinky = null;
+
+        for(Ghost ghost: map.getGhosts())
+            if(ghost instanceof BlinkyGhost) currentBlinky = (BlinkyGhost) ghost;
+
         for(Ghost ghost: map.getGhosts()) {
             GhostController newGhostController;
             if(ghost instanceof InkyGhost)
-                newGhostController = new GhostController(this.map, ghost, GhostState.INCAGE, new InkyStrategy(this.map, ghost));
+                newGhostController = new GhostController(this.map, ghost, GhostState.INCAGE, new InkyStrategy(this.map, ghost, currentBlinky));
             else if(ghost instanceof ClydeGhost)
                 newGhostController = new GhostController(this.map, ghost, GhostState.INCAGE, new ClydeStrategy(this.map, ghost));
             else if(ghost instanceof PinkyGhost)
                 newGhostController = new GhostController(this.map, ghost, GhostState.INCAGE, new PinkyStrategy(this.map, ghost));
-            else newGhostController = new GhostController(this.map, ghost, GhostState.CHASE, new BlinkyStrategy(this.map, ghost));
+            else {
+                newGhostController = new GhostController(this.map, ghost, GhostState.CHASE, new BlinkyStrategy(this.map, ghost));
+                currentBlinky = (BlinkyGhost) ghost;
+            }
 
             this.ghostsController.add(newGhostController);
             this.gameState.addObserver(newGhostController);
@@ -83,6 +95,7 @@ public class GameController implements GUIObserver, Controller {
         pacManController.update(frame);
 
         controlGhosts(frame);
+
 
         try {
             viewer.draw();

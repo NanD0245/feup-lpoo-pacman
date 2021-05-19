@@ -15,10 +15,10 @@ import static g50.model.Position.calculateDistance;
 
 public abstract class GhostStrategy {
 
-    private GameMap map;
-    private Ghost ghost;
-    private Position startPosition;
-    private int dotLimit = 0;
+    protected GameMap map;
+    protected Ghost ghost;
+    protected Position startPosition;
+    protected int dotLimit = 0;
 
     GhostStrategy(GameMap map, Ghost ghost){
         this.map = map;
