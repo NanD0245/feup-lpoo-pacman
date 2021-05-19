@@ -13,6 +13,7 @@ public abstract class MenuViewer<T> {
         put(Menu.ENTRIES.START, "START");
         put(Menu.ENTRIES.CONTROLS, "CONTROLS");
         put(Menu.ENTRIES.HIGH_SCORE, "HIGH-SCORE");
+        put(Menu.ENTRIES.CREDITS, "CREDITS");
         put(Menu.ENTRIES.EXIT, "EXIT");
         put(Menu.ENTRIES.RESUME, "RESUME");
         put(Menu.ENTRIES.RETURN_ENTER, "PRESS ENTER TO RETURN");

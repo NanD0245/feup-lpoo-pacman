@@ -30,21 +30,21 @@ public class ApplicationController implements GUIObserver, Controller {
     private final GUI gui;
 
     public ApplicationController(GUI gui) throws IOException, URISyntaxException, FontFormatException {
-        //MainMenu menu = new MainMenu();
+        MainMenu menu = new MainMenu();
         //GameOverMenu menu = new GameOverMenu();
         //PauseMenu menu = new PauseMenu();
         //ControlsMenu menu = new ControlsMenu();
-        CreditsMenu menu = new CreditsMenu();
+        //CreditsMenu menu = new CreditsMenu();
         GameMap map = new DefaultGameMapBuilder().getBuild();
         this.gui = gui;
         this.gui.addObserver(this);
         this.gameController = new GameController(gui, new GameMapViewer(), map, 0);
 
-        //this.menuController = new MainMenuController(gui, new MainMenuViewer(), menu);
+        this.menuController = new MainMenuController(gui, new MainMenuViewer(), menu);
         //this.menuController = new GameOverMenuController(gui, new GameOverViewer(), menu);
         //this.menuController = new PauseMenuController(gui, new PauseMenuViewer(), menu);
         //this.menuController = new ControlsMenuController(gui, new ControlsMenuViewer(), menu);
-        this.menuController = new CreditsMenuController(gui, new CreditsMenuViewer(), menu);
+        //this.menuController = new CreditsMenuController(gui, new CreditsMenuViewer(), menu);
     }
 
     public void setUp(){
