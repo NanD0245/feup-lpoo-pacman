@@ -34,8 +34,8 @@ public class GhostController implements Controller{
 
         if(state == GhostState.INCAGE && this.strategy.getDotLimit() == 0)
             state = GhostState.LEAVINGCAGE;
-        // state must be updated whenever the ghost isn't in cage, its dot
-        // limit reaches 0 or whenever the ghost reaches the out of spawn
+        // state must be updated whenever the ghost isn't in cage
+        // or whenever the ghost reaches the exit of spawn
         // start position (right after LEAVINGCAGE state)
         else if((state != GhostState.INCAGE && state != GhostState.LEAVINGCAGE) ||
         controllable.getPosition().equals(map.getGhostStartPos()))
@@ -58,7 +58,7 @@ public class GhostController implements Controller{
     private void updateStateFromGameState() {
         switch (gameState) {
             case GameChase: {
-                state = GhostState.SCATTER;
+                state = GhostState.CHASE;
                 return;
             }
             case GameScatter: {
