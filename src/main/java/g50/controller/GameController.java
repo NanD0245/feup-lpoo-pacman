@@ -6,6 +6,7 @@ import g50.gui.GUIObserver;
 import g50.model.Position;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.collectable.Collectable;
+import g50.model.element.fixed.collectable.CollectableTriggers;
 import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.*;
@@ -25,6 +26,7 @@ public class GameController implements GUIObserver, Controller {
     private TimerTask updater;
     private final GameMapViewer viewer;
     private final GameState gameState;
+    private final List<Class<? extends GhostStrategy>> priorities;
 
     public GameController(GameMap map, GameMapViewer viewer){
         this.map = map;
@@ -32,7 +34,12 @@ public class GameController implements GUIObserver, Controller {
         this.ghostsController = new ArrayList<>();
         this.gameState = new GameState();
         setUpGhosts();
-        this.pacManController = new PacManController(map);
+        this.pacManController = new PacManController(map, this);
+        this.priorities = Arrays.asList(
+                BlinkyStrategy.class,
+                PinkyStrategy.class,
+                InkyStrategy.class,
+                ClydeStrategy.class);
     }
 
     public void setUpGhosts(){
@@ -67,7 +74,7 @@ public class GameController implements GUIObserver, Controller {
     public void setUp(int framerate){
         this.framerate = framerate;
         updater = new TimerTask() {
-            int frame = 0;
+            int frame = -1;
             @Override
             public void run() {
                 frame++;
@@ -92,10 +99,8 @@ public class GameController implements GUIObserver, Controller {
     @Override
     public void update(int frame) {
         gameState.update(frame, framerate);
-        pacManController.update(frame);
-
         controlGhosts(frame);
-
+        pacManController.update(frame);
 
         try {
             viewer.draw();
@@ -105,13 +110,45 @@ public class GameController implements GUIObserver, Controller {
     }
 
     private void controlGhosts(int frame) {
-
         for(GhostController ghostController: ghostsController){
             ghostController.update(frame);
         }
     }
 
+    public void consumeMapElement(Position pos){
+        FixedElement currentElement = map.getElement(pos);
+
+        if(currentElement.isCollectable()){
+            Position newPos = new Position(map.getPacman().getPosition());
+            map.setElement(new EmptySpace(newPos), newPos);
+
+            CollectableTriggers action = ((Collectable) currentElement).triggersEffect();
+
+            switch (action) {
+                case COLLECT:
+                    decreaseDotsOnHighestPriorityGhost();
+                    break;
+                case FRIGHTEN:
+                default:
+            }
+
+            // if it is a power pallet do smthg
+        }
+    }
+
+    private void decreaseDotsOnHighestPriorityGhost(){
+        for(Class classType: this.priorities){
+            for(GhostController ghostController: this.ghostsController){
+                if(classType == ghostController.getStrategy().getClass()
+                        && ghostController.getState() == GhostState.INCAGE){
+                    ghostController.decrementStrategyDotLimit();
+                    return;
+                }
+            }
+        }
+    }
+
     @Override
-    public void notify(GameState.CurrentState state) { }
+    public void notify(GameState.CurrentState state) {}
 
 }

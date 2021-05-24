@@ -14,7 +14,7 @@ import static g50.model.Position.calculateDistance;
 
 public class InkyStrategy extends GhostStrategy {
 
-    public int defaultDotLimit = 30;
+    public static int defaultDotLimit = 30;
     BlinkyGhost blinky;
 
     public InkyStrategy(GameMap map, Ghost ghost, BlinkyGhost blinky) {

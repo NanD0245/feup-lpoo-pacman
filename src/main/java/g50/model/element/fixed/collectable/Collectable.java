@@ -12,11 +12,15 @@ public abstract class Collectable extends FixedElement {
         this.points = points;
     }
 
+    public int getPoints() { return this.points; }
+
     @Override
     public boolean isWalkable(){
         return true;
     }
 
+    @Override
+    public boolean isCollectable() { return true; }
 
-    public int getPoints() { return this.points; }
+    public abstract CollectableTriggers triggersEffect();
 }

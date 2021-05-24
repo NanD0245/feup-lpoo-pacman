@@ -20,6 +20,7 @@ public class GhostController implements Controller{
     private Orientation nextBufferedOrientation;
     private int velocity = 25;
 
+
     public GhostController(GameMap map, Ghost ghost, GhostState state, GhostStrategy strategy){
         this.map = map;
         this.controllable = ghost;
@@ -69,6 +70,10 @@ public class GhostController implements Controller{
         }
     }
 
+    public void decrementStrategyDotLimit(){
+        if(this.strategy.getDotLimit() > 0) this.strategy.decrementDotLimit();
+    }
+
     public void setNextBufferedOrientation(Orientation ori){
         this.nextBufferedOrientation = ori;
     }
@@ -76,7 +81,16 @@ public class GhostController implements Controller{
     @Override
     public void notify(GameState.CurrentState state) {
         this.gameState = state;
-        setNextBufferedOrientation(controllable.getOrientation().getOpposite());
+        if(this.state != GhostState.LEAVINGCAGE)
+            setNextBufferedOrientation(controllable.getOrientation().getOpposite());
+    }
+
+    public GhostState getState() {
+        return this.state;
+    }
+
+    public GhostStrategy getStrategy(){
+        return this.strategy;
     }
 
 }

@@ -13,7 +13,7 @@ import static g50.model.Position.calculateDistance;
 
 public class PinkyStrategy extends GhostStrategy {
 
-    public int defaultDotLimit = 0;
+    public static int defaultDotLimit = 0;
 
     public PinkyStrategy(GameMap map, Ghost ghost) {
         super(map, ghost);

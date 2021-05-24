@@ -26,8 +26,6 @@ public class Game {
             GameController controller = new GameController(gameMap, viewer);
             gui.addObserver(controller);
             controller.setUp(60);
-            //viewer.draw();
-            //controller.terminate();
         } catch (IOException e) {
             e.printStackTrace();
         }

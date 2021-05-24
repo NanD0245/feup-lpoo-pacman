@@ -20,6 +20,7 @@ public class PacManController implements Controller{
 
     private final PacMan controllable;
     private final GameMap map;
+    private final GameController gameController;
     private Orientation nextBufferedOrientation;
     private int velocity = 15;
 
@@ -32,9 +33,10 @@ public class PacManController implements Controller{
                 put(GUI.ACTION.QUIT, null);
     }};
 
-    public PacManController(GameMap map){
+    public PacManController(GameMap map, GameController gameController){
         this.map = map;
         this.controllable = map.getPacman();
+        this.gameController = gameController;
     }
 
     public void addPendingAction(GUI.ACTION action) {
@@ -53,14 +55,7 @@ public class PacManController implements Controller{
     public void update(int frame) {
         if(frame % velocity != 0) return;
 
-        FixedElement currentElement = map.getElement(map.getPacman().getPosition());
-
-        if(currentElement instanceof Collectable){
-            Position newPos = new Position(map.getPacman().getPosition());
-            map.setElement(new EmptySpace(newPos), newPos);
-            // add score
-            // if it is a power pallet do smthg
-        }
+        gameController.consumeMapElement(controllable.getPosition());
 
         Position currentPos = controllable.getPosition();
         moveToNewPosition(map.getAvailableOrientations(controllable.getPosition()), currentPos);
