@@ -12,6 +12,7 @@ public class GameState {
     private CurrentState state;
     private List<Integer> times;
     private int frightnedTime;
+    private int elapsedSeconds;
     private static int defaultFrightnedTime = 6;
     private List<Controller> observers;
 
@@ -20,10 +21,15 @@ public class GameState {
         this.times = Arrays.asList(7, 20, 7, 20, 5, 20, 5, Integer.MAX_VALUE);
         this.observers = new ArrayList<>();
         this.frightnedTime = 0;
+        this.elapsedSeconds = 0;
     }
 
     public void update(int frame, int framerate) {
-        int elapsedSeconds = frame/framerate;
+        elapsedSeconds = frame/framerate;
+
+        if(state == CurrentState.GameFrightned)
+            if(elapsedSeconds - frightnedTime < defaultFrightnedTime) return;
+
         CurrentState newState = CurrentState.GameScatter;
         for(Integer value: this.times){
             if(value == Integer.MAX_VALUE || elapsedSeconds - value < 0){
@@ -38,7 +44,7 @@ public class GameState {
     public void setCurrentState(CurrentState newState){
         this.state = newState;
         notifyObservers();
-        if(newState == CurrentState.GameFrightned);
+        if(newState == CurrentState.GameFrightned) frightnedTime = elapsedSeconds;
     }
 
     public void addObserver(Controller controller){

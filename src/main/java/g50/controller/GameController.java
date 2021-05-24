@@ -129,10 +129,10 @@ public class GameController implements GUIObserver, Controller {
                     decreaseDotsOnHighestPriorityGhost();
                     break;
                 case FRIGHTEN:
-                default:
+                    gameState.setCurrentState(GameState.CurrentState.GameFrightned);
+                    break;
+                default: break;
             }
-
-            // if it is a power pallet do smthg
         }
     }
 
