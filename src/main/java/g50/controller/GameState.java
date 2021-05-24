@@ -56,4 +56,6 @@ public class GameState {
             controller.notify(this.state);
         }
     }
+
+    public CurrentState getState() { return state; }
 }
