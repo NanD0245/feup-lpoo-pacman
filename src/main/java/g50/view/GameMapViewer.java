@@ -11,33 +11,29 @@ import java.io.IOException;
 import java.util.List;
 
 public class GameMapViewer {
-    private final GUI gui;
-    private final GameMap gameMap;
     private final ElementViewerBuilder viewerBuilder;
 
-    public GameMapViewer(GUI gui, GameMap gameMap){
-        this.gui = gui;
-        this.gameMap = gameMap;
+    public GameMapViewer(){
         this.viewerBuilder = new DefaultElementViewerBuilder();
     }
 
-    public void draw() throws IOException {
-        this.gui.clear();
+    public void draw(GUI gui, GameMap gameMap) throws IOException {
+        gui.clear();
 
-        final List<List<FixedElement>> map = this.gameMap.getMap();
-        for (int line = 0; line < this.gameMap.getLines(); line++){
-            for (int column = 0; column < this.gameMap.getColumns(); column++){
+        final List<List<FixedElement>> map = gameMap.getMap();
+        for (int line = 0; line < gameMap.getLines(); line++){
+            for (int column = 0; column < gameMap.getColumns(); column++){
                 Position position = new Position(column, line);
                 Element element = map.get(line).get(column);
-                this.viewerBuilder.getViewer(this.gui, element).draw(position);
+                this.viewerBuilder.getViewer(element).draw(gui);
             }
         }
 
-        this.viewerBuilder.getViewer(this.gui, this.gameMap.getPacman()).draw(this.gameMap.getPacman().getPosition());
-        for (Ghost ghost : this.gameMap.getGhosts()){
-            this.viewerBuilder.getViewer(this.gui, ghost).draw(ghost.getPosition());
+        this.viewerBuilder.getViewer(gameMap.getPacman()).draw(gui);
+        for (Ghost ghost : gameMap.getGhosts()){
+            this.viewerBuilder.getViewer(ghost).draw(gui);
         }
 
-        this.gui.refresh();
+        gui.refresh();
     }
 }

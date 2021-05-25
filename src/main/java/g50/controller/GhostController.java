@@ -5,14 +5,16 @@ import g50.controller.states.GameState;
 import g50.controller.states.GhostState;
 import g50.model.Position;
 import g50.model.element.movable.Orientation;
+import g50.Application;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
-
+import g50.view.Viewer;
 import java.util.List;
 
-public class GhostController implements Controller{
+public class GhostController extends Controller<Ghost> {
 
     private final Ghost controllable;
+    private final GameController gameController;
     private final GameMap map;
     private GhostState state;
     private GameState gameState;
@@ -21,8 +23,10 @@ public class GhostController implements Controller{
     private int velocity = 25;
 
 
-    public GhostController(GameMap map, Ghost ghost, GhostState state, GhostStrategy strategy){
-        this.map = map;
+    public GhostController(GameController gameController, Ghost ghost, GhostState state, GhostStrategy strategy){
+        super(ghost);
+        this.gameController = gameController;
+        this.map = gameController.getModel().getMap();
         this.controllable = ghost;
         this.state = state;
         this.strategy = strategy;
@@ -30,7 +34,7 @@ public class GhostController implements Controller{
     }
 
     @Override
-    public void update(int frame) {
+    public void update(Application application, int frame) {
         if (frame % velocity != 0) return;
 
         if(state == GhostState.DEAD && controllable.getPosition().equals(controllable.getStartPosition()))
