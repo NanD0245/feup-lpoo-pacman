@@ -14,6 +14,7 @@ public class Position implements Cloneable {
     }
 
     public Position(Position pos){
+        if(pos == null) return;
         this.x = pos.getX();
         this.y = pos.getY();
     }

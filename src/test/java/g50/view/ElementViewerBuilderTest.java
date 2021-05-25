@@ -39,6 +39,7 @@ class ElementViewerBuilderTest {
 
         assertEquals(elementViewerBuilder.getViewer(mockGUI, new BlinkyGhost(null, null, null, null)),
                 new ElementViewer(mockGUI, new ViewProperty("#FFFFFF", '?')));
+
         elementViewerBuilder.addViewer(PinkyGhost.class, new ViewProperty("#FFFF00", 'G'));
         assertEquals(elementViewerBuilder.getViewer(mockGUI, new PinkyGhost(null,null,null,null)),
                 new ElementViewer(mockGUI, new ViewProperty("#FFFF00", 'G')));
