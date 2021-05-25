@@ -3,6 +3,8 @@ package g50.model.element.fixed.collectable;
 import g50.model.Position;
 import g50.model.element.fixed.FixedElement;
 
+import static g50.model.element.fixed.collectable.CollectableTriggers.FRIGHTEN;
+
 public class PowerPellet extends Collectable {
     public PowerPellet(Position position) {
         super(position,50);
@@ -13,4 +15,8 @@ public class PowerPellet extends Collectable {
         return new PowerPellet(position);
     }
 
+    @Override
+    public CollectableTriggers triggersEffect() {
+        return FRIGHTEN;
+    }
 }

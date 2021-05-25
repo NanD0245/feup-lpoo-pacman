@@ -2,7 +2,9 @@ package g50.view;
 
 import g50.gui.GUI;
 import g50.model.element.movable.PacMan;
+import g50.model.element.movable.ghost.BlinkyGhost;
 import g50.model.element.movable.ghost.Ghost;
+import g50.model.element.movable.ghost.PinkyGhost;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
@@ -35,10 +37,11 @@ class ElementViewerBuilderTest {
         Mockito.when(ghostViewProperty.getColor()).thenReturn("#FFFFFF");
         CustomElementViewerBuilder elementViewerBuilder = new CustomElementViewerBuilder();
 
-        assertEquals(elementViewerBuilder.getViewer(mockGUI, new Ghost(null, null, null, null)),
+        assertEquals(elementViewerBuilder.getViewer(mockGUI, new BlinkyGhost(null, null, null, null)),
                 new ElementViewer(mockGUI, new ViewProperty("#FFFFFF", '?')));
-        elementViewerBuilder.addViewer(Ghost.class, new ViewProperty("#FFFF00", 'G'));
-        assertEquals(elementViewerBuilder.getViewer(mockGUI, new Ghost(null,null,null,null)),
+
+        elementViewerBuilder.addViewer(PinkyGhost.class, new ViewProperty("#FFFF00", 'G'));
+        assertEquals(elementViewerBuilder.getViewer(mockGUI, new PinkyGhost(null,null,null,null)),
                 new ElementViewer(mockGUI, new ViewProperty("#FFFF00", 'G')));
 
         elementViewerBuilder.addViewer(PacMan.class, new ViewProperty("#F0FFF0", 'P'));

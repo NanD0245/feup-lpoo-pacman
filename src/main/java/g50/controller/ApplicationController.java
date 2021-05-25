@@ -1,5 +1,6 @@
 package g50.controller;
 
+import g50.controller.states.GameState;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
 import g50.model.Game;
@@ -25,11 +26,10 @@ public class ApplicationController implements GUIObserver, Controller {
     private final GameController gameController;
     private final GUI gui;
 
-    public ApplicationController(GUI gui) throws IOException, URISyntaxException, FontFormatException {
-        GameMap map = new DefaultGameMapBuilder().getBuild();
+    public ApplicationController(GUI gui) throws IOException {
         this.gui = gui;
         this.gui.addObserver(this);
-        this.gameController = new GameController(gui, new GameMapViewer(),new Game(map));
+        this.gameController = new GameController(gui, new Game(), frameRate);
     }
 
     public void setUp(){
@@ -64,5 +64,10 @@ public class ApplicationController implements GUIObserver, Controller {
     @Override
     public void update(int frame) {
         this.gameController.update(frame);
+    }
+
+    @Override
+    public void notify(GameState state) {
+
     }
 }

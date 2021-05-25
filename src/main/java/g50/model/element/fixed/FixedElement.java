@@ -9,4 +9,5 @@ public abstract class FixedElement extends Element {
     }
     public abstract FixedElement generate(Position position);
     public abstract boolean isWalkable();
+    public abstract boolean isCollectable();
 }

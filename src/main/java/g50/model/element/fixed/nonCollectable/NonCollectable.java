@@ -8,4 +8,6 @@ public abstract class NonCollectable extends FixedElement {
         super(position);
     }
 
+    @Override
+    public boolean isCollectable() { return false; }
 }
