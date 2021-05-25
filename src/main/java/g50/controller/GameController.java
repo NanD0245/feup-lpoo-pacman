@@ -6,6 +6,7 @@ import g50.controller.states.GhostState;
 import g50.Application;
 import g50.gui.GUI;
 import g50.model.Game;
+import g50.model.element.fixed.collectable.PacDot;
 import g50.model.element.movable.ghost.Ghost;
 import g50.gui.GUIObserver;
 import g50.model.Position;
@@ -58,19 +59,19 @@ public class GameController extends Controller<Game> {
 
         BlinkyGhost currentBlinky = null;
 
-        for(Ghost ghost: super.getModel().getMap().getGhosts())
+        for(Ghost ghost: super.getModel().getGameMap().getGhosts())
             if(ghost instanceof BlinkyGhost) currentBlinky = (BlinkyGhost) ghost;
 
-        for(Ghost ghost: super.getModel().getMap().getGhosts()) {
+        for(Ghost ghost: super.getModel().getGameMap().getGhosts()) {
             GhostController newGhostController;
             if(ghost instanceof InkyGhost)
-                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new InkyStrategy(super.getModel().getMap(), ghost, currentBlinky));
+                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new InkyStrategy(super.getModel().getGameMap(), ghost, currentBlinky));
             else if(ghost instanceof ClydeGhost)
-                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new ClydeStrategy(super.getModel().getMap(), ghost));
+                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new ClydeStrategy(super.getModel().getGameMap(), ghost));
             else if(ghost instanceof PinkyGhost)
-                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new PinkyStrategy(super.getModel().getMap(), ghost));
+                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new PinkyStrategy(super.getModel().getGameMap(), ghost));
             else {
-                newGhostController = new GhostController(this, ghost, GhostState.CHASE, new BlinkyStrategy(super.getModel().getMap(), ghost));
+                newGhostController = new GhostController(this, ghost, GhostState.CHASE, new BlinkyStrategy(super.getModel().getGameMap(), ghost));
                 currentBlinky = (BlinkyGhost) ghost;
             }
 
@@ -92,7 +93,7 @@ public class GameController extends Controller<Game> {
         pacManController.update(application, frame);
         checkPacmanGhostCollision();
         try {
-            viewer.draw(gui, this.getModel().getMap());
+            viewer.draw(gui, this.getModel().getGameMap());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -105,11 +106,11 @@ public class GameController extends Controller<Game> {
     }
 
     public void consumeMapElement(Position pos){
-        FixedElement currentElement = super.getModel().getMap().getElement(pos);
+        FixedElement currentElement = super.getModel().getGameMap().getElement(pos);
 
         if(currentElement.isCollectable()){
-            Position newPos = new Position(super.getModel().getMap().getPacman().getPosition());
-            super.getModel().getMap().setElement(new EmptySpace(newPos), newPos);
+            Position newPos = new Position(super.getModel().getGameMap().getPacman().getPosition());
+            super.getModel().getGameMap().setElement(new EmptySpace(newPos), newPos);
 
             Collectable collectable = (Collectable) currentElement;
             CollectableTriggers action = collectable.triggersEffect();
@@ -160,4 +161,7 @@ public class GameController extends Controller<Game> {
         this.bonus = 200;
     }
 
+    public boolean isGameOver() {
+        return this.getModel().getGameMap().getMap().stream().noneMatch(x -> x instanceof PacDot);
+    }
 }
