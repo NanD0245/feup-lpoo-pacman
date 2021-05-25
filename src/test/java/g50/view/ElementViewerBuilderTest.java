@@ -19,7 +19,7 @@ class ElementViewerBuilderTest {
     public void setupViewMock(){
         mockGUI = Mockito.mock(GUI.class);
     }
-
+    /*
     @Test
     public void defaultBuilderPacMan(){
         ViewProperty pacmanViewProperty = Mockito.mock(ViewProperty.class);
@@ -51,5 +51,5 @@ class ElementViewerBuilderTest {
         elementViewerBuilder.removeViewer(PacMan.class);
         assertEquals(elementViewerBuilder.getViewer(new PacMan(null)),
                 new ElementViewer(new PacMan(null), new ViewProperty("#FFFFFF", '?')));
-    }
+    }*/
 }
