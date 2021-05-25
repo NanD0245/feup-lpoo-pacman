@@ -27,11 +27,11 @@ public class ApplicationController extends Controller<Application> implements GU
     private final GameController gameController;
     private final GUI gui;
 
-    public ApplicationController(Application application, GUI gui) throws IOException, URISyntaxException, FontFormatException {
+    public ApplicationController(Application application, GUI gui) throws IOException {
         super(application);
         GameMap map = new DefaultGameMapBuilder().getBuild();
         this.gui = gui;
-        this.gui.addObserver(this);
+        gui.addObserver(this);
         this.gameController = new GameController(gui, new GameMapViewer(),new Game(map));
     }
 
@@ -67,10 +67,5 @@ public class ApplicationController extends Controller<Application> implements GU
     @Override
     public void update(Application application, int frame) {
         this.gameController.update(application, frame);
-    }
-
-    @Override
-    public Viewer<Application> getViewer() {
-        return null;
     }
 }

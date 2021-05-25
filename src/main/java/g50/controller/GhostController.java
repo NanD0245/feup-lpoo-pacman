@@ -14,9 +14,4 @@ public class GhostController extends Controller<Ghost> {
     public void update(Application application, int frame) {
 
     }
-
-    @Override
-    public Viewer<Ghost> getViewer() {
-        return null;
-    }
 }

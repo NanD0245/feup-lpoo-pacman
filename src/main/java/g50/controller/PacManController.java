@@ -68,9 +68,4 @@ public class PacManController extends Controller<PacMan> {
 
         moveToNewPosition(map.getAvailableOrientations(getModel().getPosition()));
     }
-
-    @Override
-    public Viewer<PacMan> getViewer() {
-        return null;
-    }
 }

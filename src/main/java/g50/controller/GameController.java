@@ -45,9 +45,4 @@ public class GameController extends Controller<Game> {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public Viewer<Game> getViewer() {
-        return null;
-    }
 }
