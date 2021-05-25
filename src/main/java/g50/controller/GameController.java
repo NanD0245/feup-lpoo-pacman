@@ -1,5 +1,6 @@
 package g50.controller;
 
+import g50.Application;
 import g50.gui.GUI;
 import g50.model.Game;
 import g50.model.element.movable.ghost.Ghost;
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameController implements Controller {
+public class GameController extends Controller<Game> {
     private final Game game;
     private final List<GhostController> ghostsController;
     private final PacManController pacManController;
@@ -18,30 +19,31 @@ public class GameController implements Controller {
     private final GUI gui;
 
     public GameController(GUI gui, GameMapViewer viewer, Game game) {
+        super(game);
         this.game = game;
         this.ghostsController = new ArrayList<>();
         for(Ghost ghost: this.game.getMap().getGhosts()){
-            this.ghostsController.add(new GhostController(this.game.getMap(), ghost));
+            this.ghostsController.add(new GhostController(ghost));
         }
         this.pacManController = new PacManController(this.game.getMap());
         this.viewer = viewer;
         this.gui = gui;
     }
 
+    public void addPendingAction(GUI.ACTION action){
+        pacManController.addPendingAction(action);
+    }
+
     @Override
-    public void update(int frame) {
-        pacManController.update(frame);
+    public void update(Application application, int frame) {
+        pacManController.update(application, frame);
         for (GhostController ghostController: ghostsController){
-            ghostController.update(frame);
+            ghostController.update(application, frame);
         }
         try {
             viewer.draw(gui, this.game.getMap());
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void addPendingAction(GUI.ACTION action){
-        pacManController.addPendingAction(action);
     }
 }

@@ -1,5 +1,6 @@
 package g50.controller;
 
+import g50.Application;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
 import g50.model.Game;
@@ -18,14 +19,15 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ApplicationController implements GUIObserver, Controller {
+public class ApplicationController extends Controller<Application> implements GUIObserver {
 
     private int frameRate = 60;
     private Timer timer;
     private final GameController gameController;
     private final GUI gui;
 
-    public ApplicationController(GUI gui) throws IOException, URISyntaxException, FontFormatException {
+    public ApplicationController(Application application, GUI gui) throws IOException, URISyntaxException, FontFormatException {
+        super(application);
         GameMap map = new DefaultGameMapBuilder().getBuild();
         this.gui = gui;
         this.gui.addObserver(this);
@@ -43,7 +45,7 @@ public class ApplicationController implements GUIObserver, Controller {
             @Override
             public void run() {
                 frame++;
-                update(frame);
+                update(getModel(), frame);
             }
         };
         timer = new Timer();
@@ -62,7 +64,7 @@ public class ApplicationController implements GUIObserver, Controller {
     }
 
     @Override
-    public void update(int frame) {
-        this.gameController.update(frame);
+    public void update(Application application, int frame) {
+        this.gameController.update(application, frame);
     }
 }

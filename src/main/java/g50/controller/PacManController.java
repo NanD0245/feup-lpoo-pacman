@@ -1,5 +1,6 @@
 package g50.controller;
 
+import g50.Application;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
 import g50.model.Position;
@@ -15,9 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class PacManController implements Controller{
-
-    private final PacMan controllable;
+public class PacManController extends Controller<PacMan> {
     private final GameMap map;
     private Orientation nextBufferedOrientation;
     private int velocity = 15;
@@ -32,40 +31,40 @@ public class PacManController implements Controller{
     }};
 
     public PacManController(GameMap map){
+        super(map.getPacman());
         this.map = map;
-        this.controllable = map.getPacman();
     }
 
     public void addPendingAction(GUI.ACTION action) {
-        List<Orientation> oris = map.getAvailableOrientations(controllable.getPosition());
+        List<Orientation> oris = map.getAvailableOrientations(getModel().getPosition());
         Orientation actionOrientation = actionToOrientation.get(action);
-        if(actionOrientation == null || actionOrientation == controllable.getOrientation()) return;
+        if(actionOrientation == null || actionOrientation == getModel().getOrientation()) return;
 
         if(oris.contains(actionOrientation)){
-            controllable.setOrientation(actionOrientation);
+            getModel().setOrientation(actionOrientation);
             if(nextBufferedOrientation == actionOrientation.getOpposite()) nextBufferedOrientation = null;
         }
         else this.nextBufferedOrientation = actionOrientation;
     }
 
+    private void moveToNewPosition(List<Orientation> oris){
+        if(oris.contains(nextBufferedOrientation)) {
+            getModel().move(nextBufferedOrientation, map.getColumns(), map.getLines());
+            nextBufferedOrientation = null;
+        } else if(oris.contains(getModel().getOrientation()))
+            getModel().move(getModel().getOrientation(), map.getColumns(), map.getLines());
+    }
+
     @Override
-    public void update(int frame) {
+    public void update(Application application, int frame) {
         if(frame % velocity != 0) return;
 
-        Position currentPos = controllable.getPosition();
+        Position currentPos = getModel().getPosition();
         FixedElement currentElement = map.getElement(currentPos);
 
         if(currentElement instanceof Collectable)
             map.setElement(new EmptySpace(currentPos), currentPos);
 
-        moveToNewPosition(map.getAvailableOrientations(controllable.getPosition()));
-    }
-
-    private void moveToNewPosition(List<Orientation> oris){
-        if(oris.contains(nextBufferedOrientation)) {
-            controllable.move(nextBufferedOrientation, map.getColumns(), map.getLines());
-            nextBufferedOrientation = null;
-        } else if(oris.contains(controllable.getOrientation()))
-            controllable.move(controllable.getOrientation(), map.getColumns(), map.getLines());
+        moveToNewPosition(map.getAvailableOrientations(getModel().getPosition()));
     }
 }

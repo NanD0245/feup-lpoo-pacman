@@ -1,20 +1,16 @@
 package g50.controller;
 
+import g50.Application;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
 
-public class GhostController implements Controller{
-
-    private final Ghost controllabe;
-    private final GameMap map;
-
-    public GhostController(GameMap map, Ghost ghost){
-        this.map = map;
-        this.controllabe = ghost;
+public class GhostController extends Controller<Ghost> {
+    public GhostController(Ghost ghost){
+        super(ghost);
     }
 
     @Override
-    public void update(int frame) {
+    public void update(Application application, int frame) {
 
     }
 }
