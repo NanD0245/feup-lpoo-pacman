@@ -10,6 +10,7 @@ import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.model.map.GameMap;
+import g50.view.Viewer;
 
 import java.util.HashMap;
 import java.util.List;
@@ -66,5 +67,10 @@ public class PacManController extends Controller<PacMan> {
             map.setElement(new EmptySpace(currentPos), currentPos);
 
         moveToNewPosition(map.getAvailableOrientations(getModel().getPosition()));
+    }
+
+    @Override
+    public Viewer<PacMan> getViewer() {
+        return null;
     }
 }

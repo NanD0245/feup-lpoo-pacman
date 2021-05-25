@@ -10,6 +10,7 @@ import g50.model.map.GameMap;
 import g50.model.map.mapbuilder.DefaultGameMapBuilder;
 import g50.model.map.mapbuilder.GameMapBuilder;
 import g50.view.GameMapViewer;
+import g50.view.Viewer;
 
 import java.awt.*;
 import java.io.IOException;
@@ -66,5 +67,10 @@ public class ApplicationController extends Controller<Application> implements GU
     @Override
     public void update(Application application, int frame) {
         this.gameController.update(application, frame);
+    }
+
+    @Override
+    public Viewer<Application> getViewer() {
+        return null;
     }
 }
