@@ -1,5 +1,6 @@
 package g50.controller;
 
+import g50.controller.states.GameState;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
 import g50.model.Position;
@@ -62,7 +63,7 @@ public class PacManController implements Controller{
     }
 
     @Override
-    public void notify(GameState.CurrentState state) { }
+    public void notify(GameState state) { }
 
     private void moveToNewPosition(List<Orientation> oris, Position currentPos){
         if(oris.contains(nextBufferedOrientation)

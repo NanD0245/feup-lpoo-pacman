@@ -1,6 +1,8 @@
 package g50.controller;
 
 import g50.controller.ghost_strategy.*;
+import g50.controller.states.GameState;
+import g50.controller.states.GhostState;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
 import g50.model.Position;
@@ -8,7 +10,6 @@ import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.collectable.Collectable;
 import g50.model.element.fixed.collectable.CollectableTriggers;
 import g50.model.element.fixed.nonCollectable.EmptySpace;
-import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.*;
 import g50.model.map.GameMap;
 import g50.view.GameMapViewer;
@@ -25,14 +26,14 @@ public class GameController implements GUIObserver, Controller {
     private Timer timer;
     private TimerTask updater;
     private final GameMapViewer viewer;
-    private final GameState gameState;
+    private final GameStateController gameState;
     private final List<Class<? extends GhostStrategy>> priorities;
 
     public GameController(GameMap map, GameMapViewer viewer){
         this.map = map;
         this.viewer = viewer;
         this.ghostsController = new ArrayList<>();
-        this.gameState = new GameState();
+        this.gameState = new GameStateController();
         setUpGhosts();
         this.pacManController = new PacManController(map, this);
         this.priorities = Arrays.asList(
@@ -129,7 +130,7 @@ public class GameController implements GUIObserver, Controller {
                     decreaseDotsOnHighestPriorityGhost();
                     break;
                 case FRIGHTEN:
-                    gameState.setCurrentState(GameState.CurrentState.GameFrightned);
+                    gameState.setCurrentState(GameState.GameFrightned);
                     break;
                 default: break;
             }
@@ -149,6 +150,6 @@ public class GameController implements GUIObserver, Controller {
     }
 
     @Override
-    public void notify(GameState.CurrentState state) {}
+    public void notify(GameState state) {}
 
 }

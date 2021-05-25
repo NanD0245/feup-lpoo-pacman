@@ -1,9 +1,8 @@
 package g50.controller.ghost_strategy;
 
-import g50.controller.GhostState;
+import g50.controller.states.GhostState;
 import g50.model.Position;
 import g50.model.element.fixed.nonCollectable.Door;
-import g50.model.element.fixed.nonCollectable.Target;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
@@ -27,7 +26,10 @@ public abstract class GhostStrategy {
 
     protected Orientation inScatter(){
         List<Orientation> availableOris =  map.getAvailableOrientations(ghost.getPosition());
-        availableOris.remove(ghost.getOrientation().getOpposite());
+
+        removeOrientationTowardsCage(availableOris);
+        removeReverseOrientation(availableOris);
+
         Orientation bestOrientation = null;
         double bestDistance = Double.POSITIVE_INFINITY;
         
@@ -48,6 +50,10 @@ public abstract class GhostStrategy {
 
     protected Orientation inFrightned(){
         List<Orientation> availableOris =  map.getAvailableOrientations(ghost.getPosition());
+
+        removeOrientationTowardsCage(availableOris);
+        removeReverseOrientation(availableOris);
+
         return availableOris.get(new Random().nextInt(availableOris.size()));
     }
 
@@ -61,7 +67,9 @@ public abstract class GhostStrategy {
 
     protected Orientation leavingCage(){
         List<Orientation> availableOris =  map.getAvailableOrientations(ghost.getPosition());
-        availableOris.remove(ghost.getOrientation().getOpposite());
+
+        removeReverseOrientation(availableOris);
+
         Orientation bestOrientation = null;
         double bestDistance = Double.POSITIVE_INFINITY;
 
@@ -105,5 +113,18 @@ public abstract class GhostStrategy {
 
     public void decrementDotLimit(){
         this.dotLimit--;
+    }
+
+    private void removeOrientationTowardsCage(List<Orientation> oris){
+        for(Orientation ori: oris){
+            if(map.getElement(ghost.getPosition().getAdjacent(ori)) instanceof Door) {
+                oris.remove(ori);
+                return;
+            }
+        }
+    }
+
+    private void removeReverseOrientation(List<Orientation> oris){
+        oris.remove(ghost.getOrientation().getOpposite());
     }
 }

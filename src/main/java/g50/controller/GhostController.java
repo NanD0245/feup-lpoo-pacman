@@ -1,9 +1,9 @@
 package g50.controller;
 
 import g50.controller.ghost_strategy.GhostStrategy;
+import g50.controller.states.GameState;
+import g50.controller.states.GhostState;
 import g50.model.Position;
-import g50.model.element.fixed.FixedElement;
-import g50.model.element.fixed.nonCollectable.Door;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
@@ -15,7 +15,7 @@ public class GhostController implements Controller{
     private final Ghost controllable;
     private final GameMap map;
     private GhostState state;
-    private GameState.CurrentState gameState;
+    private GameState gameState;
     private GhostStrategy strategy;
     private Orientation nextBufferedOrientation;
     private int velocity = 25;
@@ -26,7 +26,7 @@ public class GhostController implements Controller{
         this.controllable = ghost;
         this.state = state;
         this.strategy = strategy;
-        this.gameState = GameState.CurrentState.GameScatter;
+        this.gameState = GameState.GameScatter;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class GhostController implements Controller{
     }
 
     @Override
-    public void notify(GameState.CurrentState state) {
+    public void notify(GameState state) {
         this.gameState = state;
         if(this.state != GhostState.LEAVINGCAGE)
             setNextBufferedOrientation(controllable.getOrientation().getOpposite());
