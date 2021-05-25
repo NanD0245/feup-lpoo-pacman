@@ -1,12 +1,13 @@
 package g50.controller;
 
+import g50.Application;
 import g50.controller.states.GameState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-class GameStateController implements Controller{
+class GameStateHandler {
     private GameState state;
     private List<Integer> times;
     private int frightnedTime;
@@ -14,7 +15,7 @@ class GameStateController implements Controller{
     private static int defaultFrightnedTime = 6;
     private List<Controller> observers;
 
-    public GameStateController(){
+    public GameStateHandler(){
         this.state = GameState.GameScatter;
         this.times = Arrays.asList(7, 20, 7, 20, 5, 20, 5, Integer.MAX_VALUE);
         this.observers = new ArrayList<>();
@@ -58,12 +59,4 @@ class GameStateController implements Controller{
     }
 
     public GameState getState() { return state; }
-
-    @Override
-    public void update(int frame) {}
-
-    @Override
-    public void notify(GameState state) {
-
-    }
 }

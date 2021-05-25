@@ -1,6 +1,7 @@
 package g50.view;
 
 import g50.gui.GUI;
+import g50.model.Position;
 import g50.model.element.Element;
 import g50.model.element.fixed.collectable.Collectable;
 import g50.model.element.fixed.collectable.PacDot;
@@ -19,13 +20,13 @@ public abstract class ElementViewerBuilder {
         this.properties = new HashMap<>();
     }
 
-    public ElementViewer getViewer(GUI gui, Element element){
+    public ElementViewer getViewer(Element element){
         for (Map.Entry<Class<? extends Element>, ViewProperty> entry :
                 properties.entrySet()){
             if (entry.getKey().equals(element.getClass())){
-                return new ElementViewer(gui, entry.getValue());
+                return new ElementViewer(element, entry.getValue());
             }
         }
-        return new ElementViewer(gui, new ViewProperty('?'));
+        return new ElementViewer(new EmptySpace(new Position(element.getPosition())), new ViewProperty('?'));
     }
 }

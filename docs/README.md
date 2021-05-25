@@ -19,7 +19,7 @@ To be implemented:
 - Scoring and abilities with collectables
 - Win/defeat scenarios
 - Level transitions
-- Application menus
+- g50.Application menus
 - Package manager easter eggs
 
 ## Architectural Design

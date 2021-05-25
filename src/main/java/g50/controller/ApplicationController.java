@@ -1,6 +1,7 @@
 package g50.controller;
 
 import g50.controller.states.GameState;
+import g50.Application;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
 import g50.model.Game;
@@ -10,6 +11,7 @@ import g50.model.map.GameMap;
 import g50.model.map.mapbuilder.DefaultGameMapBuilder;
 import g50.model.map.mapbuilder.GameMapBuilder;
 import g50.view.GameMapViewer;
+import g50.view.Viewer;
 
 import java.awt.*;
 import java.io.IOException;
@@ -19,17 +21,19 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ApplicationController implements GUIObserver, Controller {
+public class ApplicationController extends Controller<Application> implements GUIObserver {
 
     private int frameRate = 60;
     private Timer timer;
     private final GameController gameController;
     private final GUI gui;
 
-    public ApplicationController(GUI gui) throws IOException {
+    public ApplicationController(Application application, GUI gui) throws IOException {
+        super(application);
+        GameMap map = new DefaultGameMapBuilder().getBuild();
         this.gui = gui;
-        this.gui.addObserver(this);
-        this.gameController = new GameController(gui, new Game(), frameRate);
+        gui.addObserver(this);
+        this.gameController = new GameController(gui, new GameMapViewer(),new Game(), frameRate);
     }
 
     public void setUp(){
@@ -43,7 +47,7 @@ public class ApplicationController implements GUIObserver, Controller {
             @Override
             public void run() {
                 frame++;
-                update(frame);
+                update(getModel(), frame);
             }
         };
         timer = new Timer();
@@ -62,12 +66,12 @@ public class ApplicationController implements GUIObserver, Controller {
     }
 
     @Override
-    public void update(int frame) {
-        this.gameController.update(frame);
+    public void update(Application application, int frame) {
+        this.gameController.update(application, frame);
     }
 
     @Override
-    public void notify(GameState state) {
+    public void notify(GameState state) {}
 
-    }
+    public GameController getGameController() { return this.gameController; }
 }
