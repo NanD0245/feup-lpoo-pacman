@@ -5,6 +5,7 @@ import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.nonCollectable.Target;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
+import g50.model.element.movable.ghost.BlinkyGhost;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.mapbuilder.FileGameMapBuilder;
 import g50.model.map.mapbuilder.GameMapBuilder;
@@ -23,7 +24,7 @@ public class GameMapTest {
 
         List<Ghost> ghosts = new ArrayList<>();
 
-        Ghost newGhost = new Ghost("Test", new Position(0, 0), Orientation.UP, new Target(new Position(0, 0), "Test"));
+        Ghost newGhost = new BlinkyGhost("Test", new Position(0, 0), Orientation.UP, new Target(new Position(0, 0), "Test"));
 
         ghosts.add(newGhost);
 

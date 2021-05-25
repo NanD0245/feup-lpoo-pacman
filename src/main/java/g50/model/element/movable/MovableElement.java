@@ -6,9 +6,11 @@ import g50.model.element.Element;
 public abstract class MovableElement extends Element {
     protected String name;
     protected Orientation orientation;
+    private final Position startPosition;
 
     public MovableElement(String name, Position position, Orientation orientation) {
         super(position);
+        this.startPosition = new Position(position);
         this.name = name;
         this.orientation = orientation;
     }
@@ -68,4 +70,5 @@ public abstract class MovableElement extends Element {
         setPosition(pos);
     }
 
+    public Position getStartPosition(){ return this.startPosition; }
 }

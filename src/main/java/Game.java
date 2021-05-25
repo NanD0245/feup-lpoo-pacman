@@ -1,6 +1,7 @@
 import g50.controller.GameController;
 import g50.gui.GUI;
 import g50.gui.LanternaGUI;
+import g50.model.Position;
 import g50.model.map.GameMap;
 import g50.model.map.mapbuilder.DefaultGameMapBuilder;
 import g50.model.map.mapbuilder.GameMapBuilder;
@@ -25,8 +26,6 @@ public class Game {
             GameController controller = new GameController(gameMap, viewer);
             gui.addObserver(controller);
             controller.setUp(60);
-            //viewer.draw();
-            //controller.terminate();
         } catch (IOException e) {
             e.printStackTrace();
         }

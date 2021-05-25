@@ -7,12 +7,14 @@ import g50.model.element.fixed.collectable.PowerPellet;
 import g50.model.element.fixed.nonCollectable.*;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
-import g50.model.element.movable.ghost.Ghost;
+import g50.model.element.movable.ghost.*;
 import g50.model.map.GameMap;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +37,13 @@ public abstract class GameMapBuilder {
             'D', new Door(new Position(-1,-1)),
             'S', new SpawnArea(new Position(-1,-1))
     );
+
+    private static final Map<String, Class <? extends Ghost>> getGhost = new HashMap<>(){{
+        put("Blinky", BlinkyGhost.class);
+        put("Clyde", ClydeGhost.class);
+        put("Inky", InkyGhost.class);
+        put("Pinky", PinkyGhost.class);
+    }};
 
     GameMapBuilder(String filename){
         this.filename = filename;
@@ -95,7 +104,8 @@ public abstract class GameMapBuilder {
         return fixedElementsMap;
     }
 
-    private void startUpEntities(PacMan pacman, List<Ghost> ghosts, Map<String, Target> targets) throws IOException {
+    private void startUpEntities(PacMan pacman, List<Ghost> ghosts, Map<String, Target> targets)
+            throws IOException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
         String c;
 
@@ -103,9 +113,20 @@ public abstract class GameMapBuilder {
 
         while((c = this.buffer.readLine()) != null && c.length() > 0){
             String[] entityCoords = c.split(" ", 3);
+            String name = entityCoords[0];
             int x = Integer.parseInt(entityCoords[1]), y = Integer.parseInt(entityCoords[2]);
             if(entityCoords[0].toLowerCase().equals(("PacMan").toLowerCase())) pacman.setPosition(new Position(x,y));
-            else ghosts.add(new Ghost(entityCoords[0], new Position(x, y), Orientation.UP, targets.get(entityCoords[0])));
+            else {
+                Constructor ghostConstructor = null;
+                if (getGhost.containsKey(entityCoords[0]))
+                    ghostConstructor = getGhost.get(entityCoords[0]).getConstructor(String.class, Position.class, Orientation.class, Target.class);
+                if (ghostConstructor == null)
+                    ghosts.add(new BlinkyGhost(name, new Position(x, y), Orientation.UP, targets.get(name)));
+                else {
+                    ghosts.add((Ghost) ghostConstructor.newInstance(name, new Position(x, y), Orientation.UP, targets.get(name)));
+                }
+            }
         }
     }
+
 }

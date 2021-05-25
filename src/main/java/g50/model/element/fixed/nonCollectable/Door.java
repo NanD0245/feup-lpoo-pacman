@@ -15,6 +15,6 @@ public class Door extends NonCollectable{
 
     @Override
     public boolean isWalkable() {
-        return false;
+        return true;
     }
 }
