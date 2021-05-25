@@ -2,6 +2,7 @@ package g50.controller;
 
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
+import g50.model.Game;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
@@ -28,7 +29,7 @@ public class ApplicationController implements GUIObserver, Controller {
         GameMap map = new DefaultGameMapBuilder().getBuild();
         this.gui = gui;
         this.gui.addObserver(this);
-        this.gameController = new GameController(gui, new GameMapViewer(), map, 0);
+        this.gameController = new GameController(gui, new GameMapViewer(),new Game(map));
     }
 
     public void setUp(){
