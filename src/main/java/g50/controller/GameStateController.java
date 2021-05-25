@@ -25,17 +25,19 @@ class GameStateController implements Controller{
     public void update(int frame, int framerate) {
         elapsedSeconds = frame/framerate;
 
-        if(state == GameState.GameFrightned)
+        if(state.equals(GameState.GameFrightned))
             if(elapsedSeconds - frightnedTime < defaultFrightnedTime) return;
 
         GameState newState = GameState.GameScatter;
+
+        int timeForState = elapsedSeconds;
         for(Integer value: this.times){
-            if(value == Integer.MAX_VALUE || elapsedSeconds - value < 0){
+            if(value == Integer.MAX_VALUE || timeForState - value < 0){
                 if(this.state == null || this.state != newState) setCurrentState(newState);
                 return;
             }
             newState = newState == GameState.GameScatter ? GameState.GameChase : GameState.GameScatter;
-            elapsedSeconds -= value;
+            timeForState -= value;
         }
     }
 

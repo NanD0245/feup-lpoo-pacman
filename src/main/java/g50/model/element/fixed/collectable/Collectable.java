@@ -12,7 +12,7 @@ public abstract class Collectable extends FixedElement {
         this.points = points;
     }
 
-    public int getPoints() { return this.points; }
+    public int collect() { return this.points; }
 
     @Override
     public boolean isWalkable(){

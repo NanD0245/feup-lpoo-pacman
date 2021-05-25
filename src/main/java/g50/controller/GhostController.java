@@ -33,13 +33,16 @@ public class GhostController implements Controller{
     public void update(int frame) {
         if (frame % velocity != 0) return;
 
+        if(state == GhostState.DEAD && controllable.getPosition().equals(controllable.getStartPosition()))
+            state = GhostState.INCAGE;
+
         if(state == GhostState.INCAGE && this.strategy.getDotLimit() == 0)
             state = GhostState.LEAVINGCAGE;
         // state must be updated whenever the ghost isn't in cage
         // or whenever the ghost reaches the exit of spawn
         // start position (right after LEAVINGCAGE state)
-        else if((state != GhostState.INCAGE && state != GhostState.LEAVINGCAGE) ||
-        controllable.getPosition().equals(map.getGhostStartPos()))
+        else if(state != GhostState.INCAGE && state != GhostState.DEAD && state != GhostState.LEAVINGCAGE ||
+                (state == GhostState.LEAVINGCAGE && controllable.getPosition().equals(map.getGhostStartPos())))
             updateStateFromGameState();
 
         Orientation newOrientation = strategy.getNextOrientation(state);
@@ -81,7 +84,7 @@ public class GhostController implements Controller{
     @Override
     public void notify(GameState state) {
         this.gameState = state;
-        if(this.state != GhostState.LEAVINGCAGE)
+        if(this.state != GhostState.LEAVINGCAGE && this.state != GhostState.INCAGE && this.state != GhostState.DEAD)
             setNextBufferedOrientation(controllable.getOrientation().getOpposite());
     }
 
@@ -93,4 +96,10 @@ public class GhostController implements Controller{
         return this.strategy;
     }
 
+    public Position getControllablePosition() { return this.controllable.getPosition(); }
+
+    public void consumeGhost() {
+        state = GhostState.DEAD;
+        this.strategy.resetDotLimit();
+    }
 }

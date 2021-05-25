@@ -18,10 +18,13 @@ public abstract class GhostStrategy {
     protected Ghost ghost;
     protected Position startPosition;
     protected int dotLimit = 0;
+    protected int defaultDotLimit;
 
-    GhostStrategy(GameMap map, Ghost ghost){
+    GhostStrategy(GameMap map, Ghost ghost, int defaultDotLimit){
         this.map = map;
         this.ghost = ghost;
+        this.defaultDotLimit = defaultDotLimit;
+        setDotLimit(defaultDotLimit);
     }
 
     protected Orientation inScatter(){
@@ -30,18 +33,7 @@ public abstract class GhostStrategy {
         removeOrientationTowardsCage(availableOris);
         removeReverseOrientation(availableOris);
 
-        Orientation bestOrientation = null;
-        double bestDistance = Double.POSITIVE_INFINITY;
-        
-        for(Orientation ori: availableOris){
-            double currDistance = calculateDistance(ghost.getPosition().getAdjacent(ori), ghost.getTarget().getPosition());
-            if(currDistance < bestDistance){
-                bestOrientation = ori;
-                bestDistance = currDistance;
-            }
-        }
-        
-        return bestOrientation;
+        return getOrientationTo(availableOris, ghost.getTarget().getPosition());
     }
 
     protected Orientation inChase(){
@@ -65,16 +57,23 @@ public abstract class GhostStrategy {
         return ghost.getOrientation();
     }
 
+    protected Orientation inDead(){
+        return map.getOrientationOfShortestPath(ghost.getPosition(), ghost.getStartPosition(), ghost.getOrientation());
+    }
+
     protected Orientation leavingCage(){
         List<Orientation> availableOris =  map.getAvailableOrientations(ghost.getPosition());
-
         removeReverseOrientation(availableOris);
 
+        return getOrientationTo(availableOris, map.getGhostStartPos());
+    }
+
+    private Orientation getOrientationTo(List<Orientation> availableOris, Position pos){
         Orientation bestOrientation = null;
         double bestDistance = Double.POSITIVE_INFINITY;
 
         for(Orientation ori: availableOris){
-            double currDistance = calculateDistance(ghost.getPosition().getAdjacent(ori), map.getGhostStartPos());
+            double currDistance = calculateDistance(ghost.getPosition().getAdjacent(ori), pos);
             if(currDistance < bestDistance){
                 bestOrientation = ori;
                 bestDistance = currDistance;
@@ -82,7 +81,6 @@ public abstract class GhostStrategy {
         }
 
         return bestOrientation;
-
     }
 
     public Orientation getNextOrientation(GhostState state){
@@ -90,6 +88,7 @@ public abstract class GhostStrategy {
         if(state.equals(GhostState.LEAVINGCAGE)) return leavingCage();
         if (map.isIntersection(ghost.getPosition())) {
             switch (state) {
+                case DEAD: return inDead();
                 case CHASE: return inChase();
                 case SCATTER: return inScatter();
                 default: return inFrightned();
@@ -110,6 +109,8 @@ public abstract class GhostStrategy {
     public void setDotLimit(int number){
         this.dotLimit = number;
     }
+
+    public void resetDotLimit() { this.dotLimit = this.defaultDotLimit; }
 
     public void decrementDotLimit(){
         this.dotLimit--;

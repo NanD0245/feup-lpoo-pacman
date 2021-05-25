@@ -73,4 +73,7 @@ public class PacManController implements Controller{
         } else if(oris.contains(controllable.getOrientation()))
             controllable.move(controllable.getOrientation(), map.getColumns(), map.getLines());
     }
+
+    public Position getControllablePosition() { return this.controllable.getPosition(); }
+
 }

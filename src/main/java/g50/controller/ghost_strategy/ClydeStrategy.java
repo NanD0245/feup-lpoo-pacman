@@ -13,11 +13,10 @@ import static g50.model.Position.calculateDistance;
 
 public class ClydeStrategy extends GhostStrategy {
 
-    public static int defaultDotLimit = 60;
+    private static int defaultDotLimit = 60;
 
     public ClydeStrategy(GameMap map, Ghost ghost) {
-        super(map, ghost);
-        setDotLimit(defaultDotLimit);
+        super(map, ghost, defaultDotLimit);
     }
 
     @Override

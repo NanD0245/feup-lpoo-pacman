@@ -6,9 +6,9 @@ import g50.model.map.GameMap;
 
 public class BlinkyStrategy extends GhostStrategy {
 
-    public static int defaultDotLimit = 0;
+    private static int defaultDotLimit = 0;
 
     public BlinkyStrategy(GameMap map, Ghost ghost) {
-        super(map, ghost);
+        super(map, ghost, defaultDotLimit);
     }
 }

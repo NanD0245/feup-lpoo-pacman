@@ -28,19 +28,24 @@ public class GameController implements GUIObserver, Controller {
     private final GameMapViewer viewer;
     private final GameStateController gameState;
     private final List<Class<? extends GhostStrategy>> priorities;
+    private int bonus;
 
     public GameController(GameMap map, GameMapViewer viewer){
         this.map = map;
         this.viewer = viewer;
         this.ghostsController = new ArrayList<>();
         this.gameState = new GameStateController();
+        this.gameState.addObserver(this);
         setUpGhosts();
+
         this.pacManController = new PacManController(map, this);
         this.priorities = Arrays.asList(
                 BlinkyStrategy.class,
                 PinkyStrategy.class,
                 InkyStrategy.class,
                 ClydeStrategy.class);
+
+        this.bonus = 200;
     }
 
     public void setUpGhosts(){
@@ -92,7 +97,7 @@ public class GameController implements GUIObserver, Controller {
 
     @Override
     public void addPendingAction(GUI.ACTION action) {
-        if(action == GUI.ACTION.QUIT) terminate();
+        if(action.equals(GUI.ACTION.QUIT)) terminate();
         pacManController.addPendingAction(action);
     }
 
@@ -102,6 +107,7 @@ public class GameController implements GUIObserver, Controller {
         gameState.update(frame, framerate);
         controlGhosts(frame);
         pacManController.update(frame);
+        checkPacmanGhostCollision();
 
         try {
             viewer.draw();
@@ -123,7 +129,8 @@ public class GameController implements GUIObserver, Controller {
             Position newPos = new Position(map.getPacman().getPosition());
             map.setElement(new EmptySpace(newPos), newPos);
 
-            CollectableTriggers action = ((Collectable) currentElement).triggersEffect();
+            Collectable collectable = (Collectable) currentElement;
+            CollectableTriggers action = collectable.triggersEffect();
 
             switch (action) {
                 case COLLECT:
@@ -134,14 +141,16 @@ public class GameController implements GUIObserver, Controller {
                     break;
                 default: break;
             }
+
+            // points += currentElement.collect();
         }
     }
 
     private void decreaseDotsOnHighestPriorityGhost(){
         for(Class classType: this.priorities){
             for(GhostController ghostController: this.ghostsController){
-                if(classType == ghostController.getStrategy().getClass()
-                        && ghostController.getState() == GhostState.INCAGE){
+                if(classType.equals(ghostController.getStrategy().getClass())
+                        && ghostController.getState().equals(GhostState.INCAGE)){
                     ghostController.decrementStrategyDotLimit();
                     return;
                 }
@@ -149,7 +158,24 @@ public class GameController implements GUIObserver, Controller {
         }
     }
 
+    private void checkPacmanGhostCollision() {
+        for(GhostController ghostController: ghostsController){
+            if(ghostController.getControllablePosition().equals(pacManController.getControllablePosition())){
+                if(ghostController.getState().equals(GhostState.FRIGHTENED)){
+                    ghostController.consumeGhost();
+                    // points += this.bonus;
+                    // this.bonus *= 2;
+                }
+                else if(!ghostController.getState().equals(GhostState.DEAD)){
+                    // dead pacman
+                }
+            }
+        }
+    }
+
     @Override
-    public void notify(GameState state) {}
+    public void notify(GameState state) {
+        this.bonus = 200;
+    }
 
 }
