@@ -25,13 +25,13 @@ public class GameMapViewer {
             for (int column = 0; column < gameMap.getColumns(); column++){
                 Position position = new Position(column, line);
                 Element element = map.get(line).get(column);
-                this.viewerBuilder.getViewer(gui, element).draw(gui);
+                this.viewerBuilder.getViewer(element).draw(gui);
             }
         }
 
-        this.viewerBuilder.getViewer(gui, gameMap.getPacman()).draw(gui);
+        this.viewerBuilder.getViewer(gameMap.getPacman()).draw(gui);
         for (Ghost ghost : gameMap.getGhosts()){
-            this.viewerBuilder.getViewer(gui, ghost).draw(gui);
+            this.viewerBuilder.getViewer(ghost).draw(gui);
         }
 
         gui.refresh();

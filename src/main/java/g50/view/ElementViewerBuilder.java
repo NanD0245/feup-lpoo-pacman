@@ -20,7 +20,7 @@ public abstract class ElementViewerBuilder {
         this.properties = new HashMap<>();
     }
 
-    public ElementViewer getViewer(GUI gui, Element element){
+    public ElementViewer getViewer(Element element){
         for (Map.Entry<Class<? extends Element>, ViewProperty> entry :
                 properties.entrySet()){
             if (entry.getKey().equals(element.getClass())){
