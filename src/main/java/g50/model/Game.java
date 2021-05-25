@@ -13,7 +13,7 @@ public class Game {
         this.map = new DefaultGameMapBuilder().getBuild();
     }
 
-    public GameMap getMap() {
+    public GameMap getGameMap() {
         return map;
     }
 

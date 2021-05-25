@@ -36,9 +36,9 @@ public class PacManController extends Controller<PacMan> {
 
 
     public PacManController(GameController gameController){
-        super(gameController.getModel().getMap().getPacman());
+        super(gameController.getModel().getGameMap().getPacman());
         this.gameController = gameController;
-        this.gameMap = gameController.getModel().getMap();
+        this.gameMap = gameController.getModel().getGameMap();
     }
 
     public void addPendingAction(GUI.ACTION action) {

@@ -26,7 +26,7 @@ public class GhostController extends Controller<Ghost> {
     public GhostController(GameController gameController, Ghost ghost, GhostState state, GhostStrategy strategy){
         super(ghost);
         this.gameController = gameController;
-        this.map = gameController.getModel().getMap();
+        this.map = gameController.getModel().getGameMap();
         this.controllable = ghost;
         this.state = state;
         this.strategy = strategy;
