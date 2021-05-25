@@ -1,10 +1,12 @@
 package g50.controller;
 
+import g50.controller.states.GameState;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
 import g50.model.Position;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.collectable.Collectable;
+import g50.model.element.fixed.nonCollectable.Door;
 import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
@@ -19,6 +21,7 @@ public class PacManController implements Controller{
 
     private final PacMan controllable;
     private final GameMap map;
+    private final GameController gameController;
     private Orientation nextBufferedOrientation;
     private int velocity = 15;
 
@@ -31,9 +34,10 @@ public class PacManController implements Controller{
                 put(GUI.KBD_ACTION.QUIT, null);
     }};
 
-    public PacManController(GameMap map){
+    public PacManController(GameMap map, GameController gameController){
         this.map = map;
         this.controllable = map.getPacman();
+        this.gameController = gameController;
     }
 
     public void addPendingKBDAction(GUI.KBD_ACTION action) {
@@ -52,20 +56,24 @@ public class PacManController implements Controller{
     public void update(int frame) {
         if(frame % velocity != 0) return;
 
+        gameController.consumeMapElement(controllable.getPosition());
+
         Position currentPos = controllable.getPosition();
-        FixedElement currentElement = map.getElement(currentPos);
-
-        if(currentElement instanceof Collectable)
-            map.setElement(new EmptySpace(currentPos), currentPos);
-
-        moveToNewPosition(map.getAvailableOrientations(controllable.getPosition()));
+        moveToNewPosition(map.getAvailableOrientations(controllable.getPosition()), currentPos);
     }
 
-    private void moveToNewPosition(List<Orientation> oris){
-        if(oris.contains(nextBufferedOrientation)) {
+    @Override
+    public void notify(GameState state) { }
+
+    private void moveToNewPosition(List<Orientation> oris, Position currentPos){
+        if(oris.contains(nextBufferedOrientation)
+        && !(map.getElement(currentPos.getAdjacent(nextBufferedOrientation)) instanceof Door)){
             controllable.move(nextBufferedOrientation, map.getColumns(), map.getLines());
             nextBufferedOrientation = null;
         } else if(oris.contains(controllable.getOrientation()))
             controllable.move(controllable.getOrientation(), map.getColumns(), map.getLines());
     }
+
+    public Position getControllablePosition() { return this.controllable.getPosition(); }
+
 }

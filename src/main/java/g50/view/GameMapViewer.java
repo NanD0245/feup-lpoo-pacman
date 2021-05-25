@@ -18,8 +18,6 @@ public class GameMapViewer {
     }
 
     public void draw(GUI gui, GameMap gameMap) throws IOException {
-        gui.clear();
-
         final List<List<FixedElement>> map = gameMap.getMap();
         for (int line = 0; line < gameMap.getLines(); line++){
             for (int column = 0; column < gameMap.getColumns(); column++){
@@ -33,7 +31,5 @@ public class GameMapViewer {
         for (Ghost ghost : gameMap.getGhosts()){
             this.viewerBuilder.getViewer(gui, ghost).draw(ghost.getPosition());
         }
-
-        gui.refresh();
     }
 }

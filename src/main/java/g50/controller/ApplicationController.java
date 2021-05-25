@@ -1,6 +1,7 @@
 package g50.controller;
 
 import g50.controller.menu.*;
+import g50.controller.states.GameState;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
 import g50.model.element.movable.PacMan;
@@ -38,7 +39,7 @@ public class ApplicationController implements GUIObserver, Controller {
         GameMap map = new DefaultGameMapBuilder().getBuild();
         this.gui = gui;
         this.gui.addObserver(this);
-        this.gameController = new GameController(gui, new GameMapViewer(), map, 0);
+        this.gameController = new GameController(gui, map, 0);
 
         this.menuController = new MainMenuController(gui, new MainMenuViewer(), menu);
         //this.menuController = new GameOverMenuController(gui, new GameOverViewer(), menu);
@@ -72,13 +73,18 @@ public class ApplicationController implements GUIObserver, Controller {
     @Override
     public void addPendingKBDAction(GUI.KBD_ACTION action) {
         if(action == GUI.KBD_ACTION.QUIT) terminate();
-        //gameController.addPendingAction(action);
-        this.menuController.addPendingKBDAction(action);
+        gameController.addPendingKBDAction(action);
+        //this.menuController.addPendingKBDAction(action);
     }
 
     @Override
     public void update(int frame) {
-        //this.gameController.update(frame);
-        this.menuController.update(frame);
+        this.gameController.update(frame);
+        //this.menuController.update(frame);
+    }
+
+    @Override
+    public void notify(GameState state) {
+
     }
 }

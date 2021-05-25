@@ -1,7 +1,8 @@
 package g50.controller;
 
-import java.io.IOException;
+import g50.controller.states.GameState;
 
 public interface Controller {
-    public void update(int frame) throws IOException;
+    public void update(int frame);
+    public void notify(GameState state);
 }
