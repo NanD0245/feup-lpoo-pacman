@@ -21,19 +21,17 @@ public class MainMenuViewer extends MenuViewer {
     }
 
     public void initViewerBuilder() {
-        this.elementViewers.add(new ViewProperty("#DEA185",' '));
-        this.elementViewers.add(new ViewProperty("#DEA185",' '));
-        this.elementViewers.add(new ViewProperty("#FFFF00",' '));
-        this.elementViewers.add(new ViewProperty("#FF0000",' '));
-        this.elementViewers.add(new ViewProperty("#FFB8FF",' '));
-        this.elementViewers.add(new ViewProperty("#00FFFF",' '));
-        this.elementViewers.add(new ViewProperty("#FFB852",' '));
+        this.elementViewers.add(new ViewProperty("#DEA185",'Ç'));
+        this.elementViewers.add(new ViewProperty("#DEA185",'É'));
+        this.elementViewers.add(new ViewProperty("#FFFF00",'Á'));
+        this.elementViewers.add(new ViewProperty("#FF0000",'È'));
+        this.elementViewers.add(new ViewProperty("#FFB8FF",'È'));
+        this.elementViewers.add(new ViewProperty("#00FFFF",'È'));
+        this.elementViewers.add(new ViewProperty("#FFB852",'È'));
     }
 
     @Override
     public void draw(GUI gui) throws IOException {
-        System.out.println("gui");
-
         gui.clear();
 
         gui.drawText((getModel()).getTitle(),new Position(10,5), "#FFFF00");

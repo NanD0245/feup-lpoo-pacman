@@ -24,4 +24,8 @@ public class Game {
     public void incrementScore(int increment) { score += increment; }
 
     public void resetScore() { score = 0; }
+
+    public void resetPositions() {
+        this.map.resetPositions();
+    }
 }

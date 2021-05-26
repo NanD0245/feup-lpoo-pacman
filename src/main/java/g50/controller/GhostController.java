@@ -3,12 +3,15 @@ package g50.controller;
 import g50.controller.ghost_strategy.GhostStrategy;
 import g50.controller.states.GameState;
 import g50.controller.states.GhostState;
+import g50.gui.GUI;
 import g50.model.Position;
 import g50.model.element.movable.Orientation;
 import g50.Application;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
 import g50.view.Viewer;
+
+import java.io.IOException;
 import java.util.List;
 
 public class GhostController extends Controller<Ghost> {
@@ -105,5 +108,10 @@ public class GhostController extends Controller<Ghost> {
     public void consumeGhost() {
         state = GhostState.DEAD;
         this.strategy.resetDotLimit();
+    }
+
+    @Override
+    public void addPendingKBDAction(GUI.KBD_ACTION action) throws IOException {
+
     }
 }

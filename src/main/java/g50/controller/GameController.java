@@ -4,6 +4,7 @@ import g50.controller.ghost_strategy.*;
 import g50.controller.states.GameState;
 import g50.controller.states.GhostState;
 import g50.Application;
+import g50.controller.states.app_states.AppState;
 import g50.gui.GUI;
 import g50.model.Game;
 import g50.model.element.fixed.collectable.PacDot;
@@ -35,6 +36,7 @@ public class GameController extends Controller<Game> {
     private final List<Class<? extends GhostStrategy>> priorities;
     private int bonus;
     private int frameRate;
+    private boolean pause;
 
 
     public GameController(GUI gui, Game game, int frameRate) {
@@ -84,17 +86,27 @@ public class GameController extends Controller<Game> {
 
 
     public void addPendingKBDAction(GUI.KBD_ACTION action) {
-        pacManController.addPendingKBDAction(action);
+        if (action.equals(GUI.KBD_ACTION.ESQ))
+            pause = true;
+        else {
+            pacManController.addPendingKBDAction(action);
+        }
     }
 
+    public boolean isPause() {
+        return pause;
+    }
 
     @Override
     public void update(Application application, int frame) {
-        System.out.println("update");
         gameState.update(frame, frameRate);
         controlGhosts(application, frame);
         pacManController.update(application, frame);
-        checkPacmanGhostCollision();
+        try {
+            checkPacmanGhostCollision();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         try {
             viewer.draw(gui, this.getModel().getGameMap());
         } catch (IOException e) {
@@ -143,7 +155,7 @@ public class GameController extends Controller<Game> {
         }
     }
 
-    private void checkPacmanGhostCollision() {
+    private void checkPacmanGhostCollision() throws InterruptedException {
         for(GhostController ghostController: ghostsController){
             if(ghostController.getControllablePosition().equals(pacManController.getModel().getPosition())){
                 if(ghostController.getState().equals(GhostState.FRIGHTENED)){
@@ -152,7 +164,14 @@ public class GameController extends Controller<Game> {
                     this.bonus *= 2;
                 }
                 else if(!ghostController.getState().equals(GhostState.DEAD)){
-                    // dead pacman
+                    getModel().getGameMap().getPacman().decreaseLives();
+                    if (getModel().getGameMap().getPacman().isAlive()) {
+                        Thread.sleep(1000);
+                        getModel().resetPositions();
+                    }
+                    else {
+                        Thread.sleep(1000);
+                    }
                 }
             }
         }
@@ -165,7 +184,16 @@ public class GameController extends Controller<Game> {
 
 
     public boolean isGameOver() {
-        return this.getModel().getGameMap().getMap().stream().noneMatch(x -> x instanceof PacDot);
+        List<List<FixedElement>> v = getModel().getGameMap().getMap();
+        boolean check = true;
+        for (List<FixedElement> fixedElements : v)
+            for (FixedElement fixedElement : fixedElements)
+                if (fixedElement instanceof PacDot) {
+                    check = false;
+                    break;
+                }
+
+        return check || !getModel().getGameMap().getPacman().isAlive();
     }
 
     public List<GhostController> getGhostsController() { return ghostsController; }
