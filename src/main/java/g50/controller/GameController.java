@@ -37,11 +37,11 @@ public class GameController extends Controller<Game> {
     private int frameRate;
 
 
-    public GameController(GUI gui, GameViewer viewer, Game game, int frameRate) {
+    public GameController(GUI gui, Game game, int frameRate) {
         super(game);
         this.ghostsController = new ArrayList<>();
         this.pacManController = new PacManController(this);
-        this.viewer = viewer;
+        this.viewer = new GameViewer(game);
         this.gui = gui;
         this.gameState = new GameStateHandler();
         this.gameState.addObserver(this);
@@ -127,8 +127,7 @@ public class GameController extends Controller<Game> {
                     break;
                 default: break;
             }
-
-            //score += ((Collectable) currentElement).collect();
+            this.getModel().incrementScore(((Collectable) currentElement).collect());
         }
     }
 
@@ -149,8 +148,8 @@ public class GameController extends Controller<Game> {
             if(ghostController.getControllablePosition().equals(pacManController.getModel().getPosition())){
                 if(ghostController.getState().equals(GhostState.FRIGHTENED)){
                     ghostController.consumeGhost();
-                    // points += this.bonus;
-                    // this.bonus *= 2;
+                    this.getModel().incrementScore(this.bonus);
+                    this.bonus *= 2;
                 }
                 else if(!ghostController.getState().equals(GhostState.DEAD)){
                     // dead pacman

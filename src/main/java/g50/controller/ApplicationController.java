@@ -46,7 +46,7 @@ public class ApplicationController extends Controller<Application> implements GU
         GameMap map = new DefaultGameMapBuilder().getBuild();
         this.gui = gui;
         gui.addObserver(this);
-        this.gameController = new GameController(gui, new GameViewer() ,new Game(), frameRate);
+        this.gameController = new GameController(gui, new Game(), frameRate);
         this.menuController = new MainMenuController(gui, menu);
         //this.menuController = new GameOverMenuController(gui, new GameOverViewer(), menu);
         //this.menuController = new PauseMenuController(gui, new PauseMenuViewer(), menu);

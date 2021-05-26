@@ -1,6 +1,7 @@
 package g50.view;
 
 import g50.gui.GUI;
+import g50.model.Game;
 import g50.model.Position;
 import g50.model.element.movable.PacMan;
 import g50.model.map.GameMap;
@@ -10,8 +11,10 @@ import java.io.IOException;
 public class GameViewer {
     private GameMapViewer gameMapViewer;
     private DefaultElementViewerBuilder viewerBuilder;
+    private Game game;
 
-    public GameViewer() {
+    public GameViewer(Game game) {
+        this.game = game;
         this.gameMapViewer = new GameMapViewer();
         this.viewerBuilder = new DefaultElementViewerBuilder();
     }
@@ -21,7 +24,7 @@ public class GameViewer {
 
         gameMapViewer.draw(gui, gameMap);
 
-        gui.drawText("score", new Position(3,0));
+        gui.drawText(String.valueOf(game.getScore()), new Position(3,0));
 
         gui.drawText("HIGH SCORE", new Position(16,-1));
 
