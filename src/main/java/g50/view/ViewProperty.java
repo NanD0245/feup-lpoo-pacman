@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class ViewProperty {
     private final String color;
-    private final char character;
+    private final Character character;
 
     public ViewProperty(String color, char character) {
         this.color = color;

@@ -1,5 +1,6 @@
 package g50.view;
 
+import g50.controller.GameController;
 import g50.gui.GUI;
 import g50.model.Game;
 import g50.model.Position;
@@ -12,10 +13,11 @@ public class GameViewer {
     private GameMapViewer gameMapViewer;
     private DefaultElementViewerBuilder viewerBuilder;
     private Game game;
+    private GameController gameController;
 
-    public GameViewer(Game game) {
+    public GameViewer(Game game, GameController gameController) {
         this.game = game;
-        this.gameMapViewer = new GameMapViewer();
+        this.gameMapViewer = new GameMapViewer(gameController);
         this.viewerBuilder = new DefaultElementViewerBuilder();
     }
 

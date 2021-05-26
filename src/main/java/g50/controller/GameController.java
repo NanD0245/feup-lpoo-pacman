@@ -41,7 +41,7 @@ public class GameController extends Controller<Game> {
         super(game);
         this.ghostsController = new ArrayList<>();
         this.pacManController = new PacManController(this);
-        this.viewer = new GameViewer(game);
+        this.viewer = new GameViewer(game, this);
         this.gui = gui;
         this.gameState = new GameStateHandler();
         this.gameState.addObserver(this);
@@ -167,4 +167,8 @@ public class GameController extends Controller<Game> {
     public boolean isGameOver() {
         return this.getModel().getGameMap().getMap().stream().noneMatch(x -> x instanceof PacDot);
     }
+
+    public List<GhostController> getGhostsController() { return ghostsController; }
+
+    public PacManController getPacManController() { return pacManController; }
 }
