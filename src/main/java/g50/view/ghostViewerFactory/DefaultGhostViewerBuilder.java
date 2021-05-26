@@ -16,7 +16,7 @@ public class DefaultGhostViewerBuilder extends GhostViewerBuilder{
         this.properties.put(PinkyGhost.class, new ViewProperty("#FFB8FF", 'È'));
         this.properties.put(InkyGhost.class, new ViewProperty("#FFB852", 'È'));
 
-        this.ghostStateProperties.put(GhostState.DEAD, new ViewProperty("#FF0000", 'Ê'));
-        this.ghostStateProperties.put(GhostState.FRIGHTENED, new ViewProperty("0000FF", 'È'));
+        this.ghostStateProperties.put(GhostState.DEAD, new ViewProperty("#FFFFFF", 'Ê'));
+        this.ghostStateProperties.put(GhostState.FRIGHTENED, new ViewProperty("#0000FF", 'È'));
     }
 }
