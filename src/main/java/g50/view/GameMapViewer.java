@@ -1,20 +1,27 @@
 package g50.view;
 
+import g50.controller.GameController;
 import g50.gui.GUI;
 import g50.model.Position;
 import g50.model.element.Element;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
+import g50.view.ghostViewerFactory.GhostViewerBuilder;
+import g50.view.pacmanViewerFactory.PacManViewerBuilder;
 
 import java.io.IOException;
 import java.util.List;
 
 public class GameMapViewer {
-    private final ElementViewerBuilder viewerBuilder;
+    private final ElementViewerBuilder elementViewerBuilder;
+    private final PacManViewerBuilder pacManViewerBuilder;
+    private final GhostViewerBuilder ghostViewerBuilder;
 
-    public GameMapViewer(){
-        this.viewerBuilder = new DefaultElementViewerBuilder();
+    public GameMapViewer(GameController gameController){
+        this.elementViewerBuilder = new DefaultElementViewerBuilder();
+        this.pacManViewerBuilder = new PacManViewerBuilder(gameController);
+        this.ghostViewerBuilder = new GhostViewerBuilder(gameController);
     }
 
     public void draw(GUI gui, GameMap gameMap) throws IOException {
@@ -23,13 +30,13 @@ public class GameMapViewer {
             for (int column = 0; column < gameMap.getColumns(); column++){
                 Position position = new Position(column, line);
                 Element element = map.get(line).get(column);
-                this.viewerBuilder.getViewer(element).draw(gui);
+                this.elementViewerBuilder.getViewer(element).draw(gui);
             }
         }
 
-        this.viewerBuilder.getViewer(gameMap.getPacman()).draw(gui);
+        this.pacManViewerBuilder.getViewer(gameMap.getPacman()).draw(gui);
         for (Ghost ghost : gameMap.getGhosts()){
-            this.viewerBuilder.getViewer(ghost).draw(gui);
+            this.ghostViewerBuilder.getViewer(ghost).draw(gui);
         }
     }
 }
