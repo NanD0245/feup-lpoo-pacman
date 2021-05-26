@@ -20,7 +20,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("Application")
+    mainClass.set("g50.Application")
 }
 
 test {
