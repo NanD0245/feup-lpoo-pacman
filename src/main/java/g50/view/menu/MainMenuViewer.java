@@ -3,17 +3,19 @@ package g50.view.menu;
 import g50.gui.GUI;
 import g50.model.Position;
 import g50.model.menu.MainMenu;
+import g50.model.menu.Menu;
 import g50.view.ViewProperty;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class MainMenuViewer extends MenuViewer<MainMenu> {
+public class MainMenuViewer extends MenuViewer {
     protected List<ViewProperty> elementViewers;
 
-    public MainMenuViewer() {
-        super();
+    public MainMenuViewer(MainMenu menu) {
+        super(menu);
         this.elementViewers = new ArrayList<>();
         initViewerBuilder();
     }
@@ -28,10 +30,13 @@ public class MainMenuViewer extends MenuViewer<MainMenu> {
         this.elementViewers.add(new ViewProperty("#FFB852",'È'));
     }
 
-    public void draw(GUI gui, MainMenu menu) throws IOException {
+    @Override
+    public void draw(GUI gui) throws IOException {
+        System.out.println("gui");
+
         gui.clear();
 
-        gui.drawText(menu.getTitle(),new Position(10,5), "#FFFF00");
+        gui.drawText((getModel()).getTitle(),new Position(10,5), "#FFFF00");
 
 
         for (int i = 0; i < elementViewers.size(); i++)
@@ -39,13 +44,13 @@ public class MainMenuViewer extends MenuViewer<MainMenu> {
                     new Position(10+i, 8),
                     elementViewers.get(i).getColor());
 
-        int selected = menu.getCurrentEntry();
+        int selected = getModel().getCurrentEntry();
 
-        for (int i = 0; i < menu.getNumberEntries(); i++) {
+        for (int i = 0; i < getModel().getNumberEntries(); i++) {
             if (selected == i)
-                gui.drawText('>' + map.get(menu.getEntry(i)), new Position(5 - 1,15 + 3 * i), "#FFFF00");
+                gui.drawText('>' + map.get(getModel().getEntry(i)), new Position(5 - 1,15 + 3 * i), "#FFFF00");
             else {
-                gui.drawText(map.get(menu.getEntry(i)), new Position(5, 15 + 3 * i), "#FFFFFF");
+                gui.drawText(map.get(getModel().getEntry(i)), new Position(5, 15 + 3 * i), "#FFFFFF");
             }
         }
 

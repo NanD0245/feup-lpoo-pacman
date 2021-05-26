@@ -5,9 +5,9 @@ import g50.gui.GUI;
 import g50.model.menu.CreditsMenu;
 import g50.view.menu.MenuViewer;
 
-public class CreditsMenuController extends MenuController<CreditsMenu> {
+public class CreditsMenuController extends MenuController {
 
-    public CreditsMenuController(GUI gui, MenuViewer<CreditsMenu> menuViewer, CreditsMenu menu) {
+    public CreditsMenuController(GUI gui, MenuViewer menuViewer, CreditsMenu menu) {
         super(gui, menuViewer, menu);
     }
 

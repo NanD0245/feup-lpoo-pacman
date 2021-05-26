@@ -6,9 +6,9 @@ import g50.model.menu.PauseMenu;
 import g50.view.menu.MenuViewer;
 import g50.view.menu.PauseMenuViewer;
 
-public class PauseMenuController extends MenuController<PauseMenu> {
+public class PauseMenuController extends MenuController {
 
-    public PauseMenuController(GUI gui, MenuViewer<PauseMenu> menuViewer, PauseMenu menu) {
+    public PauseMenuController(GUI gui, MenuViewer menuViewer, PauseMenu menu) {
         super(gui, menuViewer, menu);
     }
 
@@ -16,14 +16,14 @@ public class PauseMenuController extends MenuController<PauseMenu> {
     public void addPendingKBDAction(GUI.KBD_ACTION action) {
         switch (action) {
             case UP:
-                menu.previousEntry();
+                getModel().previousEntry();
                 break;
             case DOWN:
-                menu.nextEntry();
+                getModel().nextEntry();
                 break;
             case SELECT:
-                if (menu.isSelectedResume())
-                if (menu.isSelectedExit())
+                if (((PauseMenu)getModel()).isSelectedResume())
+                if (((PauseMenu)getModel()).isSelectedExit())
                 break;
         }
     }

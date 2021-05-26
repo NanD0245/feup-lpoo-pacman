@@ -6,9 +6,9 @@ import g50.model.menu.ControlsMenu;
 import g50.view.menu.ControlsMenuViewer;
 import g50.view.menu.MenuViewer;
 
-public class ControlsMenuController extends MenuController<ControlsMenu> {
+public class ControlsMenuController extends MenuController {
 
-    public ControlsMenuController(GUI gui, MenuViewer<ControlsMenu> menuViewer, ControlsMenu menu) { super(gui, menuViewer, menu); }
+    public ControlsMenuController(GUI gui, MenuViewer menuViewer, ControlsMenu menu) { super(gui, menuViewer, menu); }
 
     @Override
     public void addPendingKBDAction(GUI.KBD_ACTION action) {

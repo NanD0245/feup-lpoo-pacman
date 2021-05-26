@@ -6,9 +6,9 @@ import g50.model.menu.GameOverMenu;
 import g50.view.menu.GameOverViewer;
 import g50.view.menu.MenuViewer;
 
-public class GameOverMenuController extends MenuController<GameOverMenu> {
+public class GameOverMenuController extends MenuController {
 
-    public GameOverMenuController(GUI gui, MenuViewer<GameOverMenu> menuViewer, GameOverMenu menu) {
+    public GameOverMenuController(GUI gui, MenuViewer menuViewer, GameOverMenu menu) {
         super(gui,menuViewer,menu);
     }
 

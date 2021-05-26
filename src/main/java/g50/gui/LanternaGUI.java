@@ -87,7 +87,11 @@ public class LanternaGUI implements GUI{
             public void keyPressed(KeyEvent keyEvent) {
                 KBD_ACTION action = getAction(keyEvent);
                 if (action != KBD_ACTION.OTHER){
-                    notifyObservers(action);
+                    try {
+                        notifyObservers(action);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -111,7 +115,8 @@ public class LanternaGUI implements GUI{
         }
     }
 
-    private void notifyObservers(KBD_ACTION action) {
+
+    private void notifyObservers(KBD_ACTION action) throws IOException {
         for (GUIObserver observer : this.observers){
             observer.addPendingKBDAction(action);
         }

@@ -1,6 +1,7 @@
 package g50.controller;
 
 import g50.controller.states.GameState;
+import g50.Application;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
 import g50.model.Position;
@@ -11,17 +12,16 @@ import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.model.map.GameMap;
+import g50.view.Viewer;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class PacManController implements Controller{
-
-    private final PacMan controllable;
-    private final GameMap map;
+public class PacManController extends Controller<PacMan> {
     private final GameController gameController;
+    private final GameMap gameMap;
     private Orientation nextBufferedOrientation;
     private int velocity = 15;
 
@@ -34,32 +34,44 @@ public class PacManController implements Controller{
                 put(GUI.KBD_ACTION.QUIT, null);
     }};
 
-    public PacManController(GameMap map, GameController gameController){
-        this.map = map;
-        this.controllable = map.getPacman();
+
+    public PacManController(GameController gameController){
+        super(gameController.getModel().getGameMap().getPacman());
         this.gameController = gameController;
+        this.gameMap = gameController.getModel().getGameMap();
     }
 
+
     public void addPendingKBDAction(GUI.KBD_ACTION action) {
-        List<Orientation> oris = map.getAvailableOrientations(controllable.getPosition());
+        List<Orientation> oris =
+                gameMap.getAvailableOrientations(getModel().getPosition());
+
         Orientation actionOrientation = actionToOrientation.get(action);
-        if(actionOrientation == null || actionOrientation == controllable.getOrientation()) return;
+        if(actionOrientation == null || actionOrientation == getModel().getOrientation()) return;
 
         if(oris.contains(actionOrientation)){
-            controllable.setOrientation(actionOrientation);
+            getModel().setOrientation(actionOrientation);
             if(nextBufferedOrientation == actionOrientation.getOpposite()) nextBufferedOrientation = null;
         }
         else this.nextBufferedOrientation = actionOrientation;
     }
 
+    private void moveToNewPosition(List<Orientation> oris){
+        if(oris.contains(nextBufferedOrientation)) {
+            getModel().move(nextBufferedOrientation, gameMap.getColumns(), gameMap.getLines());
+            nextBufferedOrientation = null;
+        } else if(oris.contains(getModel().getOrientation()))
+            getModel().move(getModel().getOrientation(), gameMap.getColumns(), gameMap.getLines());
+    }
+
     @Override
-    public void update(int frame) {
+    public void update(Application application, int frame) {
         if(frame % velocity != 0) return;
 
-        gameController.consumeMapElement(controllable.getPosition());
+        gameController.consumeMapElement(super.getModel().getPosition());
 
-        Position currentPos = controllable.getPosition();
-        moveToNewPosition(map.getAvailableOrientations(controllable.getPosition()), currentPos);
+        Position currentPos = super.getModel().getPosition();
+        moveToNewPosition(gameMap.getAvailableOrientations(super.getModel().getPosition()), currentPos);
     }
 
     @Override
@@ -67,13 +79,13 @@ public class PacManController implements Controller{
 
     private void moveToNewPosition(List<Orientation> oris, Position currentPos){
         if(oris.contains(nextBufferedOrientation)
-        && !(map.getElement(currentPos.getAdjacent(nextBufferedOrientation)) instanceof Door)){
-            controllable.move(nextBufferedOrientation, map.getColumns(), map.getLines());
+        && !(gameMap.getElement(currentPos.getAdjacent(nextBufferedOrientation)) instanceof Door)){
+            super.getModel().move(nextBufferedOrientation, gameMap.getColumns(), gameMap.getLines());
             nextBufferedOrientation = null;
-        } else if(oris.contains(controllable.getOrientation()))
-            controllable.move(controllable.getOrientation(), map.getColumns(), map.getLines());
+        } else if(oris.contains(super.getModel().getOrientation()))
+            super.getModel().move(super.getModel().getOrientation(), gameMap.getColumns(), gameMap.getLines());
     }
 
-    public Position getControllablePosition() { return this.controllable.getPosition(); }
+    public Position getControllablePosition() { return super.getModel().getPosition(); }
 
 }

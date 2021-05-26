@@ -3,7 +3,11 @@ package g50.controller;
 import g50.controller.ghost_strategy.*;
 import g50.controller.states.GameState;
 import g50.controller.states.GhostState;
+import g50.Application;
 import g50.gui.GUI;
+import g50.model.Game;
+import g50.model.element.fixed.collectable.PacDot;
+import g50.model.element.movable.ghost.Ghost;
 import g50.gui.GUIObserver;
 import g50.model.Position;
 import g50.model.element.fixed.FixedElement;
@@ -14,38 +18,35 @@ import g50.model.element.movable.ghost.*;
 import g50.model.map.GameMap;
 import g50.view.GameMapViewer;
 import g50.view.GameViewer;
+import g50.view.Viewer;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
 
-public class GameController implements Controller, GUIObserver{
-    private final GameMap map;
+
+public class GameController extends Controller<Game> {
     private final List<GhostController> ghostsController;
     private final PacManController pacManController;
     private final GameViewer viewer;
-    private int framerate = 60;
-    private TimerTask updater;
-    private Timer timer;
-
-    private int score;
     private final GUI gui;
-
-    private final GameStateController gameState;
+    private final GameStateHandler gameState;
     private final List<Class<? extends GhostStrategy>> priorities;
     private int bonus;
+    private int frameRate;
 
-    public GameController(GUI gui, GameMap map, int score) {
-        this.map = map;
-        this.gui = gui;
-        this.viewer = new GameViewer();
+
+    public GameController(GUI gui, GameViewer viewer, Game game, int frameRate) {
+        super(game);
         this.ghostsController = new ArrayList<>();
-        this.gameState = new GameStateController();
+        this.pacManController = new PacManController(this);
+        this.viewer = viewer;
+        this.gui = gui;
+        this.gameState = new GameStateHandler();
         this.gameState.addObserver(this);
         setUpGhosts();
 
-        this.pacManController = new PacManController(map, this);
         this.priorities = Arrays.asList(
                 BlinkyStrategy.class,
                 PinkyStrategy.class,
@@ -53,25 +54,26 @@ public class GameController implements Controller, GUIObserver{
                 ClydeStrategy.class);
 
         this.bonus = 200;
+        this.frameRate = frameRate;
     }
 
     public void setUpGhosts(){
 
         BlinkyGhost currentBlinky = null;
 
-        for(Ghost ghost: map.getGhosts())
+        for(Ghost ghost: super.getModel().getGameMap().getGhosts())
             if(ghost instanceof BlinkyGhost) currentBlinky = (BlinkyGhost) ghost;
 
-        for(Ghost ghost: map.getGhosts()) {
+        for(Ghost ghost: super.getModel().getGameMap().getGhosts()) {
             GhostController newGhostController;
             if(ghost instanceof InkyGhost)
-                newGhostController = new GhostController(this.map, ghost, GhostState.INCAGE, new InkyStrategy(this.map, ghost, currentBlinky));
+                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new InkyStrategy(super.getModel().getGameMap(), ghost, currentBlinky));
             else if(ghost instanceof ClydeGhost)
-                newGhostController = new GhostController(this.map, ghost, GhostState.INCAGE, new ClydeStrategy(this.map, ghost));
+                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new ClydeStrategy(super.getModel().getGameMap(), ghost));
             else if(ghost instanceof PinkyGhost)
-                newGhostController = new GhostController(this.map, ghost, GhostState.INCAGE, new PinkyStrategy(this.map, ghost));
+                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new PinkyStrategy(super.getModel().getGameMap(), ghost));
             else {
-                newGhostController = new GhostController(this.map, ghost, GhostState.CHASE, new BlinkyStrategy(this.map, ghost));
+                newGhostController = new GhostController(this, ghost, GhostState.CHASE, new BlinkyStrategy(super.getModel().getGameMap(), ghost));
                 currentBlinky = (BlinkyGhost) ghost;
             }
 
@@ -80,60 +82,38 @@ public class GameController implements Controller, GUIObserver{
         }
     }
 
-    public void setUp(){
-        setUp(framerate);
-    }
 
-    public void setUp(int framerate){
-        this.framerate = framerate;
-        updater = new TimerTask() {
-            int frame = -1;
-            @Override
-            public void run() {
-                frame++;
-                update(frame);
-            }
-        };
-        timer = new Timer();
-        timer.schedule(updater, 1000/framerate, 1000/framerate);
-    }
-
-    public void terminate() {
-        timer.cancel();
-    }
-
-    @Override
     public void addPendingKBDAction(GUI.KBD_ACTION action) {
-        if(action.equals(GUI.KBD_ACTION.QUIT)) terminate();
         pacManController.addPendingKBDAction(action);
     }
 
 
     @Override
-    public void update(int frame) {
-        gameState.update(frame, framerate);
-        controlGhosts(frame);
-        pacManController.update(frame);
+    public void update(Application application, int frame) {
+        System.out.println("update");
+        gameState.update(frame, frameRate);
+        controlGhosts(application, frame);
+        pacManController.update(application, frame);
         checkPacmanGhostCollision();
         try {
-            viewer.draw(gui, map);
+            viewer.draw(gui, this.getModel().getGameMap());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void controlGhosts(int frame) {
+    private void controlGhosts(Application application, int frame) {
         for(GhostController ghostController: ghostsController){
-            ghostController.update(frame);
+            ghostController.update(application, frame);
         }
     }
 
     public void consumeMapElement(Position pos){
-        FixedElement currentElement = map.getElement(pos);
+        FixedElement currentElement = super.getModel().getGameMap().getElement(pos);
 
         if(currentElement.isCollectable()){
-            Position newPos = new Position(map.getPacman().getPosition());
-            map.setElement(new EmptySpace(newPos), newPos);
+            Position newPos = new Position(super.getModel().getGameMap().getPacman().getPosition());
+            super.getModel().getGameMap().setElement(new EmptySpace(newPos), newPos);
 
             Collectable collectable = (Collectable) currentElement;
             CollectableTriggers action = collectable.triggersEffect();
@@ -148,7 +128,7 @@ public class GameController implements Controller, GUIObserver{
                 default: break;
             }
 
-            score += ((Collectable) currentElement).collect();
+            //score += ((Collectable) currentElement).collect();
         }
     }
 
@@ -166,7 +146,7 @@ public class GameController implements Controller, GUIObserver{
 
     private void checkPacmanGhostCollision() {
         for(GhostController ghostController: ghostsController){
-            if(ghostController.getControllablePosition().equals(pacManController.getControllablePosition())){
+            if(ghostController.getControllablePosition().equals(pacManController.getModel().getPosition())){
                 if(ghostController.getState().equals(GhostState.FRIGHTENED)){
                     ghostController.consumeGhost();
                     // points += this.bonus;
@@ -185,4 +165,7 @@ public class GameController implements Controller, GUIObserver{
     }
 
 
+    public boolean isGameOver() {
+        return this.getModel().getGameMap().getMap().stream().noneMatch(x -> x instanceof PacDot);
+    }
 }
