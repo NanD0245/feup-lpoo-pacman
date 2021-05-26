@@ -6,19 +6,20 @@ import g50.model.Game;
 import g50.model.Position;
 import g50.model.element.movable.PacMan;
 import g50.model.map.GameMap;
+import g50.view.pacmanViewerFactory.DefaultPacManViewerBuilder;
 
 import java.io.IOException;
 
 public class GameViewer {
     private GameMapViewer gameMapViewer;
-    private DefaultElementViewerBuilder viewerBuilder;
+    private DefaultPacManViewerBuilder pacmanBuilder;
     private Game game;
     private GameController gameController;
 
     public GameViewer(Game game, GameController gameController) {
         this.game = game;
         this.gameMapViewer = new GameMapViewer(gameController);
-        this.viewerBuilder = new DefaultElementViewerBuilder();
+        this.pacmanBuilder = new DefaultPacManViewerBuilder(gameController);
     }
 
     public void draw(GUI gui, GameMap gameMap) throws IOException {
@@ -28,10 +29,10 @@ public class GameViewer {
 
         gui.drawText(String.valueOf(game.getScore()), new Position(3,0));
 
-        gui.drawText("HIGH SCORE", new Position(16,-1));
+        gui.drawText("SCORE\t\t\tHIGH SCORE", new Position(2,-1));
 
         for (int i = 0; i < gameMap.getPacman().getLives(); i++) {
-            this.viewerBuilder.getViewer(new PacMan(new Position(i, 34))).draw(gui);
+            this.pacmanBuilder.getViewer(new PacMan(new Position(i, 34))).draw(gui);
         }
 
         gui.refresh();

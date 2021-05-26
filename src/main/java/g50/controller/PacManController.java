@@ -46,6 +46,13 @@ public class PacManController extends Controller<PacMan> {
         List<Orientation> oris =
                 gameMap.getAvailableOrientations(getModel().getPosition());
 
+        for(Orientation orientation: oris){
+            if(gameController.getModel().getGameMap().getElement(getModel().getPosition().getAdjacent(orientation)) instanceof Door){
+                oris.remove(orientation);
+                break;
+            }
+        }
+
         Orientation actionOrientation = actionToOrientation.get(action);
         if(actionOrientation == null || actionOrientation == getModel().getOrientation()) return;
 
