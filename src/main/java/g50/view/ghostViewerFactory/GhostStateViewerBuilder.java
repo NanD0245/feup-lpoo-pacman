@@ -9,7 +9,7 @@ public class GhostStateViewerBuilder extends GhostViewerBuilder{
     public GhostStateViewerBuilder(GameController gameController) {
         super(gameController);
 
-        this.ghostStateProperties.put(GhostState.DEAD, new ViewProperty("#FF0000", ' '));
-        this.ghostStateProperties.put(GhostState.FRIGHTENED, new ViewProperty("0000FF", ' '));
+        this.ghostStateProperties.put(GhostState.DEAD, new ViewProperty("#FF0000", 'Ê'));
+        this.ghostStateProperties.put(GhostState.FRIGHTENED, new ViewProperty("0000FF", 'È'));
     }
 }
