@@ -26,11 +26,12 @@ public class GhostViewerBuilder {
     public ElementViewer getViewer(Ghost ghost){
 
         GhostController controller = getCorrespondingController(ghost);
-
-        for (Map.Entry<GhostState, ViewProperty> entry :
-                ghostStateProperties.entrySet()){
-            if (entry.getKey().equals(controller.getState())){
-                return new ElementViewer(ghost, entry.getValue());
+        if(controller != null){
+            for (Map.Entry<GhostState, ViewProperty> entry :
+                    ghostStateProperties.entrySet()){
+                if (entry.getKey().equals(controller.getState())){
+                    return new ElementViewer(ghost, entry.getValue());
+                }
             }
         }
 
@@ -48,5 +49,6 @@ public class GhostViewerBuilder {
             if(ghostController.getModel().equals(ghost))
                 return ghostController;
         }
+        return null;
     }
 }

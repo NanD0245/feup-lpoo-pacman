@@ -9,9 +9,9 @@ public class OrientationPacManViewerBuilder extends PacManViewerBuilder{
     public OrientationPacManViewerBuilder(GameController gameController) {
         super(gameController);
 
-        this.properties.put(Orientation.UP, new ViewProperty("#FFFF00", 'À' ));
-        this.properties.put(Orientation.LEFT, new ViewProperty("#FFFF00", 'Á' ));
-        this.properties.put(Orientation.DOWN, new ViewProperty("#FFFF00", 'Â' ));
-        this.properties.put(Orientation.RIGHT, new ViewProperty("#FFFF00", 'Ã' ));
+        this.properties.put(Orientation.UP, new ViewProperty("#FFFF00", ' ' ));
+        this.properties.put(Orientation.LEFT, new ViewProperty("#FFFF00", ' ' ));
+        this.properties.put(Orientation.DOWN, new ViewProperty("#FFFF00", ' ' ));
+        this.properties.put(Orientation.RIGHT, new ViewProperty("#FFFF00", ' ' ));
     }
 }
