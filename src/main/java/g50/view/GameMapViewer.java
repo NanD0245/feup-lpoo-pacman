@@ -7,7 +7,9 @@ import g50.model.element.Element;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
+import g50.view.ghostViewerFactory.DefaultGhostViewerBuilder;
 import g50.view.ghostViewerFactory.GhostViewerBuilder;
+import g50.view.pacmanViewerFactory.DefaultPacManViewerBuilder;
 import g50.view.pacmanViewerFactory.PacManViewerBuilder;
 
 import java.io.IOException;
@@ -20,8 +22,8 @@ public class GameMapViewer {
 
     public GameMapViewer(GameController gameController){
         this.elementViewerBuilder = new DefaultElementViewerBuilder();
-        this.pacManViewerBuilder = new PacManViewerBuilder(gameController);
-        this.ghostViewerBuilder = new GhostViewerBuilder(gameController);
+        this.pacManViewerBuilder = new DefaultPacManViewerBuilder(gameController);
+        this.ghostViewerBuilder = new DefaultGhostViewerBuilder(gameController);
     }
 
     public void draw(GUI gui, GameMap gameMap) throws IOException {

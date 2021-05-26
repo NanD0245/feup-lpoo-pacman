@@ -4,9 +4,9 @@ import g50.controller.GameController;
 import g50.model.element.movable.Orientation;
 import g50.view.ViewProperty;
 
-public class OrientationPacManViewerBuilder extends PacManViewerBuilder{
+public class DefaultPacManViewerBuilder extends PacManViewerBuilder{
 
-    public OrientationPacManViewerBuilder(GameController gameController) {
+    public DefaultPacManViewerBuilder(GameController gameController) {
         super(gameController);
 
         this.properties.put(Orientation.UP, new ViewProperty("#FFFF00", 'À' ));
