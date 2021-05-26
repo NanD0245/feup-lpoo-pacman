@@ -1,16 +1,25 @@
-package g50.states;
+/*package g50.states;
 
-import g50.Application;
-import g50.controller.ApplicationController;
+import g50.controller.Controller;
+import g50.model.menu.MainMenu;
+import g50.model.menu.Menu;
+import g50.view.Viewer;
+import g50.view.menu.MainMenuViewer;
 
-public class MainMenuState extends AppState {
+public class MainMenuState extends State<MainMenu> {
 
-    MainMenuState(ApplicationController applicationController) {
+    public MainMenuState(Menu applicationController) {
         super(applicationController);
+
     }
+
 
     @Override
-    AppState step(int frame) {
+    protected Viewer<MainMenu> getViewer() {
+        return new MainMenuViewer(getModel());
+    }
+
+    public Controller<Menu> getController() {
         return null;
     }
-}
+}*/

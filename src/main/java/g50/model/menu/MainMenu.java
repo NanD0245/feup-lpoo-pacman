@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 public class MainMenu extends Menu {
     public MainMenu() {
-        super("PAC-MAN", Arrays.asList(ENTRIES.START, ENTRIES.CONTROLS,
-               ENTRIES.HIGH_SCORE, ENTRIES.CREDITS, ENTRIES.EXIT));
+        super("PAC-MAN", Arrays.asList(ENTRIES.START, ENTRIES.CONTROLS/*,
+               ENTRIES.HIGH_SCORE*/, ENTRIES.CREDITS, ENTRIES.EXIT));
     }
 
     public boolean isSelectedStart() {
@@ -18,11 +18,11 @@ public class MainMenu extends Menu {
         return (currentEntry == 2);
     }
 
-    public boolean isSelectedHighScore() {
-        return (currentEntry == 3);
-    }
+    /*public boolean isSelectedHighScore() {
+        return (currentEntry == 2);
+    }*/
 
     public boolean isSelectedExit() {
-        return (currentEntry == 4);
+        return (currentEntry == 3);
     }
 }

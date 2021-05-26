@@ -163,6 +163,14 @@ public class GameMap {
     public Position getGhostStartPos(){
         return this.ghostStartPos;
     }
+
+    public void resetPositions() {
+        for (Ghost ghost : ghosts) {
+            ghost.setPosition(ghost.getStartPosition());
+        }
+        pacman.setPosition(new Position(13, 25));
+        pacman.setOrientation(Orientation.LEFT);
+    }
 }
 
 class Entry implements Comparable<Entry>{
