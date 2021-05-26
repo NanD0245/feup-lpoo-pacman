@@ -2,6 +2,8 @@ package g50.view;
 
 import g50.gui.GUI;
 
+import java.io.IOException;
+
 public abstract class Viewer<T> {
     private final T model;
 
@@ -13,5 +15,5 @@ public abstract class Viewer<T> {
         return model;
     }
 
-    public abstract void draw(GUI gui);
+    public abstract void draw(GUI gui) throws IOException;
 }

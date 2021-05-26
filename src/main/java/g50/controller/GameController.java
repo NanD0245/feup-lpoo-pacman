@@ -17,6 +17,7 @@ import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.ghost.*;
 import g50.model.map.GameMap;
 import g50.view.GameMapViewer;
+import g50.view.GameViewer;
 import g50.view.Viewer;
 
 import java.io.IOException;
@@ -24,10 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
 
+
 public class GameController extends Controller<Game> {
     private final List<GhostController> ghostsController;
     private final PacManController pacManController;
-    private final GameMapViewer viewer;
+    private final GameViewer viewer;
     private final GUI gui;
     private final GameStateHandler gameState;
     private final List<Class<? extends GhostStrategy>> priorities;
@@ -35,11 +37,11 @@ public class GameController extends Controller<Game> {
     private int frameRate;
 
 
-    public GameController(GUI gui, GameMapViewer viewer, Game game, int frameRate) {
+    public GameController(GUI gui, Game game, int frameRate) {
         super(game);
         this.ghostsController = new ArrayList<>();
         this.pacManController = new PacManController(this);
-        this.viewer = viewer;
+        this.viewer = new GameViewer(game);
         this.gui = gui;
         this.gameState = new GameStateHandler();
         this.gameState.addObserver(this);
@@ -81,13 +83,14 @@ public class GameController extends Controller<Game> {
     }
 
 
-    public void addPendingAction(GUI.ACTION action) {
-        pacManController.addPendingAction(action);
+    public void addPendingKBDAction(GUI.KBD_ACTION action) {
+        pacManController.addPendingKBDAction(action);
     }
 
 
     @Override
     public void update(Application application, int frame) {
+        System.out.println("update");
         gameState.update(frame, frameRate);
         controlGhosts(application, frame);
         pacManController.update(application, frame);
@@ -124,8 +127,7 @@ public class GameController extends Controller<Game> {
                     break;
                 default: break;
             }
-
-            // points += currentElement.collect();
+            this.getModel().incrementScore(((Collectable) currentElement).collect());
         }
     }
 
@@ -143,11 +145,11 @@ public class GameController extends Controller<Game> {
 
     private void checkPacmanGhostCollision() {
         for(GhostController ghostController: ghostsController){
-            if(ghostController.getControllablePosition().equals(pacManController.getControllablePosition())){
+            if(ghostController.getControllablePosition().equals(pacManController.getModel().getPosition())){
                 if(ghostController.getState().equals(GhostState.FRIGHTENED)){
                     ghostController.consumeGhost();
-                    // points += this.bonus;
-                    // this.bonus *= 2;
+                    this.getModel().incrementScore(this.bonus);
+                    this.bonus *= 2;
                 }
                 else if(!ghostController.getState().equals(GhostState.DEAD)){
                     // dead pacman
@@ -160,6 +162,7 @@ public class GameController extends Controller<Game> {
     public void notify(GameState state) {
         this.bonus = 200;
     }
+
 
     public boolean isGameOver() {
         return this.getModel().getGameMap().getMap().stream().noneMatch(x -> x instanceof PacDot);

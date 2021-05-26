@@ -1,6 +1,8 @@
 package g50.gui;
 
+import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.*;
 import com.googlecode.lanterna.terminal.*;
@@ -26,7 +28,7 @@ public class LanternaGUI implements GUI{
     private final List<GUIObserver> observers;
 
     public LanternaGUI(int width, int height) throws IOException, URISyntaxException, FontFormatException {
-        AWTTerminalFontConfiguration fontConfig = loadFontConfig("fonts/square.ttf", 25);
+        AWTTerminalFontConfiguration fontConfig = loadFontConfig("fonts/pacman_final1.otf", 25);
         Terminal terminal = createTerminal(width, height, fontConfig);
         this.screen = createScreen(terminal);
         this.observers = new ArrayList<>();
@@ -56,7 +58,7 @@ public class LanternaGUI implements GUI{
             public void windowClosing(WindowEvent we) {
                 try {
                     close();
-                    notifyObservers(ACTION.QUIT);
+                    notifyObservers(KBD_ACTION.QUIT);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -83,8 +85,8 @@ public class LanternaGUI implements GUI{
 
             @Override
             public void keyPressed(KeyEvent keyEvent) {
-                ACTION action = getAction(keyEvent);
-                if (action != ACTION.OTHER){
+                KBD_ACTION action = getAction(keyEvent);
+                if (action != KBD_ACTION.OTHER){
                     try {
                         notifyObservers(action);
                     } catch (IOException e) {
@@ -100,20 +102,23 @@ public class LanternaGUI implements GUI{
         });
     }
 
-    private ACTION getAction(KeyEvent keyEvent){
-        if (keyEvent == null) return ACTION.OTHER;
+    private KBD_ACTION getAction(KeyEvent keyEvent){
+        if (keyEvent == null) return KBD_ACTION.OTHER;
         switch (keyEvent.getKeyCode()) {
-            case KeyEvent.VK_DOWN: return ACTION.DOWN;
-            case KeyEvent.VK_UP: return ACTION.UP;
-            case KeyEvent.VK_LEFT: return ACTION.LEFT;
-            case KeyEvent.VK_RIGHT: return ACTION.RIGHT;
-            default: return ACTION.OTHER;
+            case KeyEvent.VK_DOWN: return KBD_ACTION.DOWN;
+            case KeyEvent.VK_UP: return KBD_ACTION.UP;
+            case KeyEvent.VK_LEFT: return KBD_ACTION.LEFT;
+            case KeyEvent.VK_RIGHT: return KBD_ACTION.RIGHT;
+            case KeyEvent.VK_ENTER: return KBD_ACTION.SELECT;
+            case KeyEvent.VK_ESCAPE: return KBD_ACTION.ESQ;
+            default: return KBD_ACTION.OTHER;
         }
     }
 
-    private void notifyObservers(ACTION action) throws IOException {
+
+    private void notifyObservers(KBD_ACTION action) throws IOException {
         for (GUIObserver observer : this.observers){
-            observer.addPendingAction(action);
+            observer.addPendingKBDAction(action);
         }
     }
 
@@ -130,7 +135,17 @@ public class LanternaGUI implements GUI{
     @Override
     public void drawText(String text, Position position, String color) {
         TextGraphics tg = this.screen.newTextGraphics();
+        tg.setForegroundColor(TextColor.Factory.fromString(color));
         tg.putString(position.getX(), position.getY() + 1, text);
+    }
+
+    @Override
+    public void drawBlinkText(String text, Position position, String color) {
+        TextGraphics tg = this.screen.newTextGraphics();
+        tg.enableModifiers(SGR.BLINK);
+        tg.setForegroundColor(TextColor.Factory.fromString(color));
+        tg.putString(position.getX(), position.getY() + 1, text);
+        tg.disableModifiers(SGR.BLINK);
     }
 
     @Override

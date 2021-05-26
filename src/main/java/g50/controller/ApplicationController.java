@@ -1,5 +1,7 @@
 package g50.controller;
 
+import g50.controller.menu.*;
+import g50.controller.states.GameState;
 import g50.controller.states.GameState;
 import g50.Application;
 import g50.gui.GUI;
@@ -10,7 +12,11 @@ import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
 import g50.model.map.mapbuilder.DefaultGameMapBuilder;
 import g50.model.map.mapbuilder.GameMapBuilder;
+import g50.model.menu.*;
+import g50.model.menu.Menu;
 import g50.view.GameMapViewer;
+import g50.view.GameViewer;
+import g50.view.menu.*;
 import g50.view.Viewer;
 
 import java.awt.*;
@@ -26,14 +32,26 @@ public class ApplicationController extends Controller<Application> implements GU
     private int frameRate = 60;
     private Timer timer;
     private final GameController gameController;
+    private final MenuController menuController;
     private final GUI gui;
 
     public ApplicationController(Application application, GUI gui) throws IOException {
         super(application);
+
+        MainMenu menu = new MainMenu();
+        //GameOverMenu menu = new GameOverMenu();
+        //PauseMenu menu = new PauseMenu();
+        //ControlsMenu menu = new ControlsMenu();
+        //CreditsMenu menu = new CreditsMenu();
         GameMap map = new DefaultGameMapBuilder().getBuild();
         this.gui = gui;
         gui.addObserver(this);
-        this.gameController = new GameController(gui, new GameMapViewer(),new Game(), frameRate);
+        this.gameController = new GameController(gui, new Game(), frameRate);
+        this.menuController = new MainMenuController(gui, menu);
+        //this.menuController = new GameOverMenuController(gui, new GameOverViewer(), menu);
+        //this.menuController = new PauseMenuController(gui, new PauseMenuViewer(), menu);
+        //this.menuController = new ControlsMenuController(gui, new ControlsMenuViewer(), menu);
+        //this.menuController = new CreditsMenuController(gui, new CreditsMenuViewer(), menu);
     }
 
     public void setUp(){
@@ -60,14 +78,17 @@ public class ApplicationController extends Controller<Application> implements GU
     }
 
     @Override
-    public void addPendingAction(GUI.ACTION action) throws IOException {
-        if(action == GUI.ACTION.QUIT) terminate();
-        gameController.addPendingAction(action);
+    public void addPendingKBDAction(GUI.KBD_ACTION action) throws IOException {
+        if(action == GUI.KBD_ACTION.QUIT) terminate();
+        gameController.addPendingKBDAction(action);
+        //this.menuController.addPendingKBDAction(action);
     }
 
     @Override
     public void update(Application application, int frame) {
         this.gameController.update(application, frame);
+        System.out.println("here");
+        //this.menuController.update(application, frame);
     }
 
     @Override

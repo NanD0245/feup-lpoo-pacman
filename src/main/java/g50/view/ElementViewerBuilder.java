@@ -10,7 +10,9 @@ import g50.model.element.fixed.nonCollectable.*;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.Ghost;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class ElementViewerBuilder {
