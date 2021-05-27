@@ -27,9 +27,10 @@ public class GameViewer {
 
         gameMapViewer.draw(gui, gameMap);
 
-        gui.drawText(String.valueOf(game.getScore()), new Position(3,0));
-
         gui.drawText("SCORE\t\t\tHIGH SCORE", new Position(2,-1));
+
+        gui.drawText(String.valueOf(game.getScore()), new Position(3,0));
+        gui.drawText(String.valueOf(game.getScore()), new Position(19,0));
 
         for (int i = 0; i < gameMap.getPacman().getLives(); i++) {
             this.pacmanBuilder.getViewer(new PacMan(new Position(i, 34))).draw(gui);

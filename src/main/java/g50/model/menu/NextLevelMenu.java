@@ -10,12 +10,20 @@ import java.util.Collections;
 import java.util.List;
 
 public class NextLevelMenu extends Menu {
-    private PacMan pacMan;
-    private Ghost ghost;
+    private final PacMan pacMan;
+    private final Ghost ghost;
 
     public NextLevelMenu() {
         super("", Collections.emptyList());
         this.pacMan = new PacMan(new Position(28, 19));
         this.ghost = new BlinkyGhost("Blinky", new Position(28, 19), Orientation.LEFT, null);
+    }
+
+    public PacMan getPacMan() {
+        return pacMan;
+    }
+
+    public Ghost getGhost() {
+        return ghost;
     }
 }
