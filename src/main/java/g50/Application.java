@@ -152,4 +152,16 @@ public class Application implements GUIObserver {
         }
             this.controller.update(this, frame);
     }
+
+    public Controller getController() {
+        return controller;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
 }

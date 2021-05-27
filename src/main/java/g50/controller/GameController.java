@@ -15,6 +15,7 @@ import g50.model.element.fixed.collectable.Collectable;
 import g50.model.element.fixed.collectable.CollectableTriggers;
 import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.ghost.*;
+import g50.model.element.movable.ghost.strategy.*;
 import g50.view.menu.GameViewer;
 
 import java.io.IOException;
@@ -65,13 +66,13 @@ public class GameController extends Controller<Game> {
         for(Ghost ghost: super.getModel().getGameMap().getGhosts()) {
             GhostController newGhostController;
             if(ghost instanceof InkyGhost)
-                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new InkyStrategy(super.getModel().getGameMap(), ghost, currentBlinky));
+                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new InkyStrategy(currentBlinky));
             else if(ghost instanceof ClydeGhost)
-                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new ClydeStrategy(super.getModel().getGameMap(), ghost));
+                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new ClydeStrategy());
             else if(ghost instanceof PinkyGhost)
-                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new PinkyStrategy(super.getModel().getGameMap(), ghost));
+                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new PinkyStrategy());
             else {
-                newGhostController = new GhostController(this, ghost, GhostState.CHASE, new BlinkyStrategy(super.getModel().getGameMap(), ghost));
+                newGhostController = new GhostController(this, ghost, GhostState.CHASE, new BlinkyStrategy());
                 currentBlinky = (BlinkyGhost) ghost;
             }
 
@@ -142,8 +143,8 @@ public class GameController extends Controller<Game> {
     private void decreaseDotsOnHighestPriorityGhost(){
         for(Class classType: this.priorities){
             for(GhostController ghostController: this.ghostsController){
-                if(classType.equals(ghostController.getStrategy().getClass())
-                        && ghostController.getState().equals(GhostState.INCAGE)){
+                if(classType.equals(ghostController.getModel().getStrategy().getClass())
+                        && ghostController.getModel().getState().equals(GhostState.INCAGE)){
                     ghostController.decrementStrategyDotLimit();
                     return;
                 }
@@ -153,13 +154,13 @@ public class GameController extends Controller<Game> {
 
     private void checkPacmanGhostCollision() throws InterruptedException {
         for(GhostController ghostController: ghostsController){
-            if(ghostController.getControllablePosition().equals(pacManController.getModel().getPosition())){
-                if(ghostController.getState().equals(GhostState.FRIGHTENED)){
+            if(ghostController.getModel().getPosition().equals(pacManController.getModel().getPosition())){
+                if(ghostController.getModel().getState().equals(GhostState.FRIGHTENED)){
                     ghostController.consumeGhost();
                     this.getModel().incrementScore(this.bonus);
                     this.bonus *= 2;
                 }
-                else if(!ghostController.getState().equals(GhostState.DEAD)){
+                else if(!ghostController.getModel().getState().equals(GhostState.DEAD)){
                     getModel().getGameMap().getPacman().decreaseLives();
                     if (getModel().getGameMap().getPacman().isAlive()) {
                         Thread.sleep(1000);

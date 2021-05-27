@@ -29,7 +29,7 @@ public class GhostViewerBuilder {
         if(controller != null){
             for (Map.Entry<GhostState, ViewProperty> entry :
                     ghostStateProperties.entrySet()){
-                if (entry.getKey().equals(controller.getState())){
+                if (entry.getKey().equals(controller.getModel().getState())){
                     return new ElementViewer(ghost, entry.getValue());
                 }
             }

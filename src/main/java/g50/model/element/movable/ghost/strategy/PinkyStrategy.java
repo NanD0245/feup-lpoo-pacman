@@ -1,9 +1,8 @@
-package g50.controller.ghost;
+package g50.model.element.movable.ghost.strategy;
 
 import g50.model.element.Position;
 import g50.model.element.fixed.nonCollectable.Door;
 import g50.model.element.movable.Orientation;
-import g50.model.element.movable.ghost.BlinkyGhost;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
 
@@ -11,27 +10,20 @@ import java.util.List;
 
 import static g50.model.element.Position.calculateDistance;
 
-public class InkyStrategy extends GhostStrategy {
+public class PinkyStrategy extends GhostStrategy {
 
-    private static int defaultDotLimit = 30;
-    BlinkyGhost blinky;
+    private static int defaultDotLimit = 0;
 
-    public InkyStrategy(GameMap map, Ghost ghost, BlinkyGhost blinky) {
-        super(map, ghost, defaultDotLimit);
-        this.blinky = blinky;
+    public PinkyStrategy() {
+        super(defaultDotLimit);
     }
 
     @Override
-    protected Orientation inChase() {
-        if(blinky == null) return super.inChase();
-
+    protected Orientation inChase(GameMap map, Ghost ghost) {
         Position targetPos = map.getPacman().getPosition();
         Orientation pacmanOrientation = map.getPacman().getOrientation();
 
-        for(int i = 0; i < 2; ++i) targetPos = targetPos.getAdjacent(pacmanOrientation);
-
-        targetPos = new Position(2 * (targetPos.getX() - blinky.getPosition().getX()),
-                2 * (targetPos.getY() - blinky.getPosition().getY()));
+        for(int i = 0; i < 4; ++i) targetPos = targetPos.getAdjacent(pacmanOrientation);
 
         List<Orientation> availableOris =  map.getAvailableOrientations(ghost.getPosition());
         availableOris.remove(ghost.getOrientation().getOpposite());

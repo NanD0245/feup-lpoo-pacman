@@ -68,9 +68,9 @@ public class GameMap {
         if (!getElement(position).isWalkable()) return new ArrayList<>();
         Map<Orientation, FixedElement> surroundings = getSurroundings(position);
         List<Orientation> orientations = new ArrayList<>();
-        for(Orientation orientation: surroundings.keySet()){
+        for (Orientation orientation: surroundings.keySet()) {
             FixedElement element = surroundings.get(orientation);
-            if(element.isWalkable()) orientations.add(orientation);
+            if (element.isWalkable()) orientations.add(orientation);
         }
         return orientations;
     }
