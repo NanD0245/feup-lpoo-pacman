@@ -23,7 +23,6 @@ public class PacManController extends Controller<PacMan> {
     private final GameController gameController;
     private final GameMap gameMap;
     private Orientation nextBufferedOrientation;
-    private int velocity = 15;
 
     private static final Map<GUI.KBD_ACTION, Orientation> actionToOrientation = new HashMap<>() {{
                 put(GUI.KBD_ACTION.UP, Orientation.UP);
@@ -74,7 +73,7 @@ public class PacManController extends Controller<PacMan> {
     @Override
     public void update(Application application, int frame) {
         if(frame % 20 == 0) Application.playSound("pacman_chomp.wav");
-        if(frame % velocity != 0) return;
+        if(frame % gameMap.getPacman().getFramesPerPosition() != 0) return;
 
         gameController.consumeMapElement(super.getModel().getPosition());
 

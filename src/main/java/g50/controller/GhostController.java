@@ -25,9 +25,6 @@ public class GhostController extends Controller<Ghost> {
     private GameState gameState;
     private GhostStrategy strategy;
     private Orientation nextBufferedOrientation;
-    private static int defaultVelocity = 25;
-    private int velocity;
-
 
     public GhostController(GameController gameController, Ghost ghost, GhostState state, GhostStrategy strategy){
         super(ghost);
@@ -38,15 +35,16 @@ public class GhostController extends Controller<Ghost> {
         this.initialState = state;
         this.strategy = strategy;
         this.gameState = GameState.GameScatter;
-        this.velocity = this.defaultVelocity;
+        this.getModel().setDefaultFramesPerPosition();
     }
 
     @Override
     public void update(Application application, int frame) {
-        if(state == GhostState.DEAD && controllable.getPosition().equals(controllable.getStartPosition())){
+
+        if(state == GhostState.DEAD && controllable.getPosition().equals(controllable.getStartPosition())) {
             state = GhostState.INCAGE;
-            this.velocity = defaultVelocity;
         }
+
 
         if(state == GhostState.INCAGE && this.strategy.getDotLimit() == 0)
             state = GhostState.LEAVINGCAGE;
@@ -57,7 +55,7 @@ public class GhostController extends Controller<Ghost> {
                 (state == GhostState.LEAVINGCAGE && controllable.getPosition().equals(map.getGhostStartPos())))
             updateStateFromGameState();
 
-        if (frame % velocity != 0) return;
+        if (frame % getModel().getFramesPerPosition() != 0) return;
 
         Orientation newOrientation = strategy.getNextOrientation(state);
         if(newOrientation == null) return;
@@ -110,7 +108,7 @@ public class GhostController extends Controller<Ghost> {
         this.state = this.initialState;
         this.strategy.resetDotLimit();
         this.controllable.resetOrientation();
-        this.velocity = defaultVelocity;
+        this.getModel().setDefaultFramesPerPosition();
     }
 
     public GhostStrategy getStrategy(){
@@ -122,11 +120,9 @@ public class GhostController extends Controller<Ghost> {
     public void consumeGhost() {
         state = GhostState.DEAD;
         this.strategy.resetDotLimit();
-        this.velocity /= 2;
+        this.getModel().setFramesPerPosition(this.getModel().getFramesPerPosition()/2);
     }
 
     @Override
-    public void addPendingKBDAction(GUI.KBD_ACTION action) throws IOException {
-
-    }
+    public void addPendingKBDAction(GUI.KBD_ACTION action) throws IOException {}
 }

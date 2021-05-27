@@ -19,7 +19,7 @@ public class GameViewer {
     public GameViewer(Game game, GameController gameController) {
         this.game = game;
         this.gameMapViewer = new GameMapViewer(gameController);
-        this.pacmanBuilder = new DefaultPacManViewerBuilder(gameController);
+        this.pacmanBuilder = new DefaultPacManViewerBuilder();
     }
 
     public void draw(GUI gui, GameMap gameMap) throws IOException {
