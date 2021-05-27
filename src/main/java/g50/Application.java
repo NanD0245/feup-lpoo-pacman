@@ -1,5 +1,6 @@
 package g50;
 
+import com.sun.tools.javac.Main;
 import g50.controller.Controller;
 import g50.controller.GameController;
 import g50.controller.menu.ControlsMenuController;
@@ -16,9 +17,13 @@ import g50.model.map.mapbuilder.DefaultGameMapBuilder;
 import g50.model.menu.*;
 import g50.model.menu.Menu;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -151,5 +156,22 @@ public class Application implements GUIObserver {
             }
         }
             this.controller.update(this, frame);
+    }
+
+    public static synchronized void playSound(final String url) {
+        new Thread(new Runnable() {
+            // The wrapper thread is unnecessary, unless it blocks on the
+            // Clip finishing; see comments.
+            public void run() {
+                try {
+                    File file = new File("src/main/resources/sound/" + url);
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(AudioSystem.getAudioInputStream(file));
+                    clip.start();
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }).start();
     }
 }

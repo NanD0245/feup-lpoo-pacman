@@ -21,10 +21,12 @@ public class GhostController extends Controller<Ghost> {
     private final GameController gameController;
     private final GameMap map;
     private GhostState state;
+    private GhostState initialState;
     private GameState gameState;
     private GhostStrategy strategy;
     private Orientation nextBufferedOrientation;
-    private int velocity = 25;
+    private static int defaultVelocity = 25;
+    private int velocity;
 
 
     public GhostController(GameController gameController, Ghost ghost, GhostState state, GhostStrategy strategy){
@@ -33,16 +35,18 @@ public class GhostController extends Controller<Ghost> {
         this.map = gameController.getModel().getGameMap();
         this.controllable = ghost;
         this.state = state;
+        this.initialState = state;
         this.strategy = strategy;
         this.gameState = GameState.GameScatter;
+        this.velocity = this.defaultVelocity;
     }
 
     @Override
     public void update(Application application, int frame) {
-        if (frame % velocity != 0) return;
-
-        if(state == GhostState.DEAD && controllable.getPosition().equals(controllable.getStartPosition()))
+        if(state == GhostState.DEAD && controllable.getPosition().equals(controllable.getStartPosition())){
             state = GhostState.INCAGE;
+            this.velocity = defaultVelocity;
+        }
 
         if(state == GhostState.INCAGE && this.strategy.getDotLimit() == 0)
             state = GhostState.LEAVINGCAGE;
@@ -52,6 +56,8 @@ public class GhostController extends Controller<Ghost> {
         else if(state != GhostState.INCAGE && state != GhostState.DEAD && state != GhostState.LEAVINGCAGE ||
                 (state == GhostState.LEAVINGCAGE && controllable.getPosition().equals(map.getGhostStartPos())))
             updateStateFromGameState();
+
+        if (frame % velocity != 0) return;
 
         Orientation newOrientation = strategy.getNextOrientation(state);
         if(newOrientation == null) return;
@@ -81,7 +87,7 @@ public class GhostController extends Controller<Ghost> {
         }
     }
 
-    public void decrementStrategyDotLimit(){
+    public void decrementStrategyDotLimit() {
         if(this.strategy.getDotLimit() > 0) this.strategy.decrementDotLimit();
     }
 
@@ -100,6 +106,12 @@ public class GhostController extends Controller<Ghost> {
         return this.state;
     }
 
+    protected void resetState(){
+        this.state = this.initialState;
+        this.strategy.resetDotLimit();
+        this.controllable.resetOrientation();
+        this.velocity = defaultVelocity;
+    }
 
     public GhostStrategy getStrategy(){
         return this.strategy;
@@ -110,6 +122,7 @@ public class GhostController extends Controller<Ghost> {
     public void consumeGhost() {
         state = GhostState.DEAD;
         this.strategy.resetDotLimit();
+        this.velocity /= 2;
     }
 
     @Override

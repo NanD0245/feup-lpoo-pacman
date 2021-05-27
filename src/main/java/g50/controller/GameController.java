@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class GameController extends Controller<Game> {
@@ -34,9 +35,11 @@ public class GameController extends Controller<Game> {
     private final GUI gui;
     private final GameStateHandler gameState;
     private final List<Class<? extends GhostStrategy>> priorities;
-    private int bonus;
+    private int currBonus;
+    private static int bonus = 200;
     private int frameRate;
     private boolean pause;
+    private boolean started;
 
 
     public GameController(GUI gui, Game game, int frameRate) {
@@ -48,6 +51,7 @@ public class GameController extends Controller<Game> {
         this.gameState = new GameStateHandler();
         this.gameState.addObserver(this);
         setUpGhosts();
+        this.started = true;
 
         this.priorities = Arrays.asList(
                 BlinkyStrategy.class,
@@ -112,6 +116,15 @@ public class GameController extends Controller<Game> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if(this.started){
+            try {
+                Application.playSound("pacman_beginning.wav");
+                Thread.sleep(4000);
+                this.started = false;
+            } catch (InterruptedException e) {
+                    e.printStackTrace();
+            }
+        }
     }
 
     private void controlGhosts(Application application, int frame) {
@@ -160,14 +173,17 @@ public class GameController extends Controller<Game> {
             if(ghostController.getControllablePosition().equals(pacManController.getModel().getPosition())){
                 if(ghostController.getState().equals(GhostState.FRIGHTENED)){
                     ghostController.consumeGhost();
-                    this.getModel().incrementScore(this.bonus);
-                    this.bonus *= 2;
+                    this.getModel().incrementScore(this.currBonus);
+                    this.currBonus *= 2;
+                    Application.playSound("pacman_eatghost.wav");
                 }
                 else if(!ghostController.getState().equals(GhostState.DEAD)){
                     getModel().getGameMap().getPacman().decreaseLives();
                     if (getModel().getGameMap().getPacman().isAlive()) {
-                        Thread.sleep(1000);
+                        Application.playSound("pacman_death.wav");
+                        Thread.sleep(1500);
                         getModel().resetPositions();
+                        resetStates();
                     }
                     else {
                         Thread.sleep(1000);
@@ -177,26 +193,28 @@ public class GameController extends Controller<Game> {
         }
     }
 
-    @Override
-    public void notify(GameState state) {
-        this.bonus = 200;
+    private void resetStates() {
+        this.gameState.resetCurrentState();
+        for(GhostController controller: ghostsController)
+            controller.resetState();
     }
 
+    @Override
+    public void notify(GameState state) {
+        resetBonus();
+    }
+
+    private void resetBonus() { this.currBonus = bonus; }
 
     public boolean isGameOver() {
-        List<List<FixedElement>> v = getModel().getGameMap().getMap();
-        boolean check = true;
-        for (List<FixedElement> fixedElements : v)
-            for (FixedElement fixedElement : fixedElements)
-                if (fixedElement instanceof PacDot) {
-                    check = false;
-                    break;
-                }
-
-        return check || !getModel().getGameMap().getPacman().isAlive();
+        return getModel().getGameMap().getMap()
+                .stream().flatMap(Collection::stream).collect(Collectors.toList())
+                .stream().noneMatch(x -> x instanceof PacDot)
+        || !getModel().getGameMap().getPacman().isAlive();
     }
 
     public List<GhostController> getGhostsController() { return ghostsController; }
 
     public PacManController getPacManController() { return pacManController; }
+
 }
