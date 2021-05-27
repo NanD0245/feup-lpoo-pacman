@@ -46,8 +46,8 @@ public class Application implements GUIObserver {
         this.menu = new TransitionMenu();
         this.gui = gui;
         gui.addObserver(this);
-        //this.controller = new MainMenuController(gui,(MainMenu)menu);
-        this.controller = new TransitionMenuController(gui, (TransitionMenu)menu);
+        this.controller = new MainMenuController(gui,(MainMenu)menu);
+        //this.controller = new TransitionMenuController(gui, (TransitionMenu)menu);
         this.state = AppState.MAIN_MENU;
         this.lastAppState = AppState.MAIN_MENU;
         this.game = null;
