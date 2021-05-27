@@ -9,14 +9,14 @@ import g50.model.element.movable.ghost.Ghost;
 import java.util.Collections;
 import java.util.List;
 
-public class NextLevelMenu extends Menu {
+public class TransitionMenu extends Menu {
     private final PacMan pacMan;
     private final Ghost ghost;
 
-    public NextLevelMenu() {
+    public TransitionMenu() {
         super("", Collections.emptyList());
-        this.pacMan = new PacMan(new Position(28, 19));
-        this.ghost = new BlinkyGhost("Blinky", new Position(28, 19), Orientation.LEFT, null);
+        this.pacMan = new PacMan(new Position(28, 18));
+        this.ghost = new BlinkyGhost("Blinky", new Position(28, 18), Orientation.LEFT, null);
     }
 
     public PacMan getPacMan() {

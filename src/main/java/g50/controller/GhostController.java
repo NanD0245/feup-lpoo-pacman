@@ -24,7 +24,6 @@ public class GhostController extends Controller<Ghost> {
     private GameState gameState;
     private GhostStrategy strategy;
     private Orientation nextBufferedOrientation;
-    private int velocity = 25;
 
 
     public GhostController(GameController gameController, Ghost ghost, GhostState state, GhostStrategy strategy){
@@ -39,7 +38,7 @@ public class GhostController extends Controller<Ghost> {
 
     @Override
     public void update(Application application, int frame) {
-        if (frame % velocity != 0) return;
+        if (frame % getModel().getFramesPerPosition() != 0) return;
 
         if(state == GhostState.DEAD && controllable.getPosition().equals(controllable.getStartPosition()))
             state = GhostState.INCAGE;

@@ -26,11 +26,19 @@ public abstract class MenuController extends Controller<Menu> implements GUIObse
     public abstract void addPendingKBDAction(GUI.KBD_ACTION action);
 
     @Override
-    public void update(Application application, int frame) {
+    public void update(Application application, int frame) throws IOException {
         try {
             menuViewer.draw(gui);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public MenuViewer getMenuViewer() {
+        return menuViewer;
+    }
+
+    public GUI getGui() {
+        return gui;
     }
 }

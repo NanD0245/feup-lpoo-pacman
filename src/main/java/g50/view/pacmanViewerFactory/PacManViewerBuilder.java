@@ -14,7 +14,7 @@ import java.util.Map;
 public class PacManViewerBuilder {
     protected final HashMap<Orientation, ViewProperty> properties;
 
-    public PacManViewerBuilder(GameController gameController) {
+    public PacManViewerBuilder() {
         this.properties = new HashMap<>();
     }
 
