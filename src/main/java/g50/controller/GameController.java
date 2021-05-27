@@ -1,25 +1,21 @@
 package g50.controller;
 
-import g50.controller.ghost_strategy.*;
+import g50.controller.ghost.*;
+import g50.controller.pacman.PacManController;
 import g50.controller.states.GameState;
 import g50.controller.states.GhostState;
 import g50.Application;
-import g50.controller.states.app_states.AppState;
 import g50.gui.GUI;
 import g50.model.Game;
 import g50.model.element.fixed.collectable.PacDot;
 import g50.model.element.movable.ghost.Ghost;
-import g50.gui.GUIObserver;
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.collectable.Collectable;
 import g50.model.element.fixed.collectable.CollectableTriggers;
 import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.ghost.*;
-import g50.model.map.GameMap;
-import g50.view.GameMapViewer;
-import g50.view.GameViewer;
-import g50.view.Viewer;
+import g50.view.menu.GameViewer;
 
 import java.io.IOException;
 import java.util.ArrayList;

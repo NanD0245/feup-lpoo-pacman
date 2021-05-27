@@ -1,10 +1,7 @@
 package g50.view.menu;
 
-import g50.gui.GUI;
 import g50.model.menu.Menu;
-import g50.view.Viewer;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 

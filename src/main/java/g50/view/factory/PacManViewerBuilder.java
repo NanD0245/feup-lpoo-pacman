@@ -1,12 +1,12 @@
-package g50.view.pacmanViewerFactory;
+package g50.view.factory;
 
 import g50.controller.GameController;
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
-import g50.view.ElementViewer;
-import g50.view.ViewProperty;
+import g50.view.menu.ElementViewer;
+import g50.view.menu.ViewProperty;
 
 import java.util.HashMap;
 import java.util.Map;

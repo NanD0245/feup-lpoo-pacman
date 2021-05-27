@@ -1,9 +1,11 @@
-package g50.controller;
+package g50.controller.pacman;
 
+import g50.controller.Controller;
+import g50.controller.GameController;
 import g50.controller.states.GameState;
 import g50.Application;
 import g50.gui.GUI;
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.fixed.nonCollectable.Door;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;

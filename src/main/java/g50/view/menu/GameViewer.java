@@ -1,12 +1,10 @@
-package g50.view;
+package g50.view.menu;
 
 import g50.controller.GameController;
 import g50.gui.GUI;
 import g50.model.Game;
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.movable.PacMan;
-import g50.model.map.GameMap;
-import g50.view.pacmanViewerFactory.DefaultPacManViewerBuilder;
 
 import java.io.IOException;
 

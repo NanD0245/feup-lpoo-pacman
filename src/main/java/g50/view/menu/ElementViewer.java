@@ -1,10 +1,7 @@
-package g50.view;
+package g50.view.menu;
 
 import g50.gui.GUI;
-import g50.model.Position;
 import g50.model.element.Element;
-
-import java.util.Objects;
 
 public class ElementViewer extends Viewer<Element> {
     private final ViewProperty viewProperty;

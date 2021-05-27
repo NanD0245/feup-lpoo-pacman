@@ -1,7 +1,5 @@
 package g50.model.element;
 
-import g50.model.Position;
-
 public abstract class Element {
     private Position position;
 

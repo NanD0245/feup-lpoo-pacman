@@ -1,6 +1,6 @@
 package g50.model.map.mapbuilder;
 
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.map.GameMap;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

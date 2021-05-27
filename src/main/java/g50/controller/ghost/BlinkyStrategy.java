@@ -1,6 +1,5 @@
-package g50.controller.ghost_strategy;
+package g50.controller.ghost;
 
-import g50.model.element.fixed.nonCollectable.Target;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
 

@@ -1,8 +1,10 @@
-package g50.view;
+package g50.view.factory;
 
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.Element;
 import g50.model.element.fixed.nonCollectable.*;
+import g50.view.menu.ElementViewer;
+import g50.view.menu.ViewProperty;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,9 +1,8 @@
 package g50.gui;
 
-import g50.model.Position;
+import g50.model.element.Position;
 
 import java.io.IOException;
-import java.util.Map;
 
 public interface GUI {
     enum KBD_ACTION {UP, RIGHT, DOWN, LEFT, QUIT, SELECT, ESQ, OTHER};

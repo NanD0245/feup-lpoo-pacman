@@ -1,4 +1,4 @@
-package g50.view;
+package g50.view.menu;
 
 import g50.gui.GUI;
 

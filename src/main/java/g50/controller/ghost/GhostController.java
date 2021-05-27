@@ -1,10 +1,11 @@
-package g50.controller;
+package g50.controller.ghost;
 
-import g50.controller.ghost_strategy.GhostStrategy;
+import g50.controller.Controller;
+import g50.controller.GameController;
 import g50.controller.states.GameState;
 import g50.controller.states.GhostState;
 import g50.gui.GUI;
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.movable.Orientation;
 import g50.Application;
 import g50.model.element.movable.ghost.Ghost;
@@ -32,7 +33,7 @@ public class GhostController extends Controller<Ghost> {
     public void update(Application application, int frame) {
         if (frame % speed != 0) return;
 
-        if(state == GhostState.DEAD && getModel().getPosition().equals(getModel().getStartPosition()))
+        if(state == GhostState.DEAD && getModel().getPosition().equals(getModel().getSpawnPosition()))
             state = GhostState.INCAGE;
 
         if(state == GhostState.INCAGE && this.strategy.getDotLimit() == 0)

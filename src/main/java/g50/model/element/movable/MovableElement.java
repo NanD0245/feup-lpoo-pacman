@@ -1,16 +1,16 @@
 package g50.model.element.movable;
 
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.Element;
 
 public abstract class MovableElement extends Element {
-    protected String name;
-    protected Orientation orientation;
-    private final Position startPosition;
+    private final String name;
+    private Orientation orientation;
+    private final Position spawnPosition;
 
-    public MovableElement(String name, Position position, Orientation orientation) {
-        super(position);
-        this.startPosition = new Position(position);
+    public MovableElement(String name, Position spawnPosition, Orientation orientation) {
+        super(spawnPosition);
+        this.spawnPosition = new Position(spawnPosition);
         this.name = name;
         this.orientation = orientation;
     }
@@ -66,5 +66,5 @@ public abstract class MovableElement extends Element {
         setPosition(pos);
     }
 
-    public Position getStartPosition(){ return this.startPosition; }
+    public Position getSpawnPosition(){ return this.spawnPosition; }
 }

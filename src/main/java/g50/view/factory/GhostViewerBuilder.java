@@ -1,13 +1,13 @@
-package g50.view.ghostViewerFactory;
+package g50.view.factory;
 
 import g50.controller.GameController;
-import g50.controller.GhostController;
+import g50.controller.ghost.GhostController;
 import g50.controller.states.GhostState;
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.ghost.Ghost;
-import g50.view.ElementViewer;
-import g50.view.ViewProperty;
+import g50.view.menu.ElementViewer;
+import g50.view.menu.ViewProperty;
 
 import java.util.HashMap;
 import java.util.Map;

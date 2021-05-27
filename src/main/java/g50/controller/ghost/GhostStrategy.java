@@ -1,7 +1,7 @@
-package g50.controller.ghost_strategy;
+package g50.controller.ghost;
 
 import g50.controller.states.GhostState;
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.fixed.nonCollectable.Door;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.ghost.Ghost;
@@ -10,10 +10,9 @@ import g50.model.map.GameMap;
 import java.util.List;
 import java.util.Random;
 
-import static g50.model.Position.calculateDistance;
+import static g50.model.element.Position.calculateDistance;
 
 public abstract class GhostStrategy {
-
     protected GameMap map;
     protected Ghost ghost;
     protected Position startPosition;
@@ -58,7 +57,7 @@ public abstract class GhostStrategy {
     }
 
     protected Orientation inDead(){
-        return map.getOrientationOfShortestPath(ghost.getPosition(), ghost.getStartPosition(), ghost.getOrientation());
+        return map.getOrientationOfShortestPath(ghost.getPosition(), ghost.getSpawnPosition(), ghost.getOrientation());
     }
 
     protected Orientation leavingCage(){

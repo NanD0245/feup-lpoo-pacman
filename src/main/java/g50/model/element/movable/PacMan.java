@@ -1,6 +1,6 @@
 package g50.model.element.movable;
 
-import g50.model.Position;
+import g50.model.element.Position;
 
 public class PacMan extends MovableElement {
     private int lives;

@@ -1,9 +1,9 @@
-package g50.view.ghostViewerFactory;
+package g50.view.factory;
 
 import g50.controller.GameController;
 import g50.controller.states.GhostState;
 import g50.model.element.movable.ghost.*;
-import g50.view.ViewProperty;
+import g50.view.menu.ViewProperty;
 
 public class DefaultGhostViewerBuilder extends GhostViewerBuilder{
 

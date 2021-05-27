@@ -1,6 +1,6 @@
 package g50.model.element.fixed.collectable;
 
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.fixed.FixedElement;
 
 import static g50.model.element.fixed.collectable.CollectableTriggers.COLLECT;

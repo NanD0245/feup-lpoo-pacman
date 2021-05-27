@@ -1,4 +1,4 @@
-package g50.view;
+package g50.view.menu;
 
 import g50.controller.GameController;
 import g50.gui.GUI;
@@ -6,10 +6,12 @@ import g50.model.element.Element;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
-import g50.view.ghostViewerFactory.DefaultGhostViewerBuilder;
-import g50.view.ghostViewerFactory.GhostViewerBuilder;
-import g50.view.pacmanViewerFactory.DefaultPacManViewerBuilder;
-import g50.view.pacmanViewerFactory.PacManViewerBuilder;
+import g50.view.factory.DefaultElementViewerBuilder;
+import g50.view.factory.DefaultGhostViewerBuilder;
+import g50.view.factory.ElementViewerBuilder;
+import g50.view.factory.GhostViewerBuilder;
+import g50.view.factory.DefaultPacManViewerBuilder;
+import g50.view.factory.PacManViewerBuilder;
 
 import java.io.IOException;
 import java.util.List;

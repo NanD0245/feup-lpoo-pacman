@@ -1,6 +1,4 @@
-package g50.view;
-
-import g50.model.Position;
+package g50.view.menu;
 
 import java.util.Objects;
 
