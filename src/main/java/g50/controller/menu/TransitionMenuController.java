@@ -15,11 +15,13 @@ public class TransitionMenuController extends MenuController {
 
     private int count;
     private boolean direction;
+    private boolean started;
 
     public TransitionMenuController(GUI gui, TransitionMenu menu) {
         super(gui, new TransitionMenuViewer(menu), menu);
         this.count = 0;
         this.direction = true;
+        this.started = false;
     }
 
     @Override
@@ -35,6 +37,10 @@ public class TransitionMenuController extends MenuController {
     @Override
     public void update(Application application, int frame) throws IOException {
         if (direction) {
+            if(!started){
+                Application.playSound("pacman_intermission.wav");
+                this.started = true;
+            }
             ((TransitionMenu) getModel()).getPacMan().setFramesPerPosition(10);
             ((TransitionMenu) getModel()).getGhost().setFramesPerPosition(8);
             if (((TransitionMenu)getModel()).getPacMan().getPosition().getX() >= 0 && frame % ((TransitionMenu) getModel()).getPacMan().getFramesPerPosition() == 0) {
@@ -51,6 +57,10 @@ public class TransitionMenuController extends MenuController {
             }
         }
         else {
+            if(started){
+                Application.playSound("pacman_intermission.wav");
+                this.started = false;
+            }
             ((TransitionMenu) getModel()).getGhost().setFramesPerPosition(10);
             ((TransitionMenu) getModel()).getPacMan().setFramesPerPosition(8);
             if (frame % ((TransitionMenu) getModel()).getGhost().getFramesPerPosition() == 0) {

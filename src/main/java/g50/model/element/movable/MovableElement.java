@@ -8,6 +8,7 @@ public abstract class MovableElement extends Element {
     protected Orientation orientation;
     private final Position startPosition;
     protected int framesPerPosition;
+    protected int defaultFramesPerPosition;
 
     public MovableElement(String name, Position position, Orientation orientation, int framesPerPosition) {
         super(position);
@@ -15,6 +16,7 @@ public abstract class MovableElement extends Element {
         this.name = name;
         this.orientation = orientation;
         this.framesPerPosition = framesPerPosition;
+        this.defaultFramesPerPosition = this.framesPerPosition;
     }
 
     public String getName() { return this.name; }
@@ -81,4 +83,6 @@ public abstract class MovableElement extends Element {
     public void setFramesPerPosition(int framesPerPosition) {
         this.framesPerPosition = framesPerPosition;
     }
+
+    public void setDefaultFramesPerPosition() { this.defaultFramesPerPosition = this.framesPerPosition; }
 }

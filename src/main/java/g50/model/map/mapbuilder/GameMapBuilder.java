@@ -54,6 +54,7 @@ public abstract class GameMapBuilder {
         PacMan pacman = new PacMan(new Position(-1, -1));
         this.buffer = new BufferedReader(new FileReader(this.filename));
         List<List<FixedElement>> map = new ArrayList<>();
+        Position startPos = null;
         try{
             String gridSize = this.buffer.readLine();
             String[] values = gridSize.split("x", 2);
@@ -63,7 +64,7 @@ public abstract class GameMapBuilder {
 
             map = generateMap(targets, rows, columns);
 
-            startUpEntities(pacman, ghosts, targets);
+            startPos = startUpEntities(pacman, ghosts, targets);
 
             this.buffer.close();
 
@@ -72,7 +73,7 @@ public abstract class GameMapBuilder {
             System.out.println(e.getMessage());
         }
 
-        return new GameMap(map, ghosts, pacman);
+        return new GameMap(map, ghosts, pacman, startPos);
     }
 
     private List<List<FixedElement>> generateMap(Map<String, Target> targets, int rows, int columns) throws IOException {
@@ -104,18 +105,22 @@ public abstract class GameMapBuilder {
         return fixedElementsMap;
     }
 
-    private void startUpEntities(PacMan pacman, List<Ghost> ghosts, Map<String, Target> targets)
+    private Position startUpEntities(PacMan pacman, List<Ghost> ghosts, Map<String, Target> targets)
             throws IOException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
         String c;
 
         while((!this.buffer.readLine().equals("SPAWN POSITIONS")));
-
+        c = this.buffer.readLine();
+        String[] entityCoords = c.split(" ", 2);
+        int x = Integer.parseInt(entityCoords[0]), y = Integer.parseInt(entityCoords[1]);
+        Position startPos = new Position(x,y);
         while((c = this.buffer.readLine()) != null && c.length() > 0){
-            String[] entityCoords = c.split(" ", 3);
+            entityCoords = c.split(" ", 3);
             String name = entityCoords[0];
-            int x = Integer.parseInt(entityCoords[1]), y = Integer.parseInt(entityCoords[2]);
-            if(entityCoords[0].toLowerCase().equals(("PacMan").toLowerCase())) pacman.setPosition(new Position(x,y));
+            x = Integer.parseInt(entityCoords[1]);
+            y = Integer.parseInt(entityCoords[2]);
+            if(entityCoords[0].equalsIgnoreCase("PacMan")) pacman.setPosition(new Position(x,y));
             else {
                 Constructor ghostConstructor = null;
                 if (getGhost.containsKey(entityCoords[0]))
@@ -127,6 +132,7 @@ public abstract class GameMapBuilder {
                 }
             }
         }
+        return startPos;
     }
 
 }
