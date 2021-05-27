@@ -20,14 +20,11 @@ public class GameMap {
     private final PacMan pacman;
     private Position ghostStartPos;
 
-    public GameMap(List<List<FixedElement>> map, List<Ghost> ghosts, PacMan pacman) {
+    public GameMap(List<List<FixedElement>> map, List<Ghost> ghosts, PacMan pacman, Position startPos) {
         this.map = map;
         this.ghosts = ghosts;
         this.pacman = pacman;
-        for(Ghost ghost: ghosts)
-            if(this.ghostStartPos == null
-                    || ghost instanceof BlinkyGhost)
-                this.ghostStartPos = new Position(ghost.getPosition());
+        this.ghostStartPos = startPos;
     }
 
     public List<List<FixedElement>> getMap(){

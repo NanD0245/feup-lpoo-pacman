@@ -1,11 +1,9 @@
 package g50;
 
+import com.sun.tools.javac.Main;
 import g50.controller.Controller;
 import g50.controller.GameController;
-import g50.controller.menu.ControlsMenuController;
-import g50.controller.menu.CreditsMenuController;
-import g50.controller.menu.GameOverMenuController;
-import g50.controller.menu.MainMenuController;
+import g50.controller.menu.*;
 import g50.controller.states.app_states.AppState;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
@@ -16,9 +14,13 @@ import g50.model.map.mapbuilder.DefaultGameMapBuilder;
 import g50.model.menu.*;
 import g50.model.menu.Menu;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,10 +42,12 @@ public class Application implements GUIObserver {
     Application(GUI gui) throws FileNotFoundException {
         setHighscore(readHighscore(highscore_file));
         System.out.println(readHighscore(highscore_file));
-        this.menu = new MainMenu();
+        //this.menu = new MainMenu();
+        this.menu = new TransitionMenu();
         this.gui = gui;
         gui.addObserver(this);
         this.controller = new MainMenuController(gui,(MainMenu)menu);
+        //this.controller = new TransitionMenuController(gui, (TransitionMenu)menu);
         this.state = AppState.MAIN_MENU;
         this.lastAppState = AppState.MAIN_MENU;
         this.game = null;
@@ -110,8 +114,8 @@ public class Application implements GUIObserver {
     public void addPendingKBDAction(GUI.KBD_ACTION action) throws IOException {
         if(action == GUI.KBD_ACTION.QUIT) terminate();
         this.controller.addPendingKBDAction(action);
-        if (this.controller.state != null)
-            this.state = this.controller.state;
+        //if (this.controller.state != null)
+            //this.state = this.controller.state;
     }
 
     public void update(int frame) throws IOException {
@@ -150,6 +154,23 @@ public class Application implements GUIObserver {
                 this.controller = new GameOverMenuController(gui, (GameOverMenu) menu);
             }
         }
-            this.controller.update(this, frame);
+        this.controller.update(this, frame);
+    }
+
+    public static synchronized void playSound(final String url) {
+        new Thread(new Runnable() {
+            // The wrapper thread is unnecessary, unless it blocks on the
+            // Clip finishing; see comments.
+            public void run() {
+                try {
+                    File file = new File("src/main/resources/sound/" + url);
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(AudioSystem.getAudioInputStream(file));
+                    clip.start();
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }).start();
     }
 }

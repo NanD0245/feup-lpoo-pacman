@@ -59,4 +59,8 @@ class GameStateHandler {
     }
 
     public GameState getState() { return state; }
+
+    public void resetCurrentState() {
+        this.state = GameState.GameScatter;
+    }
 }

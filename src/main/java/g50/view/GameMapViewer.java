@@ -22,7 +22,7 @@ public class GameMapViewer {
 
     public GameMapViewer(GameController gameController){
         this.elementViewerBuilder = new DefaultElementViewerBuilder();
-        this.pacManViewerBuilder = new DefaultPacManViewerBuilder(gameController);
+        this.pacManViewerBuilder = new DefaultPacManViewerBuilder();
         this.ghostViewerBuilder = new DefaultGhostViewerBuilder(gameController);
     }
 
