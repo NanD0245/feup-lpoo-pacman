@@ -3,6 +3,7 @@ package g50.controller;
 import g50.controller.ghost_strategy.GhostStrategy;
 import g50.controller.states.GameState;
 import g50.controller.states.GhostState;
+import g50.controller.states.app_states.AppState;
 import g50.gui.GUI;
 import g50.model.Position;
 import g50.model.element.movable.Orientation;
@@ -98,6 +99,7 @@ public class GhostController extends Controller<Ghost> {
     public GhostState getState() {
         return this.state;
     }
+
 
     public GhostStrategy getStrategy(){
         return this.strategy;

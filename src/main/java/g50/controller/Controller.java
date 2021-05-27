@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public abstract class Controller<T> implements GUIObserver {
     private final T model;
-    protected AppState state;
+    public AppState state;
 
     protected Controller(T model) {
         this.model = model;
@@ -26,4 +26,5 @@ public abstract class Controller<T> implements GUIObserver {
     public void setState(AppState state) {
         this.state = state;
     }
+
 }
