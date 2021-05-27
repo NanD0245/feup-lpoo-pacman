@@ -21,13 +21,13 @@ public class MainMenuViewer extends MenuViewer {
     }
 
     public void initViewerBuilder() {
-        this.elementViewers.add(new ViewProperty("#DEA185",'Ç'));
-        this.elementViewers.add(new ViewProperty("#DEA185",'É'));
-        this.elementViewers.add(new ViewProperty("#FFFF00",'Á'));
-        this.elementViewers.add(new ViewProperty("#FF0000",'È'));
-        this.elementViewers.add(new ViewProperty("#FFB8FF",'È'));
-        this.elementViewers.add(new ViewProperty("#00FFFF",'È'));
-        this.elementViewers.add(new ViewProperty("#FFB852",'È'));
+        this.elementViewers.add(new ViewProperty("#DEA185",(char)(199)));
+        this.elementViewers.add(new ViewProperty("#DEA185",(char)(201)));
+        this.elementViewers.add(new ViewProperty("#FFFF00",(char)(193)));
+        this.elementViewers.add(new ViewProperty("#FF0000",(char)(200)));
+        this.elementViewers.add(new ViewProperty("#FFB8FF",(char)(200)));
+        this.elementViewers.add(new ViewProperty("#00FFFF",(char)(200)));
+        this.elementViewers.add(new ViewProperty("#FFB852",(char)(200)));
     }
 
     @Override
