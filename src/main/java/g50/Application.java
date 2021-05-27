@@ -42,8 +42,8 @@ public class Application implements GUIObserver {
     Application(GUI gui) throws FileNotFoundException {
         setHighscore(readHighscore(highscore_file));
         System.out.println(readHighscore(highscore_file));
-        //this.menu = new MainMenu();
-        this.menu = new TransitionMenu();
+        this.menu = new MainMenu();
+        //this.menu = new TransitionMenu();
         this.gui = gui;
         gui.addObserver(this);
         this.controller = new MainMenuController(gui,(MainMenu)menu);
@@ -114,8 +114,8 @@ public class Application implements GUIObserver {
     public void addPendingKBDAction(GUI.KBD_ACTION action) throws IOException {
         if(action == GUI.KBD_ACTION.QUIT) terminate();
         this.controller.addPendingKBDAction(action);
-        //if (this.controller.state != null)
-            //this.state = this.controller.state;
+        if (this.controller.state != null)
+            this.state = this.controller.state;
     }
 
     public void update(int frame) throws IOException {

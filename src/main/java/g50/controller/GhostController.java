@@ -43,6 +43,7 @@ public class GhostController extends Controller<Ghost> {
 
         if(state == GhostState.DEAD && controllable.getPosition().equals(controllable.getStartPosition())) {
             state = GhostState.INCAGE;
+            this.getModel().setDefaultFramesPerPosition();
         }
 
 

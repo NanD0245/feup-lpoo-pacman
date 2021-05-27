@@ -84,5 +84,5 @@ public abstract class MovableElement extends Element {
         this.framesPerPosition = framesPerPosition;
     }
 
-    public void setDefaultFramesPerPosition() { this.defaultFramesPerPosition = this.framesPerPosition; }
+    public void setDefaultFramesPerPosition() { this.framesPerPosition = this.defaultFramesPerPosition; }
 }
