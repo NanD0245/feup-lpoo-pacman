@@ -3,35 +3,26 @@ package g50.controller;
 import g50.controller.ghost_strategy.GhostStrategy;
 import g50.controller.states.GameState;
 import g50.controller.states.GhostState;
-import g50.controller.states.app_states.AppState;
 import g50.gui.GUI;
 import g50.model.Position;
 import g50.model.element.movable.Orientation;
 import g50.Application;
 import g50.model.element.movable.ghost.Ghost;
-import g50.model.map.GameMap;
-import g50.view.Viewer;
 
 import java.io.IOException;
 import java.util.List;
 
 public class GhostController extends Controller<Ghost> {
-
-    private final Ghost controllable;
     private final GameController gameController;
-    private final GameMap map;
     private GhostState state;
     private GameState gameState;
     private GhostStrategy strategy;
     private Orientation nextBufferedOrientation;
-    private int velocity = 25;
-
+    private int speed = 25;
 
     public GhostController(GameController gameController, Ghost ghost, GhostState state, GhostStrategy strategy){
         super(ghost);
         this.gameController = gameController;
-        this.map = gameController.getModel().getGameMap();
-        this.controllable = ghost;
         this.state = state;
         this.strategy = strategy;
         this.gameState = GameState.GameScatter;
@@ -39,9 +30,9 @@ public class GhostController extends Controller<Ghost> {
 
     @Override
     public void update(Application application, int frame) {
-        if (frame % velocity != 0) return;
+        if (frame % speed != 0) return;
 
-        if(state == GhostState.DEAD && controllable.getPosition().equals(controllable.getStartPosition()))
+        if(state == GhostState.DEAD && getModel().getPosition().equals(getModel().getStartPosition()))
             state = GhostState.INCAGE;
 
         if(state == GhostState.INCAGE && this.strategy.getDotLimit() == 0)
@@ -50,21 +41,25 @@ public class GhostController extends Controller<Ghost> {
         // or whenever the ghost reaches the exit of spawn
         // start position (right after LEAVINGCAGE state)
         else if(state != GhostState.INCAGE && state != GhostState.DEAD && state != GhostState.LEAVINGCAGE ||
-                (state == GhostState.LEAVINGCAGE && controllable.getPosition().equals(map.getGhostStartPos())))
+                (state == GhostState.LEAVINGCAGE && getModel().getPosition().
+                        equals(gameController.getModel().getGameMap().getGhostStartPos())))
             updateStateFromGameState();
 
         Orientation newOrientation = strategy.getNextOrientation(state);
         if(newOrientation == null) return;
-        else controllable.setOrientation(newOrientation);
-        moveToNewPosition(map.getAvailableOrientations(controllable.getPosition()), controllable.getPosition());
+        else getModel().setOrientation(newOrientation);
+        moveToNewPosition(gameController.getModel().getGameMap().getAvailableOrientations(getModel().getPosition()),
+                getModel().getPosition());
     }
 
     private void moveToNewPosition(List<Orientation> oris, Position currentPos){
         if(oris.contains(nextBufferedOrientation)){
-            controllable.move(nextBufferedOrientation, map.getColumns(), map.getLines());
+            getModel().move(nextBufferedOrientation, gameController.getModel().getGameMap().getColumns(),
+                    gameController.getModel().getGameMap().getLines());
             nextBufferedOrientation = null;
-        } else if(oris.contains(controllable.getOrientation()))
-            controllable.move(controllable.getOrientation(), map.getColumns(), map.getLines());
+        } else if(oris.contains(getModel().getOrientation()))
+            getModel().move(getModel().getOrientation(), gameController.getModel().getGameMap().getColumns(),
+                    gameController.getModel().getGameMap().getLines());
     }
 
     private void updateStateFromGameState() {
@@ -93,7 +88,7 @@ public class GhostController extends Controller<Ghost> {
     public void notify(GameState state) {
         this.gameState = state;
         if(this.state != GhostState.LEAVINGCAGE && this.state != GhostState.INCAGE && this.state != GhostState.DEAD)
-            setNextBufferedOrientation(controllable.getOrientation().getOpposite());
+            setNextBufferedOrientation(getModel().getOrientation().getOpposite());
     }
 
     public GhostState getState() {
@@ -105,7 +100,7 @@ public class GhostController extends Controller<Ghost> {
         return this.strategy;
     }
 
-    public Position getControllablePosition() { return this.controllable.getPosition(); }
+    public Position getControllablePosition() { return this.getModel().getPosition(); }
 
     public void consumeGhost() {
         state = GhostState.DEAD;

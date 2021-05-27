@@ -108,7 +108,7 @@ public class GameController extends Controller<Game> {
             e.printStackTrace();
         }
         try {
-            viewer.draw(gui, this.getModel().getGameMap());
+            viewer.draw(gui);
         } catch (IOException e) {
             e.printStackTrace();
         }

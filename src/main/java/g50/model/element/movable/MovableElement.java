@@ -21,10 +21,6 @@ public abstract class MovableElement extends Element {
 
     public void setOrientation(Orientation orientation) { this.orientation = orientation; }
 
-    public void setPosition(Position pos){
-        this.position.setPosition(pos);
-    }
-
     public void move(Orientation orientation, int maxCol, int maxRow) {
         switch (orientation){
             case UP:
@@ -44,28 +40,28 @@ public abstract class MovableElement extends Element {
 
     public void moveUp(int maxRow){
         setOrientation(Orientation.UP);
-        Position pos = this.position.getUp();
+        Position pos = this.getPosition().getUp();
         if(pos.getY() < 0) pos.setPosition(pos.getX(), maxRow - 1);
         setPosition(pos);
     }
 
     public void moveDown(int maxRow) {
         setOrientation(Orientation.DOWN);
-        Position pos = this.position.getDown();
+        Position pos = this.getPosition().getDown();
         if(pos.getY() >= maxRow) pos.setPosition(pos.getX(), 0);
         setPosition(pos);
     }
 
     public void moveLeft(int maxCol) {
         setOrientation(Orientation.LEFT);
-        Position pos = this.position.getLeft();
+        Position pos = this.getPosition().getLeft();
         if(pos.getX() < 0) pos.setPosition(maxCol - 1, pos.getY());
         setPosition(pos);
     }
 
     public void moveRight(int maxCol) {
         setOrientation(Orientation.RIGHT);
-        Position pos = this.position.getRight();
+        Position pos = this.getPosition().getRight();
         if(pos.getX() >= maxCol) pos.setPosition(0, pos.getY());
         setPosition(pos);
     }

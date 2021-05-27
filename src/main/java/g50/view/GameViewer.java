@@ -10,30 +10,27 @@ import g50.view.pacmanViewerFactory.DefaultPacManViewerBuilder;
 
 import java.io.IOException;
 
-public class GameViewer {
-    private GameMapViewer gameMapViewer;
-    private DefaultPacManViewerBuilder pacmanBuilder;
-    private Game game;
-    private GameController gameController;
+public class GameViewer extends Viewer<Game>{
+    private final GameMapViewer gameMapViewer;
 
     public GameViewer(Game game, GameController gameController) {
-        this.game = game;
-        this.gameMapViewer = new GameMapViewer(gameController);
-        this.pacmanBuilder = new DefaultPacManViewerBuilder(gameController);
+        super(game);
+        this.gameMapViewer = new GameMapViewer(game.getGameMap(), gameController);
     }
 
-    public void draw(GUI gui, GameMap gameMap) throws IOException {
+    @Override
+    public void draw(GUI gui) throws IOException {
         gui.clear();
 
-        gameMapViewer.draw(gui, gameMap);
+        gameMapViewer.draw(gui);
 
         gui.drawText("SCORE\t\t\tHIGH SCORE", new Position(2,-1));
 
-        gui.drawText(String.valueOf(game.getScore()), new Position(3,0));
-        gui.drawText(String.valueOf(game.getScore()), new Position(19,0));
+        gui.drawText(String.valueOf(getModel().getScore()), new Position(3,0));
+        gui.drawText(String.valueOf(getModel().getScore()), new Position(19,0));
 
-        for (int i = 0; i < gameMap.getPacman().getLives(); i++) {
-            this.pacmanBuilder.getViewer(new PacMan(new Position(i, 34))).draw(gui);
+        for (int i = 0; i < getModel().getGameMap().getPacman().getLives(); i++) {
+            this.gameMapViewer.getPacManViewerBuilder().getViewer(new PacMan(new Position(i, 34))).draw(gui);
         }
 
         gui.refresh();
