@@ -7,10 +7,18 @@ import java.io.IOException;
 
 public class Game {
     private final GameMap map;
-    private int score = 0;
+    private int score;
+    private LevelInfo levelInfo;
 
     public Game() throws IOException {
         this.map = new DefaultGameMapBuilder().getBuild();
+        this.score = 0;
+        this.levelInfo = new LevelInfo(1);
+    }
+    public Game(int score, int level) throws IOException {
+        this.map = new DefaultGameMapBuilder().getBuild();
+        this.score = score;
+        this.levelInfo = new LevelInfo(level);
     }
 
     public GameMap getGameMap() {
@@ -20,6 +28,8 @@ public class Game {
     public int getScore() {
         return score;
     }
+
+    public LevelInfo getLevelInfo() { return levelInfo; }
 
     public void incrementScore(int increment) { score += increment; }
 

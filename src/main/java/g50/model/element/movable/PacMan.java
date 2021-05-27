@@ -6,7 +6,7 @@ public class PacMan extends MovableElement {
     private int lives;
 
     public PacMan(Position position) {
-        super("Pac-Man", position, Orientation.LEFT, 15);
+        super("Pac-Man", position, Orientation.LEFT);
         this.lives = 3;
     }
 

@@ -35,7 +35,7 @@ public class GhostController extends Controller<Ghost> {
         this.initialState = state;
         this.strategy = strategy;
         this.gameState = GameState.GameScatter;
-        this.getModel().setDefaultFramesPerPosition();
+        this.getModel().defineFramesPerPosition(gameController.getLevelInfo().getGhostFramesPerMovement());
     }
 
     @Override
@@ -55,6 +55,11 @@ public class GhostController extends Controller<Ghost> {
         else if(state != GhostState.INCAGE && state != GhostState.DEAD && state != GhostState.LEAVINGCAGE ||
                 (state == GhostState.LEAVINGCAGE && controllable.getPosition().equals(map.getGhostStartPos())))
             updateStateFromGameState();
+
+        if(this.state == GhostState.FRIGHTENED)
+            this.getModel().setFramesPerPosition(this.gameController.getLevelInfo().getFrightnedGhostFramesPerMovement());
+        else
+            this.getModel().setDefaultFramesPerPosition();
 
         if (frame % getModel().getFramesPerPosition() != 0) return;
 

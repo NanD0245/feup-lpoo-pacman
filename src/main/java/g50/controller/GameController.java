@@ -7,6 +7,7 @@ import g50.Application;
 import g50.controller.states.app_states.AppState;
 import g50.gui.GUI;
 import g50.model.Game;
+import g50.model.LevelInfo;
 import g50.model.element.fixed.collectable.PacDot;
 import g50.model.element.movable.ghost.Ghost;
 import g50.gui.GUIObserver;
@@ -48,7 +49,7 @@ public class GameController extends Controller<Game> {
         this.pacManController = new PacManController(this);
         this.viewer = new GameViewer(game, this);
         this.gui = gui;
-        this.gameState = new GameStateHandler();
+        this.gameState = new GameStateHandler(this.getModel().getLevelInfo().getGameStateIntervals());
         this.gameState.addObserver(this);
         setUpGhosts();
         this.started = true;
@@ -217,4 +218,7 @@ public class GameController extends Controller<Game> {
 
     public PacManController getPacManController() { return pacManController; }
 
+    public LevelInfo getLevelInfo() {
+        return this.getModel().getLevelInfo();
+    }
 }
