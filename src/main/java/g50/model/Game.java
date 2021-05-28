@@ -8,9 +8,11 @@ import java.io.IOException;
 public class Game {
     private final GameMap map;
     private int score = 0;
+    private int highscore;
 
-    public Game() throws IOException {
+    public Game(int highscore) throws IOException {
         this.map = new DefaultGameMapBuilder().getBuild();
+        this.highscore = highscore;
     }
 
     public GameMap getGameMap() {
@@ -19,6 +21,10 @@ public class Game {
 
     public int getScore() {
         return score;
+    }
+
+    public int getHighscore() {
+        return highscore;
     }
 
     public void incrementScore(int increment) { score += increment; }

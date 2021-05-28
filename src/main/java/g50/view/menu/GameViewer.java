@@ -25,7 +25,7 @@ public class GameViewer extends Viewer<Game>{
         gui.drawText("SCORE\t\t\tHIGH SCORE", new Position(2,-1));
 
         gui.drawText(String.valueOf(getModel().getScore()), new Position(3,0));
-        gui.drawText(String.valueOf(getModel().getScore()), new Position(19,0));
+        gui.drawText(String.valueOf(getModel().getHighscore()), new Position(19,0));
 
         for (int i = 0; i < getModel().getGameMap().getPacman().getLives(); i++) {
             this.gameMapViewer.getPacManViewerBuilder().getViewer(new PacMan(new Position(i, 34))).draw(gui);

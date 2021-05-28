@@ -117,7 +117,7 @@ public class Application implements GUIObserver {
                     this.controller = new MainMenuController(gui,(MainMenu)menu);
                     break;
                 case IN_GAME:
-                    this.game = new Game();
+                    this.game = new Game(highScore);
                     this.controller = new GameController(gui, game);
                     break;
                 case CONTROLS_MENU:
