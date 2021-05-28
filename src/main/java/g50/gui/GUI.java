@@ -5,7 +5,7 @@ import g50.model.element.Position;
 import java.io.IOException;
 
 public interface GUI {
-    enum KBD_ACTION {UP, RIGHT, DOWN, LEFT, QUIT, SELECT, ESQ, OTHER};
+    enum KBD_ACTION {UP, RIGHT, DOWN, LEFT, QUIT, SELECT, ESQ, OTHER, NONE};
     void addObserver(GUIObserver observer);
     void drawCharacter(char c, Position position, String color);
     void drawText(String text, Position position, String color);

@@ -1,5 +1,6 @@
 package g50.controller.menu;
 
+import g50.Application;
 import g50.controller.states.GameState;
 import g50.controller.states.app_states.AppState;
 import g50.gui.GUI;
@@ -14,7 +15,12 @@ public class PauseMenuController extends MenuController {
     }
 
     @Override
-    public void addPendingKBDAction(GUI.KBD_ACTION action) {
+    public void notify(GameState state) {
+
+    }
+
+    @Override
+    public void handleKBDAction(Application application, GUI.KBD_ACTION action) {
         switch (action) {
             case UP:
                 getModel().previousEntry();
@@ -24,15 +30,10 @@ public class PauseMenuController extends MenuController {
                 break;
             case SELECT:
                 if (((PauseMenu)getModel()).isSelectedResume())
-                    setState(AppState.IN_GAME);
+                    application.setState(AppState.IN_GAME);
                 if (((PauseMenu)getModel()).isSelectedExit())
-                    setState(AppState.MAIN_MENU);
+                    application.setState(AppState.MAIN_MENU);
                 break;
         }
-    }
-
-    @Override
-    public void notify(GameState state) {
-
     }
 }

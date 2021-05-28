@@ -18,7 +18,7 @@ public class GhostController extends Controller<Ghost> {
     private final GameController gameController;
     private Orientation nextBufferedOrientation;
     private GameState gameState;
-    private int speed = 25;
+    private int speed = 15;
 
     public GhostController(GameController gameController, Ghost ghost, GhostState state, GhostStrategy strategy){
         super(ghost);

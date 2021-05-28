@@ -1,5 +1,6 @@
 package g50.controller.menu;
 
+import g50.Application;
 import g50.controller.states.GameState;
 import g50.controller.states.app_states.AppState;
 import g50.gui.GUI;
@@ -12,14 +13,14 @@ public class ControlsMenuController extends MenuController {
     public ControlsMenuController(GUI gui, ControlsMenu menu) { super(gui, new ControlsMenuViewer(menu), menu); }
 
     @Override
-    public void addPendingKBDAction(GUI.KBD_ACTION action) {
-        if (action == GUI.KBD_ACTION.SELECT) {
-            setState(AppState.MAIN_MENU);
-        }
+    public void notify(GameState state) {
+
     }
 
     @Override
-    public void notify(GameState state) {
-
+    public void handleKBDAction(Application application, GUI.KBD_ACTION action) {
+        if (action == GUI.KBD_ACTION.SELECT) {
+            application.setState(AppState.MAIN_MENU);
+        }
     }
 }

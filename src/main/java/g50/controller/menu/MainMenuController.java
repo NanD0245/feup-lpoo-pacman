@@ -16,7 +16,13 @@ public class MainMenuController extends MenuController {
         super(gui, new MainMenuViewer(menu),menu);
     }
 
-    public void addPendingKBDAction(GUI.KBD_ACTION action) {
+    @Override
+    public void notify(GameState state) {
+
+    }
+
+    @Override
+    public void handleKBDAction(Application application, GUI.KBD_ACTION action) {
         switch (action) {
             case UP:
                 getModel().previousEntry();
@@ -25,21 +31,15 @@ public class MainMenuController extends MenuController {
                 getModel().nextEntry();
                 break;
             case SELECT:
-                if (((MainMenu)getModel()).isSelectedStart())
-                    setState(AppState.IN_GAME);
-                if (((MainMenu)getModel()).isSelectedControls())
-                    setState(AppState.CONTROLS_MENU);
-                if (((MainMenu)getModel()).isSelectedCredits())
-                    setState(AppState.CREDITS_MENU);
-                if (((MainMenu)getModel()).isSelectedExit())
-                    setState(AppState.EXIT_MENU);
+                if (((MainMenu) getModel()).isSelectedStart())
+                    application.setState(AppState.IN_GAME);
+                if (((MainMenu) getModel()).isSelectedControls())
+                    application.setState(AppState.CONTROLS_MENU);
+                if (((MainMenu) getModel()).isSelectedCredits())
+                    application.setState(AppState.CREDITS_MENU);
+                if (((MainMenu) getModel()).isSelectedExit())
+                    application.setState(AppState.EXIT_MENU);
                 break;
-
         }
-    }
-
-    @Override
-    public void notify(GameState state) {
-
     }
 }

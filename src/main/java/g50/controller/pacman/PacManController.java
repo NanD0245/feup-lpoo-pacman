@@ -19,7 +19,7 @@ public class PacManController extends Controller<PacMan> {
     private final GameController gameController;
     private final GameMap gameMap;
     private Orientation nextOrientation;
-    private int speed = 15;
+    private int speed = 8;
 
     private static final Map<GUI.KBD_ACTION, Orientation> actionToOrientation = new HashMap<>() {{
                 put(GUI.KBD_ACTION.UP, Orientation.UP);

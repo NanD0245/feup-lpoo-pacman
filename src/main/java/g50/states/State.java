@@ -1,6 +1,8 @@
 package g50.states;
 
-public class State<T> {
+import g50.controller.Controller;
+
+public abstract class State<T> {
     private final T model;
 
     public State(T model) {
@@ -10,4 +12,6 @@ public class State<T> {
     public T getModel() {
         return model;
     }
+
+    public abstract Controller<T> getController();
 }

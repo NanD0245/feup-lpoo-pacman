@@ -28,7 +28,7 @@ public class Application implements GUIObserver {
     private int highscore;
 
     static final String highscore_file = "src/main/resources/highscore/highscore.txt";
-    private int frameRate = 60;
+    private int frameRate;
     private Timer timer;
     private Controller controller;
     private final GUI gui;
@@ -52,7 +52,7 @@ public class Application implements GUIObserver {
     public static void main(String[] args) throws IOException, URISyntaxException, FontFormatException {
         Application application =
                 new Application(new g50.gui.LanternaGUI(28,38));
-        application.setUp(60);
+        application.setUp(30);
     }
 
     public int readHighscore(String file) throws FileNotFoundException {
@@ -68,7 +68,7 @@ public class Application implements GUIObserver {
         return highscore;
     }
 
-    public void writeHighscore(String file) throws IOException {
+    public void writeHighScore(String file) throws IOException {
         FileWriter writer = new FileWriter(file);
         writer.write(String.valueOf(getHighscore()));
         writer.close();
@@ -103,15 +103,13 @@ public class Application implements GUIObserver {
     public void terminate() throws IOException {
         timer.cancel();
         this.gui.close();
-        writeHighscore(highscore_file);
+        writeHighScore(highscore_file);
     }
 
     @Override
     public void addPendingKBDAction(GUI.KBD_ACTION action) throws IOException {
         if(action == GUI.KBD_ACTION.QUIT) terminate();
         this.controller.addPendingKBDAction(action);
-        if (this.controller.state != null)
-            this.state = this.controller.state;
     }
 
     public void update(int frame) throws IOException {
@@ -163,5 +161,13 @@ public class Application implements GUIObserver {
 
     public Menu getMenu() {
         return menu;
+    }
+
+    public AppState getState() {
+        return state;
+    }
+
+    public void setState(AppState state) {
+        this.state = state;
     }
 }
