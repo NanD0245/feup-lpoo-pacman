@@ -9,6 +9,7 @@ import g50.gui.GUI;
 import g50.model.Game;
 import g50.model.LevelInfo;
 import g50.model.element.fixed.collectable.PacDot;
+import g50.model.element.fixed.collectable.fruit.Fruit;
 import g50.model.element.movable.ghost.Ghost;
 import g50.gui.GUIObserver;
 import g50.model.Position;
@@ -41,6 +42,7 @@ public class GameController extends Controller<Game> {
     private int frameRate;
     private boolean pause;
     private boolean started;
+    private int fruitDotLimit = 70;
 
 
     public GameController(GUI gui, Game game, int frameRate) {
@@ -147,6 +149,7 @@ public class GameController extends Controller<Game> {
             switch (action) {
                 case COLLECT:
                     decreaseDotsOnHighestPriorityGhost();
+                    this.fruitDotLimit--;
                     break;
                 case FRIGHTEN:
                     gameState.setCurrentState(GameState.GameFrightned);
@@ -154,6 +157,16 @@ public class GameController extends Controller<Game> {
                 default: break;
             }
             this.getModel().incrementScore(((Collectable) currentElement).collect());
+        }
+
+        if(this.fruitDotLimit == 0) {
+            try {
+                Fruit fruit = this.getModel().getLevelInfo().getFruit(this.getModel().getGameMap().getFruitPos());
+                super.getModel().getGameMap().setElement(fruit, this.getModel().getGameMap().getFruitPos());
+                this.fruitDotLimit = 70;
+            } catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }
 

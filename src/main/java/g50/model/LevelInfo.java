@@ -60,7 +60,7 @@ public class LevelInfo {
     }
 
     public Fruit getFruit(Position pos) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        return (Fruit) fruit.getOrDefault(level, Key.class).getConstructor().newInstance(pos);
+        return (Fruit) fruit.getOrDefault(level, Key.class).getConstructor(Position.class).newInstance(pos);
     }
 
     public int getPacManFramesPerMovement(){

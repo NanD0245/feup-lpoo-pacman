@@ -54,7 +54,8 @@ public abstract class GameMapBuilder {
         PacMan pacman = new PacMan(new Position(-1, -1));
         this.buffer = new BufferedReader(new FileReader(this.filename));
         List<List<FixedElement>> map = new ArrayList<>();
-        Position startPos = null;
+        Position startPos = null, fruitPos = null;
+        ;
         try{
             String gridSize = this.buffer.readLine();
             String[] values = gridSize.split("x", 2);
@@ -65,6 +66,7 @@ public abstract class GameMapBuilder {
             map = generateMap(targets, rows, columns);
 
             startPos = startUpEntities(pacman, ghosts, targets);
+            fruitPos = new Position(startPos.getX(), startPos.getY() + 6);
 
             this.buffer.close();
 
@@ -73,7 +75,7 @@ public abstract class GameMapBuilder {
             System.out.println(e.getMessage());
         }
 
-        return new GameMap(map, ghosts, pacman, startPos);
+        return new GameMap(map, ghosts, pacman, startPos, fruitPos);
     }
 
     private List<List<FixedElement>> generateMap(Map<String, Target> targets, int rows, int columns) throws IOException {
