@@ -16,8 +16,6 @@ public abstract class Controller<T> implements GUIObserver {
 
     public abstract void update(Application application, int frame) throws IOException;
 
-    public abstract void notify(GameState gameState);
-
     public T getModel() {
         return model;
     }

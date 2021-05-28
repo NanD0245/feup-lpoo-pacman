@@ -77,9 +77,6 @@ public class PacManController extends Controller<PacMan> {
         moveToNewPosition(gameMap.getAvailableOrientations(super.getModel().getPosition()), currentPos);
     }
 
-    @Override
-    public void notify(GameState state) { }
-
     private void moveToNewPosition(List<Orientation> oris, Position currentPos){
         if(oris.contains(nextOrientation)
         && !(gameMap.getElement(currentPos.getAdjacent(nextOrientation)) instanceof Door)){

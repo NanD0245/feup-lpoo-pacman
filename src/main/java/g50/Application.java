@@ -121,7 +121,7 @@ public class Application implements GUIObserver {
                     break;
                 case IN_GAME:
                     this.game = new Game();
-                    this.controller = new GameController(gui, game, frameRate);
+                    this.controller = new GameController(gui, game);
                     break;
                 case CONTROLS_MENU:
                     this.menu = new ControlsMenu();
@@ -169,5 +169,9 @@ public class Application implements GUIObserver {
 
     public void setState(AppState state) {
         this.state = state;
+    }
+
+    public int getFrameRate() {
+        return frameRate;
     }
 }

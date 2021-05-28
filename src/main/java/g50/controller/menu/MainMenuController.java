@@ -17,11 +17,6 @@ public class MainMenuController extends MenuController {
     }
 
     @Override
-    public void notify(GameState state) {
-
-    }
-
-    @Override
     public void handleKBDAction(Application application, GUI.KBD_ACTION action) {
         switch (action) {
             case UP:

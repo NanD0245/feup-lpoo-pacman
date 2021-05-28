@@ -29,74 +29,54 @@ public class GameController extends Controller<Game> {
     private final PacManController pacManController;
     private final GameViewer viewer;
     private final GUI gui;
-    private final GameStateHandler gameState;
-    private final List<Class<? extends GhostStrategy>> priorities;
-    private int bonus;
-    private int frameRate;
-    private boolean pause;
+    private final GameStateHandler gameStateHandler;
+    private int pointsBonus;
 
+    private static List<Class<? extends GhostStrategy>> priorities = Arrays.asList(
+            BlinkyStrategy.class,
+            PinkyStrategy.class,
+            InkyStrategy.class,
+            ClydeStrategy.class);
 
-    public GameController(GUI gui, Game game, int frameRate) {
+    public GameController(GUI gui, Game game) {
         super(game);
         this.ghostsController = new ArrayList<>();
         this.pacManController = new PacManController(this);
         this.viewer = new GameViewer(game, this);
         this.gui = gui;
-        this.gameState = new GameStateHandler();
-        this.gameState.addObserver(this);
+        this.gameStateHandler = new GameStateHandler();
+        this.gameStateHandler.addObserver(this);
         setUpGhosts();
-
-        this.priorities = Arrays.asList(
-                BlinkyStrategy.class,
-                PinkyStrategy.class,
-                InkyStrategy.class,
-                ClydeStrategy.class);
-
-        this.bonus = 200;
-        this.frameRate = frameRate;
+        this.pointsBonus = 200;
     }
 
     public void setUpGhosts(){
 
-        BlinkyGhost currentBlinky = null;
-
-        for(Ghost ghost: super.getModel().getGameMap().getGhosts())
-            if(ghost instanceof BlinkyGhost) currentBlinky = (BlinkyGhost) ghost;
-
         for(Ghost ghost: super.getModel().getGameMap().getGhosts()) {
             GhostController newGhostController;
             if(ghost instanceof InkyGhost)
-                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new InkyStrategy(currentBlinky));
+                newGhostController = new GhostController(ghost);
             else if(ghost instanceof ClydeGhost)
-                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new ClydeStrategy());
+                newGhostController = new GhostController(ghost);
             else if(ghost instanceof PinkyGhost)
-                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new PinkyStrategy());
+                newGhostController = new GhostController(ghost);
             else {
-                newGhostController = new GhostController(this, ghost, GhostState.CHASE, new BlinkyStrategy());
-                currentBlinky = (BlinkyGhost) ghost;
+                newGhostController = new GhostController(ghost);
             }
 
             this.ghostsController.add(newGhostController);
-            this.gameState.addObserver(newGhostController);
+            this.gameStateHandler.addObserver(newGhostController);
         }
     }
 
 
     public void addPendingKBDAction(GUI.KBD_ACTION action) {
-        if (action.equals(GUI.KBD_ACTION.ESQ))
-            pause = true;
-        else {
-            pacManController.addPendingKBDAction(action);
-        }
-    }
-
-    public boolean isPause() {
-        return pause;
+        pacManController.addPendingKBDAction(action);
     }
 
     @Override
     public void update(Application application, int frame) {
-        gameState.update(frame, frameRate);
+        gameStateHandler.update(frame, application.getFrameRate());
         controlGhosts(application, frame);
         pacManController.update(application, frame);
         try {
@@ -132,7 +112,7 @@ public class GameController extends Controller<Game> {
                     decreaseDotsOnHighestPriorityGhost();
                     break;
                 case FRIGHTEN:
-                    gameState.setCurrentState(GameState.GameFrightned);
+                    gameStateHandler.setCurrentState(GameState.GameFrightned);
                     break;
                 default: break;
             }
@@ -141,8 +121,8 @@ public class GameController extends Controller<Game> {
     }
 
     private void decreaseDotsOnHighestPriorityGhost(){
-        for(Class classType: this.priorities){
-            for(GhostController ghostController: this.ghostsController){
+        for(Class<? extends GhostStrategy> classType: priorities){
+            for(GhostController ghostController: ghostsController){
                 if(classType.equals(ghostController.getModel().getStrategy().getClass())
                         && ghostController.getModel().getState().equals(GhostState.INCAGE)){
                     ghostController.decrementStrategyDotLimit();
@@ -157,8 +137,8 @@ public class GameController extends Controller<Game> {
             if(ghostController.getModel().getPosition().equals(pacManController.getModel().getPosition())){
                 if(ghostController.getModel().getState().equals(GhostState.FRIGHTENED)){
                     ghostController.consumeGhost();
-                    this.getModel().incrementScore(this.bonus);
-                    this.bonus *= 2;
+                    this.getModel().incrementScore(this.pointsBonus);
+                    this.pointsBonus *= 2;
                 }
                 else if(!ghostController.getModel().getState().equals(GhostState.DEAD)){
                     getModel().getGameMap().getPacman().decreaseLives();
@@ -174,26 +154,19 @@ public class GameController extends Controller<Game> {
         }
     }
 
-    @Override
-    public void notify(GameState state) {
-        this.bonus = 200;
-    }
-
-
     public boolean isGameOver() {
-        List<List<FixedElement>> v = getModel().getGameMap().getMap();
-        boolean check = true;
-        for (List<FixedElement> fixedElements : v)
-            for (FixedElement fixedElement : fixedElements)
-                if (fixedElement instanceof PacDot) {
-                    check = false;
-                    break;
-                }
-
-        return check || !getModel().getGameMap().getPacman().isAlive();
+        if (!getModel().getGameMap().getPacman().isAlive()) return true;
+        for (List<FixedElement> line : getModel().getGameMap().getMap()){
+            for (FixedElement element : line) if (element instanceof PacDot) return false;
+        }
+        return true;
     }
 
     public List<GhostController> getGhostsController() { return ghostsController; }
 
     public PacManController getPacManController() { return pacManController; }
+
+    public GameStateHandler getGameStateHandler() {
+        return gameStateHandler;
+    }
 }

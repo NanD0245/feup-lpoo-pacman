@@ -1,25 +1,24 @@
 package g50.controller;
 
-import g50.Application;
 import g50.controller.states.GameState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-class GameStateHandler {
+public class GameStateHandler {
     private GameState state;
     private List<Integer> times;
-    private int frightnedTime;
+    private int frightenedTime;
     private int elapsedSeconds;
     private static int defaultFrightnedTime = 6;
-    private List<Controller> observers;
+    private List<Controller<?>> observers;
 
     public GameStateHandler(){
         this.state = GameState.GameScatter;
         this.times = Arrays.asList(7, 20, 7, 20, 5, 20, 5, Integer.MAX_VALUE);
         this.observers = new ArrayList<>();
-        this.frightnedTime = 0;
+        this.frightenedTime = 0;
         this.elapsedSeconds = 0;
     }
 
@@ -27,7 +26,7 @@ class GameStateHandler {
         elapsedSeconds = frame/framerate;
 
         if(state.equals(GameState.GameFrightned))
-            if(elapsedSeconds - frightnedTime < defaultFrightnedTime) return;
+            if(elapsedSeconds - frightenedTime < defaultFrightnedTime) return;
 
         GameState newState = GameState.GameScatter;
 
@@ -37,7 +36,7 @@ class GameStateHandler {
                 if(this.state == null || this.state != newState) setCurrentState(newState);
                 return;
             }
-            newState = newState == GameState.GameScatter ? GameState.GameChase : GameState.GameScatter;
+            if (newState == GameState.GameScatter) newState = GameState.GameChase;
             timeForState -= value;
         }
     }
@@ -45,7 +44,7 @@ class GameStateHandler {
     public void setCurrentState(GameState newState){
         this.state = newState;
         notifyObservers();
-        if(newState == GameState.GameFrightned) frightnedTime = elapsedSeconds;
+        if(newState == GameState.GameFrightned) frightenedTime = elapsedSeconds;
     }
 
     public void addObserver(Controller controller){
@@ -53,9 +52,9 @@ class GameStateHandler {
     }
 
     private void notifyObservers(){
-        for(Controller controller: observers){
+/*        for (Controller controller: observers){
             controller.notify(this.state);
-        }
+        }*/
     }
 
     public GameState getState() { return state; }
