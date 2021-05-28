@@ -15,9 +15,9 @@ class GameStateHandler {
     private static int defaultFrightnedTime = 6;
     private List<Controller> observers;
 
-    public GameStateHandler(){
+    public GameStateHandler(List<Integer> timeIntervals){
         this.state = GameState.GameScatter;
-        this.times = Arrays.asList(7, 20, 7, 20, 5, 20, 5, Integer.MAX_VALUE);
+        this.times = timeIntervals;
         this.observers = new ArrayList<>();
         this.frightnedTime = 0;
         this.elapsedSeconds = 0;

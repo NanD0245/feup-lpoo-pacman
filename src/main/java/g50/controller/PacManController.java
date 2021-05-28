@@ -38,6 +38,7 @@ public class PacManController extends Controller<PacMan> {
         super(gameController.getModel().getGameMap().getPacman());
         this.gameController = gameController;
         this.gameMap = gameController.getModel().getGameMap();
+        this.getModel().defineFramesPerPosition(gameController.getLevelInfo().getPacManFramesPerMovement());
     }
 
 

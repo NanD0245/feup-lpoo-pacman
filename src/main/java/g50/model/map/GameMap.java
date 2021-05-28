@@ -19,12 +19,14 @@ public class GameMap {
     private final List<Ghost> ghosts;
     private final PacMan pacman;
     private Position ghostStartPos;
+    private Position fruitPos;
 
-    public GameMap(List<List<FixedElement>> map, List<Ghost> ghosts, PacMan pacman, Position startPos) {
+    public GameMap(List<List<FixedElement>> map, List<Ghost> ghosts, PacMan pacman, Position startPos, Position fruitPos) {
         this.map = map;
         this.ghosts = ghosts;
         this.pacman = pacman;
         this.ghostStartPos = startPos;
+        this.fruitPos = fruitPos;
     }
 
     public List<List<FixedElement>> getMap(){
@@ -160,6 +162,8 @@ public class GameMap {
     public Position getGhostStartPos(){
         return this.ghostStartPos;
     }
+
+    public Position getFruitPos() { return this.fruitPos; }
 
     public void resetPositions() {
         for (Ghost ghost : ghosts) {
