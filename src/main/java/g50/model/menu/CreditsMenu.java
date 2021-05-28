@@ -11,9 +11,9 @@ public class CreditsMenu extends Menu {
 
         this.text = Arrays.asList("\t\t LPOO 20/21", "", "", "", "",
                 "  PROGRAMMERS & PRODUCERS:", "", "", "",
-                "\t\tBruno Mendes", "", "",
-                "\t\t Nuno Costa", "", "",
-                "\t   Fernando Rego");
+                "\t\tBRUNO MENDES", "", "",
+                "\t\t NUNO COSTA", "", "",
+                "\t   FERNANDO REGO");
     }
 
     public String getText(int i) {
