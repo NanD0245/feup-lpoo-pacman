@@ -15,10 +15,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class GameMapBuilder {
 
@@ -65,6 +62,8 @@ public abstract class GameMapBuilder {
             map = generateMap(targets, rows, columns);
 
             startPos = startUpEntities(pacman, ghosts, targets);
+
+            generateWallBitMask(map);
 
             this.buffer.close();
 
@@ -135,4 +134,28 @@ public abstract class GameMapBuilder {
         return startPos;
     }
 
+    private void generateWallBitMask(List<List<FixedElement>> map) {
+        for (int i = 0; i < map.size(); i++) {
+            for (int j = 0; j < map.get(i).size(); j++) {
+                if (map.get(i).get(j) instanceof Wall) {
+                    if ((i == 15 && j == 0) || (i == 15 && j == map.get(i).size()-1) || (i == 17 && j == 0) || (i == 17 && j == map.get(i).size()-1)) {
+                        ((Wall) map.get(i).get(j)).setBitmask(1);
+                        ((Wall) map.get(i).get(j)).setBitmask(3);
+                    } else {
+                        if (!(map.get(i - 1).get(j) instanceof Wall))
+                            ((Wall) map.get(i).get(j)).setBitmask(1);
+
+                        if (j==0 || !(map.get(i).get(j - 1) instanceof Wall))
+                            ((Wall) map.get(i).get(j)).setBitmask(0);
+
+                        if (!(map.get(i + 1).get(j) instanceof Wall))
+                            ((Wall) map.get(i).get(j)).setBitmask(3);
+
+                        if ((j == map.get(i).size() - 1) || !(map.get(i).get(j + 1) instanceof Wall))
+                            ((Wall) map.get(i).get(j)).setBitmask(2);
+                    }
+                }
+            }
+        }
+    }
 }
