@@ -140,6 +140,9 @@ public class Application implements GUIObserver {
         }
         else {
             if (this.controller instanceof GameController && ((GameController) this.controller).isGameOver()) {
+                if (this.game.getScore() > this.highScore) {
+                    this.highScore = this.getGame().getScore();
+                }
                 this.menu = new GameOverMenu();
                 this.controller = new GameOverMenuController(gui, (GameOverMenu) menu);
             }
