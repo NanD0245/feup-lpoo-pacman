@@ -1,7 +1,7 @@
 package g50.view.factory;
 
 import g50.controller.GameController;
-import g50.controller.states.GhostState;
+import g50.states.GhostState;
 import g50.model.element.movable.ghost.*;
 import g50.view.menu.ViewProperty;
 

@@ -1,9 +1,9 @@
 package g50.controller;
 
 import g50.controller.ghost.*;
-import g50.controller.pacman.PacManController;
-import g50.controller.states.GameState;
-import g50.controller.states.GhostState;
+import g50.states.GameState;
+import g50.states.GameStateHandler;
+import g50.states.GhostState;
 import g50.Application;
 import g50.gui.GUI;
 import g50.model.Game;
@@ -23,16 +23,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
 
-
 public class GameController extends Controller<Game> {
     private final List<GhostController> ghostsController;
     private final PacManController pacManController;
     private final GameViewer viewer;
     private final GUI gui;
     private final GameStateHandler gameStateHandler;
-    private int pointsBonus;
+    private int bonusPoints;
 
-    private static List<Class<? extends GhostStrategy>> priorities = Arrays.asList(
+    private static final List<Class<? extends GhostStrategy>> priorities = Arrays.asList(
             BlinkyStrategy.class,
             PinkyStrategy.class,
             InkyStrategy.class,
@@ -44,14 +43,12 @@ public class GameController extends Controller<Game> {
         this.pacManController = new PacManController(this);
         this.viewer = new GameViewer(game, this);
         this.gui = gui;
-        this.gameStateHandler = new GameStateHandler();
-        this.gameStateHandler.addObserver(this);
+        this.gameStateHandler = new GameStateHandler(this);
         setUpGhosts();
-        this.pointsBonus = 200;
+        this.bonusPoints = 200;
     }
 
     public void setUpGhosts(){
-
         for(Ghost ghost: super.getModel().getGameMap().getGhosts()) {
             GhostController newGhostController;
             if(ghost instanceof InkyGhost)
@@ -63,9 +60,7 @@ public class GameController extends Controller<Game> {
             else {
                 newGhostController = new GhostController(ghost);
             }
-
             this.ghostsController.add(newGhostController);
-            this.gameStateHandler.addObserver(newGhostController);
         }
     }
 
@@ -112,7 +107,7 @@ public class GameController extends Controller<Game> {
                     decreaseDotsOnHighestPriorityGhost();
                     break;
                 case FRIGHTEN:
-                    gameStateHandler.setCurrentState(GameState.GameFrightned);
+                    gameStateHandler.setCurrentState(GameState.GAME_FRIGHTENED);
                     break;
                 default: break;
             }
@@ -124,7 +119,7 @@ public class GameController extends Controller<Game> {
         for(Class<? extends GhostStrategy> classType: priorities){
             for(GhostController ghostController: ghostsController){
                 if(classType.equals(ghostController.getModel().getStrategy().getClass())
-                        && ghostController.getModel().getState().equals(GhostState.INCAGE)){
+                        && ghostController.getModel().getState().equals(GhostState.IN_CAGE)){
                     ghostController.decrementStrategyDotLimit();
                     return;
                 }
@@ -137,8 +132,8 @@ public class GameController extends Controller<Game> {
             if(ghostController.getModel().getPosition().equals(pacManController.getModel().getPosition())){
                 if(ghostController.getModel().getState().equals(GhostState.FRIGHTENED)){
                     ghostController.consumeGhost();
-                    this.getModel().incrementScore(this.pointsBonus);
-                    this.pointsBonus *= 2;
+                    this.getModel().incrementScore(this.bonusPoints);
+                    this.bonusPoints *= 2;
                 }
                 else if(!ghostController.getModel().getState().equals(GhostState.DEAD)){
                     getModel().getGameMap().getPacman().decreaseLives();

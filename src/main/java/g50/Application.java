@@ -6,13 +6,10 @@ import g50.controller.menu.ControlsMenuController;
 import g50.controller.menu.CreditsMenuController;
 import g50.controller.menu.GameOverMenuController;
 import g50.controller.menu.MainMenuController;
-import g50.controller.states.app_states.AppState;
+import g50.states.AppState;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
-import g50.gui.LanternaGUI;
 import g50.model.Game;
-import g50.model.map.GameMap;
-import g50.model.map.mapbuilder.DefaultGameMapBuilder;
 import g50.model.menu.*;
 import g50.model.menu.Menu;
 
@@ -25,12 +22,12 @@ import java.util.TimerTask;
 import static java.lang.Integer.parseInt;
 
 public class Application implements GUIObserver {
-    private int highscore;
+    private int highScore;
 
     static final String highscore_file = "src/main/resources/highscore/highscore.txt";
     private int frameRate;
     private Timer timer;
-    private Controller controller;
+    private Controller<?> controller;
     private final GUI gui;
     private AppState state;
     private AppState lastAppState;
@@ -38,8 +35,8 @@ public class Application implements GUIObserver {
     private Menu menu;
 
     Application(GUI gui) throws FileNotFoundException {
-        setHighscore(readHighscore(highscore_file));
-        System.out.println(readHighscore(highscore_file));
+        setHighScore(readHighScore(highscore_file));
+        System.out.println(readHighScore(highscore_file));
         this.menu = new MainMenu();
         this.gui = gui;
         gui.addObserver(this);
@@ -55,7 +52,7 @@ public class Application implements GUIObserver {
         application.setUp(30);
     }
 
-    public int readHighscore(String file) throws FileNotFoundException {
+    public int readHighScore(String file) throws FileNotFoundException {
         BufferedReader buffer = new BufferedReader(new FileReader(file));
         int highscore = 0;
         try {
@@ -70,16 +67,16 @@ public class Application implements GUIObserver {
 
     public void writeHighScore(String file) throws IOException {
         FileWriter writer = new FileWriter(file);
-        writer.write(String.valueOf(getHighscore()));
+        writer.write(String.valueOf(getHighScore()));
         writer.close();
     }
 
-    public void setHighscore(int highscore) {
-        this.highscore = highscore;
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
     }
 
-    public int getHighscore() {
-        return highscore;
+    public int getHighScore() {
+        return highScore;
     }
 
     public void setUp(int frameRate){
@@ -140,7 +137,6 @@ public class Application implements GUIObserver {
                     break;
             }
             lastAppState = state;
-            System.out.println(lastAppState);
         }
         else {
             if (this.controller instanceof GameController && ((GameController) this.controller).isGameOver()) {
@@ -148,10 +144,10 @@ public class Application implements GUIObserver {
                 this.controller = new GameOverMenuController(gui, (GameOverMenu) menu);
             }
         }
-            this.controller.update(this, frame);
+        this.controller.update(this, frame);
     }
 
-    public Controller getController() {
+    public Controller<?> getController() {
         return controller;
     }
 

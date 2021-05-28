@@ -2,7 +2,7 @@ package g50.view.factory;
 
 import g50.controller.GameController;
 import g50.controller.ghost.GhostController;
-import g50.controller.states.GhostState;
+import g50.states.GhostState;
 import g50.model.element.Position;
 import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.ghost.Ghost;

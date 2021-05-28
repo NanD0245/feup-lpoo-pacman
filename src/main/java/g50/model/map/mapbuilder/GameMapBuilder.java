@@ -1,7 +1,5 @@
 package g50.model.map.mapbuilder;
 
-import g50.model.element.movable.ghost.strategy.GhostStrategy;
-import g50.controller.states.GhostState;
 import g50.model.element.Position;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.collectable.PacDot;

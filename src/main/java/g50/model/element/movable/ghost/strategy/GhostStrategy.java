@@ -1,6 +1,6 @@
 package g50.model.element.movable.ghost.strategy;
 
-import g50.controller.states.GhostState;
+import g50.states.GhostState;
 import g50.model.element.Position;
 import g50.model.element.fixed.nonCollectable.Door;
 import g50.model.element.movable.Orientation;
@@ -74,8 +74,8 @@ public abstract class GhostStrategy {
     }
 
     public Orientation getNextOrientation(GameMap map, Ghost ghost, GhostState state){
-        if(state.equals(GhostState.INCAGE)) return inCage(map, ghost);
-        if(state.equals(GhostState.LEAVINGCAGE)) return leavingCage(map, ghost);
+        if(state.equals(GhostState.IN_CAGE)) return inCage(map, ghost);
+        if(state.equals(GhostState.LEAVING_CAGE)) return leavingCage(map, ghost);
         if (map.isIntersection(ghost.getPosition())) {
             switch (state) {
                 case DEAD: return inDead(map,ghost);

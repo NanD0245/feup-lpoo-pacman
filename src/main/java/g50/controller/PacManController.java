@@ -1,8 +1,7 @@
-package g50.controller.pacman;
+package g50.controller;
 
 import g50.controller.Controller;
 import g50.controller.GameController;
-import g50.controller.states.GameState;
 import g50.Application;
 import g50.gui.GUI;
 import g50.model.element.Position;
