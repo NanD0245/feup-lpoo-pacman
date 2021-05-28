@@ -22,13 +22,11 @@ public abstract class MenuController extends Controller<Menu> implements GUIObse
     }
 
     public void addPendingKBDAction(GUI.KBD_ACTION action){
-        System.out.println("asd");
         lastAction = action;
     }
 
     @Override
     public void update(Application application, int frame) {
-        System.out.println("asdiihasd");
         if (lastAction != GUI.KBD_ACTION.NONE){
             handleKBDAction(application, lastAction);
             lastAction = GUI.KBD_ACTION.NONE;
