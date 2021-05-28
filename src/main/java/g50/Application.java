@@ -1,11 +1,9 @@
 package g50;
 
+import com.googlecode.lanterna.terminal.ansi.TelnetTerminalServer;
 import g50.controller.Controller;
 import g50.controller.GameController;
-import g50.controller.menu.ControlsMenuController;
-import g50.controller.menu.CreditsMenuController;
-import g50.controller.menu.GameOverMenuController;
-import g50.controller.menu.MainMenuController;
+import g50.controller.menu.*;
 import g50.states.AppState;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
@@ -33,6 +31,8 @@ public class Application implements GUIObserver {
     private AppState lastAppState;
     private Game game;
     private Menu menu;
+    private PauseMenu pauseMenu;
+    private PauseMenuController pauseMenuController;
 
     Application(GUI gui) throws FileNotFoundException {
         setHighScore(readHighScore(highscore_file));
@@ -44,6 +44,9 @@ public class Application implements GUIObserver {
         this.state = AppState.MAIN_MENU;
         this.lastAppState = AppState.MAIN_MENU;
         this.game = null;
+
+        this.pauseMenu = new PauseMenu();
+        this.pauseMenuController = new PauseMenuController(gui,pauseMenu);
     }
 
     public static void main(String[] args) throws IOException, URISyntaxException, FontFormatException {
@@ -106,19 +109,27 @@ public class Application implements GUIObserver {
     @Override
     public void addPendingKBDAction(GUI.KBD_ACTION action) throws IOException {
         if(action == GUI.KBD_ACTION.QUIT) terminate();
-        this.controller.addPendingKBDAction(action);
+        if (!state.equals(AppState.PAUSE_MENU))
+            this.controller.addPendingKBDAction(action);
+        else this.pauseMenuController.addPendingKBDAction(action);
     }
 
     public void update(int frame) throws IOException {
         if (!lastAppState.equals(state)) {
+            if (!(lastAppState.equals(AppState.PAUSE_MENU) || lastAppState.equals(AppState.IN_GAME)))
+                this.game = null;
             switch (state) {
                 case MAIN_MENU:
                     this.menu = new MainMenu();
                     this.controller = new MainMenuController(gui,(MainMenu)menu);
                     break;
                 case IN_GAME:
-                    this.game = new Game(highScore);
-                    this.controller = new GameController(gui, game);
+                    if (this.game == null) {
+                        this.game = new Game(highScore);
+                        this.controller = new GameController(gui, game);
+                    } else {
+                        ((GameController) controller).setPause(false);
+                    }
                     break;
                 case CONTROLS_MENU:
                     this.menu = new ControlsMenu();
@@ -147,7 +158,10 @@ public class Application implements GUIObserver {
                 this.controller = new GameOverMenuController(gui, (GameOverMenu) menu);
             }
         }
-        this.controller.update(this, frame);
+        if (state.equals(AppState.PAUSE_MENU)) {
+            this.pauseMenuController.update(this,frame);
+        }
+        else this.controller.update(this, frame);
     }
 
     public Controller<?> getController() {

@@ -14,6 +14,7 @@ public class PauseMenuController extends MenuController {
 
     @Override
     public void handleKBDAction(Application application, GUI.KBD_ACTION action) {
+        System.out.println("entrei");
         switch (action) {
             case UP:
                 getModel().previousEntry();

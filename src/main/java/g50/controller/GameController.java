@@ -1,6 +1,7 @@
 package g50.controller;
 
 import g50.controller.ghost.*;
+import g50.states.AppState;
 import g50.states.GameState;
 import g50.states.GameStateHandler;
 import g50.states.GhostState;
@@ -30,6 +31,7 @@ public class GameController extends Controller<Game> {
     private final GUI gui;
     private final GameStateHandler gameStateHandler;
     private int bonusPoints;
+    private boolean pause;
 
     private static final List<Class<? extends GhostStrategy>> priorities = Arrays.asList(
             BlinkyStrategy.class,
@@ -46,6 +48,11 @@ public class GameController extends Controller<Game> {
         this.gameStateHandler = new GameStateHandler(this);
         setUpGhosts();
         this.bonusPoints = 200;
+        this.pause = false;
+    }
+
+    public void setPause(boolean pause) {
+        this.pause = pause;
     }
 
     public void setUpGhosts(){
@@ -66,11 +73,17 @@ public class GameController extends Controller<Game> {
 
 
     public void addPendingKBDAction(GUI.KBD_ACTION action) {
-        pacManController.addPendingKBDAction(action);
+        if (action == GUI.KBD_ACTION.ESQ) {
+            pause = true;
+        } else {
+            pacManController.addPendingKBDAction(action);
+        }
     }
 
     @Override
     public void update(Application application, int frame) {
+        if (pause)
+            application.setState(AppState.PAUSE_MENU);
         gameStateHandler.update(frame, application.getFrameRate());
         controlGhosts(application, frame);
         pacManController.update(application, frame);
