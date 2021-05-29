@@ -32,8 +32,6 @@ public class Application implements GUIObserver {
     private AppState lastAppState;
     private Game game;
     private Menu menu;
-    private PauseMenu pauseMenu;
-    private PauseMenuController pauseMenuController;
 
     Application(GUI gui) throws FileNotFoundException {
         setHighScore(readHighScore(highScoreFile));
@@ -45,9 +43,6 @@ public class Application implements GUIObserver {
         this.state = AppState.MAIN_MENU;
         this.lastAppState = AppState.MAIN_MENU;
         this.game = null;
-
-        this.pauseMenu = new PauseMenu();
-        this.pauseMenuController = new PauseMenuController(gui,pauseMenu);
     }
 
     public static void main(String[] args) throws IOException, URISyntaxException, FontFormatException {
@@ -110,9 +105,7 @@ public class Application implements GUIObserver {
     @Override
     public void addPendingKBDAction(GUI.KBD_ACTION action) throws IOException {
         if(action == GUI.KBD_ACTION.QUIT) terminate();
-        if (!state.equals(AppState.PAUSE_MENU))
-            this.controller.addPendingKBDAction(action);
-        else this.pauseMenuController.addPendingKBDAction(action);
+        this.controller.addPendingKBDAction(action);
     }
 
     public void update(int frame) throws IOException {
@@ -128,8 +121,6 @@ public class Application implements GUIObserver {
                     if (this.game == null) {
                         this.game = new Game(highScore, 1); // change level!!
                         this.controller = new GameController(gui, game);
-                    } else {
-                        ((GameController) controller).setPause(false);
                     }
                     break;
                 case CONTROLS_MENU:
@@ -151,6 +142,7 @@ public class Application implements GUIObserver {
                 case EXIT_MENU:
                     terminate();
                     break;
+                default: break;
             }
             lastAppState = state;
         }
@@ -163,10 +155,7 @@ public class Application implements GUIObserver {
                 this.controller = new GameOverMenuController(gui, (GameOverMenu) menu);
             }
         }
-        if (state.equals(AppState.PAUSE_MENU)) {
-            this.pauseMenuController.update(this,frame);
-        }
-        else this.controller.update(this, frame);
+        this.controller.update(this, frame);
     }
 
     public Controller<?> getController() {
@@ -183,6 +172,10 @@ public class Application implements GUIObserver {
 
     public void setState(AppState state) {
         this.state = state;
+    }
+
+    public AppState getState() {
+        return state;
     }
 
     public int getFrameRate() {

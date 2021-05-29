@@ -1,5 +1,7 @@
 package g50.controller;
 
+import g50.controller.menu.PauseMenuController;
+import g50.model.menu.PauseMenu;
 import g50.states.AppState;
 import g50.states.GameState;
 import g50.states.GhostState;
@@ -31,11 +33,12 @@ public class GameController extends Controller<Game> {
     private final GameStateHandler gameStateHandler;
     private int currentBonus;
     private static final int bonusMultiplier = 200;
-
-    // refactor!!
-    private boolean pause;
-    private boolean started;
+    private final PauseMenu pauseMenu;
+    private final PauseMenuController pauseMenuController;
+    private GUI.KBD_ACTION lastAction;
     private int fruitDotLimit = 70;
+    // refactor!!
+    private boolean started;
 
     private static final List<Class<? extends GhostStrategy>> priorities = Arrays.asList(
             BlinkyStrategy.class,
@@ -52,13 +55,12 @@ public class GameController extends Controller<Game> {
         this.gameStateHandler = new GameStateHandler(this, this.getModel().getLevel().getGameStateIntervals());
         setUpGhosts();
         this.currentBonus = 200;
-        this.pause = false;
+        this.pauseMenu = new PauseMenu(game.getScore());
+        this.pauseMenuController = new PauseMenuController(gui,pauseMenu);
         this.started = true;
+        this.lastAction = GUI.KBD_ACTION.NONE;
     }
 
-    public void setPause(boolean pause) {
-        this.pause = pause;
-    }
 
     public void setUpGhosts(){
         for (Ghost ghost: getModel().getGameMap().getGhosts()) {
@@ -68,39 +70,60 @@ public class GameController extends Controller<Game> {
     }
 
     public void addPendingKBDAction(GUI.KBD_ACTION action) {
-        if (action == GUI.KBD_ACTION.ESQ) {
-            pause = true;
-        } else {
+        lastAction = action;
+    }
+
+    public void handleKBDAction(Application application, GUI.KBD_ACTION action) {
+        if (action.equals(GUI.KBD_ACTION.ESQ)) {
+            application.setState(AppState.PAUSE_MENU);
+            this.pauseMenu.setScore(getModel().getScore());
+        }
+        if (application.getState().equals(AppState.PAUSE_MENU)) {
+            pauseMenuController.addPendingKBDAction(action);
+        }
+        else {
             pacManController.addPendingKBDAction(action);
         }
+
     }
 
     @Override
-    public void update(Application application, int frame) {
-        if (pause) application.setState(AppState.PAUSE_MENU);
-        gameStateHandler.update(frame, application.getFrameRate());
-        controlGhosts(application, frame);
-        pacManController.update(application, frame);
-        try {
-            checkPacmanGhostCollision();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    public void update(Application application, int frame) throws IOException {
+        if (lastAction != GUI.KBD_ACTION.NONE){
+            handleKBDAction(application, lastAction);
+            lastAction = GUI.KBD_ACTION.NONE;
         }
-        try {
-            viewer.draw(gui);
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        if (application.getState().equals(AppState.PAUSE_MENU)) {
+            pauseMenuController.update(application,frame);
         }
-        if (this.started){
+        else {
+            gameStateHandler.update(frame, application.getFrameRate());
+            controlGhosts(application, frame);
+            pacManController.update(application, frame);
             try {
-                Application.playSound("pacman_beginning.wav");
-                Thread.sleep(4000);
-                this.started = false;
+                checkPacmanGhostCollision();
             } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            try {
+                viewer.draw(gui);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (this.started) {
+                try {
+                    Application.playSound("pacman_beginning.wav");
+                    Thread.sleep(4000);
+                    this.started = false;
+                } catch (InterruptedException e) {
                     e.printStackTrace();
+                }
             }
         }
     }
+
+
 
     private void controlGhosts(Application application, int frame) {
         for(GhostController ghostController: ghostsController){
