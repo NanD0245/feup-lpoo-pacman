@@ -22,5 +22,6 @@ public class DefaultElementViewerBuilder extends ElementViewerBuilder {
         this.properties.put(Cherry.class, new ViewProperty("#FF0000",(char)(143)));
         this.properties.put(Orange.class, new ViewProperty("#FFA500",(char)(146)));
         this.properties.put(Strawberry.class, new ViewProperty("#FF0000",(char)(144)));
+        this.properties.put(Manjaro.class, new ViewProperty("#32b858", (char)(147)));
     }
 }
