@@ -2,7 +2,9 @@ package g50.view.factory;
 
 import g50.model.element.fixed.collectable.PacDot;
 import g50.model.element.fixed.collectable.PowerPellet;
+import g50.model.element.fixed.collectable.fruit.*;
 import g50.model.element.fixed.nonCollectable.*;
+import g50.model.element.movable.Orientation;
 import g50.view.ViewProperty;
 
 public class DefaultElementViewerBuilder extends ElementViewerBuilder {
@@ -16,5 +18,9 @@ public class DefaultElementViewerBuilder extends ElementViewerBuilder {
         this.properties.put(SpawnArea.class, new ViewProperty(' '));
         this.properties.put(Door.class, new ViewProperty(' '));
         this.properties.put(Target.class, new ViewProperty(' '));
+        this.properties.put(Apple.class, new ViewProperty("#FF0000",(char)(145)));
+        this.properties.put(Cherry.class, new ViewProperty("#FF0000",(char)(143)));
+        this.properties.put(Orange.class, new ViewProperty("#FFA500",(char)(146)));
+        this.properties.put(Strawberry.class, new ViewProperty("#FF0000",(char)(144)));
     }
 }
