@@ -10,6 +10,6 @@ public class Manjaro extends Fruit {
 
     @Override
     public FixedElement generate(Position position) {
-        return new Cherry(position);
+        return new Manjaro(position);
     }
 }
