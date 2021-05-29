@@ -19,7 +19,7 @@ public class ClydeStrategy extends GhostStrategy {
         Position currentPos = ghost.getPosition();
 
         if(Math.abs(currentPos.getX() - targetPos.getX())
-                + Math.abs(currentPos.getY() - targetPos.getY()) <= 8) return super.inChase(map, ghost);
+                + Math.abs(currentPos.getY() - targetPos.getY()) >= 8) return super.inChase(map, ghost);
         else return super.inScatter(map,ghost);
     }
 }

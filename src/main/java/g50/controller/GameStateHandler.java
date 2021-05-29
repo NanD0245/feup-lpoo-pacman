@@ -1,32 +1,34 @@
 package g50.controller;
 
+import g50.model.Level;
 import g50.states.GameState;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameStateHandler {
     private GameState state;
-    private GameController gameController;
-    private List<Integer> times;
-    private int frightenedTime;
-    private int elapsedSeconds;
-    private static int defaultFrightenedTime = 6;
-    private List<Controller<?>> observers;
+    private final GameController gameController;
+    private final List<Integer> times;
+    private int frightenedFrames;
+    private int elapsedFrames;
+    private int defaultFrightenedTime;
 
-    public GameStateHandler(GameController gameController, List<Integer> timeIntervals){
+    public GameStateHandler(GameController gameController, Level levelInfo){
         this.state = GameState.GAME_SCATTER;
-        this.times = timeIntervals;
-        this.observers = new ArrayList<>();
-        this.frightenedTime = 0;
-        this.elapsedSeconds = 0;
+        this.times = levelInfo.getGameStateIntervals();
+        this.frightenedFrames = 0;
+        this.elapsedFrames = 0;
         this.gameController = gameController;
+        this.defaultFrightenedTime = levelInfo.getGhostFrightnedTime();
     }
 
-    public void update(int gameFrames, int framerate) {
-        elapsedSeconds = gameFrames/framerate;
+    public void update(int framerate) {
+        elapsedFrames++;
+        int elapsedSeconds =  elapsedFrames/framerate;
+        int frightnedSeconds = frightenedFrames/framerate;
 
         if(state.equals(GameState.GAME_FRIGHTENED))
-            if(elapsedSeconds - frightenedTime < defaultFrightenedTime) return;
+            if(elapsedSeconds - frightnedSeconds < defaultFrightenedTime) return;
 
         GameState newState = GameState.GAME_SCATTER;
 
@@ -39,11 +41,12 @@ public class GameStateHandler {
             newState = newState == GameState.GAME_SCATTER ? GameState.GAME_CHASE : GameState.GAME_SCATTER;
             timeForState -= value;
         }
+        if (this.state != newState) setCurrentState(newState);
     }
 
     public void setCurrentState(GameState newState){
         this.state = newState;
-        if (newState == GameState.GAME_FRIGHTENED) frightenedTime = elapsedSeconds;
+        if (newState == GameState.GAME_FRIGHTENED) frightenedFrames = elapsedFrames;
         for (GhostController ghostController: gameController.getGhostsController()){
             ghostController.reverseOrientation();
         }

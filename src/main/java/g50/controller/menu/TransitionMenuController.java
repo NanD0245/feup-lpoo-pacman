@@ -36,8 +36,8 @@ public class TransitionMenuController extends MenuController {
                 Application.playSound("pacman_intermission.wav");
                 this.started = true;
             }
-            ((TransitionMenu) getModel()).getPacMan().setFramesPerPosition(10);
-            ((TransitionMenu) getModel()).getGhost().setFramesPerPosition(8);
+            ((TransitionMenu) getModel()).getPacMan().setFramesPerPosition(5);
+            ((TransitionMenu) getModel()).getGhost().setFramesPerPosition(4);
             if (((TransitionMenu)getModel()).getPacMan().getPosition().getX() >= 0 && frame % ((TransitionMenu) getModel()).getPacMan().getFramesPerPosition() == 0) {
                 ((TransitionMenu) getModel()).getPacMan().setPosition(((TransitionMenu) getModel()).getPacMan().getPosition().getLeft());
                 count++;
@@ -56,8 +56,8 @@ public class TransitionMenuController extends MenuController {
                 Application.playSound("pacman_intermission.wav");
                 this.started = false;
             }
-            ((TransitionMenu) getModel()).getGhost().setFramesPerPosition(10);
-            ((TransitionMenu) getModel()).getPacMan().setFramesPerPosition(8);
+            ((TransitionMenu) getModel()).getGhost().setFramesPerPosition(5);
+            ((TransitionMenu) getModel()).getPacMan().setFramesPerPosition(4);
             if (frame % ((TransitionMenu) getModel()).getGhost().getFramesPerPosition() == 0) {
                 ((TransitionMenu) getModel()).getGhost().setPosition(((TransitionMenu) getModel()).getGhost().getPosition().getRight());
                 count++;

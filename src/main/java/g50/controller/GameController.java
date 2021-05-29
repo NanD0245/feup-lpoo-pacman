@@ -53,7 +53,7 @@ public class GameController extends Controller<Game> {
         this.pacManController = new PacManController(this);
         this.viewer = new GameViewer(game);
         this.gui = gui;
-        this.gameStateHandler = new GameStateHandler(this, this.getModel().getLevel().getGameStateIntervals());
+        this.gameStateHandler = new GameStateHandler(this, this.getModel().getLevel());
         setUpGhosts();
         this.currentBonus = 200;
         this.pauseMenu = new PauseMenu(game.getScore());
@@ -100,7 +100,7 @@ public class GameController extends Controller<Game> {
         }
         else {
             gameFrames++;
-            gameStateHandler.update(gameFrames, application.getFrameRate());
+            gameStateHandler.update(application.getFrameRate());
             pacManController.update(application, gameFrames);
             controlGhosts(application, gameFrames);
             if(frame % 15 == 0) Application.playSound("pacman_chomp.wav");
