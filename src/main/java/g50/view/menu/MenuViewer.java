@@ -1,6 +1,7 @@
 package g50.view.menu;
 
 import g50.model.menu.Menu;
+import g50.view.Viewer;
 
 import java.util.HashMap;
 import java.util.Map;

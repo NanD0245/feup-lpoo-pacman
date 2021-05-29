@@ -56,7 +56,7 @@ public abstract class GhostStrategy {
     protected Orientation leavingCage(GameMap map, Ghost ghost){
         List<Orientation> availableOrientations =  map.getAvailableOrientations(ghost.getPosition());
         removeReverseOrientation(ghost, availableOrientations);
-        return getOrientationTo(ghost, availableOrientations, map.getGhostStartPos());
+        return getOrientationTo(ghost, availableOrientations, map.getGhostSpawnPosition());
     }
 
     private Orientation getOrientationTo(Ghost ghost, List<Orientation> availableOrientations, Position pos){

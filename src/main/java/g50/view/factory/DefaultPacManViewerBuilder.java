@@ -1,13 +1,12 @@
 package g50.view.factory;
 
-import g50.controller.GameController;
 import g50.model.element.movable.Orientation;
-import g50.view.menu.ViewProperty;
+import g50.view.ViewProperty;
 
 public class DefaultPacManViewerBuilder extends PacManViewerBuilder{
 
-    public DefaultPacManViewerBuilder(GameController gameController) {
-        super(gameController);
+    public DefaultPacManViewerBuilder() {
+        super();
 
         this.properties.put(Orientation.UP, new ViewProperty("#FFFF00", (char)(192)));
         this.properties.put(Orientation.LEFT, new ViewProperty("#FFFF00", (char)(193) ));

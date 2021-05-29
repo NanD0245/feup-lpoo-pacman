@@ -1,4 +1,4 @@
-package g50.controller.ghost;
+package g50.controller;
 
 import g50.controller.Controller;
 import g50.controller.GameController;
@@ -15,7 +15,6 @@ import java.util.List;
 
 public class GhostController extends Controller<Ghost> {
     private Orientation nextBufferedOrientation;
-    private int speed = 15;
 
     public GhostController(Ghost ghost){
         super(ghost);
@@ -23,18 +22,23 @@ public class GhostController extends Controller<Ghost> {
 
     @Override
     public void update(Application application, int frame) {
-
-        if(getModel().getState() == GhostState.DEAD && getModel().getPosition().equals(getModel().getSpawnPosition()))
+        // refactor!!
+        if (getModel().getState() == GhostState.DEAD && getModel().getPosition().equals(getModel().getSpawnPosition()))
             getModel().setState(GhostState.IN_CAGE);
         else if (getModel().getState() == GhostState.IN_CAGE && getModel().getStrategy().getDotLimit() == 0)
             getModel().setState(GhostState.LEAVING_CAGE);
-        else if(getModel().getState() != GhostState.IN_CAGE && getModel().getState() != GhostState.DEAD
+        else if (getModel().getState() != GhostState.IN_CAGE && getModel().getState() != GhostState.DEAD
                 && getModel().getState() != GhostState.LEAVING_CAGE ||
                 (getModel().getState() == GhostState.LEAVING_CAGE && getModel().getPosition().
-                        equals(((GameController)(application.getController())).getModel().getGameMap().getGhostStartPos())))
+                        equals(((GameController)(application.getController())).getModel().getGameMap().getGhostSpawnPosition())))
             updateGhostState(((GameController)(application.getController())).getGameStateHandler().getState());
 
-        if (frame % speed != 0) return;
+        if(this.getModel().getState() == GhostState.FRIGHTENED)
+            this.getModel().setFramesPerPosition(((GameController)(application.getController())).getModel().getLevelInfo().getFrightenedGhostFramesPerMovement());
+        else
+            this.getModel().setDefaultFramesPerPosition();
+
+        if (frame % getModel().getFramesPerPosition() != 0) return;
         Orientation newOrientation = getModel().getStrategy().getNextOrientation(application.getGame().getGameMap(),
                 getModel(), getModel().getState());
         if (newOrientation == null) return;
@@ -85,7 +89,7 @@ public class GhostController extends Controller<Ghost> {
     public void addPendingKBDAction(GUI.KBD_ACTION action) throws IOException {}
 
     public void reverseOrientation(){
-        if(this.getModel().getState() != GhostState.LEAVING_CAGE &&
+        if (this.getModel().getState() != GhostState.LEAVING_CAGE &&
                 this.getModel().getState() != GhostState.IN_CAGE && this.getModel().getState() != GhostState.DEAD)
             setNextBufferedOrientation(getModel().getOrientation().getOpposite());
     }

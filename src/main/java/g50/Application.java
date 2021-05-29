@@ -1,6 +1,5 @@
 package g50;
 
-import com.googlecode.lanterna.terminal.ansi.TelnetTerminalServer;
 import g50.controller.Controller;
 import g50.controller.GameController;
 import g50.controller.menu.*;
@@ -11,6 +10,8 @@ import g50.model.Game;
 import g50.model.menu.*;
 import g50.model.menu.Menu;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
@@ -22,7 +23,7 @@ import static java.lang.Integer.parseInt;
 public class Application implements GUIObserver {
     private int highScore;
 
-    static final String highscore_file = "src/main/resources/highscore/highscore.txt";
+    static final String highScoreFile = "src/main/resources/highscore/highscore.txt";
     private int frameRate;
     private Timer timer;
     private Controller<?> controller;
@@ -35,8 +36,8 @@ public class Application implements GUIObserver {
     private PauseMenuController pauseMenuController;
 
     Application(GUI gui) throws FileNotFoundException {
-        setHighScore(readHighScore(highscore_file));
-        System.out.println(readHighScore(highscore_file));
+        setHighScore(readHighScore(highScoreFile));
+        System.out.println(readHighScore(highScoreFile));
         this.menu = new MainMenu();
         this.gui = gui;
         gui.addObserver(this);
@@ -57,15 +58,15 @@ public class Application implements GUIObserver {
 
     public int readHighScore(String file) throws FileNotFoundException {
         BufferedReader buffer = new BufferedReader(new FileReader(file));
-        int highscore = 0;
+        int highScore = 0;
         try {
             String score_s = buffer.readLine();
             if (score_s != null && !score_s.equals(""))
-                highscore =  parseInt(score_s);
+                highScore =  parseInt(score_s);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return highscore;
+        return highScore;
     }
 
     public void writeHighScore(String file) throws IOException {
@@ -103,7 +104,7 @@ public class Application implements GUIObserver {
     public void terminate() throws IOException {
         timer.cancel();
         this.gui.close();
-        writeHighScore(highscore_file);
+        writeHighScore(highScoreFile);
     }
 
     @Override
@@ -125,7 +126,7 @@ public class Application implements GUIObserver {
                     break;
                 case IN_GAME:
                     if (this.game == null) {
-                        this.game = new Game(highScore);
+                        this.game = new Game(highScore, 1); // change level!!
                         this.controller = new GameController(gui, game);
                     } else {
                         ((GameController) controller).setPause(false);
@@ -176,15 +177,28 @@ public class Application implements GUIObserver {
         return menu;
     }
 
-    public AppState getState() {
-        return state;
-    }
-
     public void setState(AppState state) {
         this.state = state;
     }
 
     public int getFrameRate() {
         return frameRate;
+    }
+
+    public static synchronized void playSound(final String url) {
+        new Thread(new Runnable() {
+            // The wrapper thread is unnecessary, unless it blocks on the
+            // Clip finishing; see comments.
+            public void run() {
+                try {
+                    File file = new File("src/main/resources/sound/" + url);
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(AudioSystem.getAudioInputStream(file));
+                    clip.start();
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }).start();
     }
 }

@@ -1,6 +1,5 @@
-package g50.view.menu;
+package g50.view;
 
-import g50.controller.GameController;
 import g50.gui.GUI;
 import g50.model.Game;
 import g50.model.element.Position;
@@ -8,12 +7,12 @@ import g50.model.element.movable.PacMan;
 
 import java.io.IOException;
 
-public class GameViewer extends Viewer<Game>{
+public class GameViewer extends Viewer<Game> {
     private final GameMapViewer gameMapViewer;
 
-    public GameViewer(Game game, GameController gameController) {
+    public GameViewer(Game game) {
         super(game);
-        this.gameMapViewer = new GameMapViewer(game.getGameMap(), gameController);
+        this.gameMapViewer = new GameMapViewer(game.getGameMap());
     }
 
     @Override
@@ -25,7 +24,7 @@ public class GameViewer extends Viewer<Game>{
         gui.drawText("SCORE\t\t\tHIGH SCORE", new Position(2,-1));
 
         gui.drawText(String.valueOf(getModel().getScore()), new Position(3,0));
-        gui.drawText(String.valueOf(getModel().getHighscore()), new Position(19,0));
+        gui.drawText(String.valueOf(getModel().getHighScore()), new Position(19,0));
 
         for (int i = 0; i < getModel().getGameMap().getPacman().getLives(); i++) {
             this.gameMapViewer.getPacManViewerBuilder().getViewer(new PacMan(new Position(i, 34))).draw(gui);
@@ -33,4 +32,6 @@ public class GameViewer extends Viewer<Game>{
 
         gui.refresh();
     }
+
+
 }

@@ -3,8 +3,8 @@ package g50.view.factory;
 import g50.model.element.Position;
 import g50.model.element.Element;
 import g50.model.element.fixed.nonCollectable.*;
-import g50.view.menu.ElementViewer;
-import g50.view.menu.ViewProperty;
+import g50.view.ElementViewer;
+import g50.view.ViewProperty;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +17,6 @@ public abstract class ElementViewerBuilder {
     }
 
     public ElementViewer getViewer(Element element){
-
         for (Map.Entry<Class<? extends Element>, ViewProperty> entry :
                 properties.entrySet()){
             if (entry.getKey().equals(element.getClass())){

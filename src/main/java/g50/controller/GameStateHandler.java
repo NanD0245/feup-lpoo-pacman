@@ -1,27 +1,21 @@
-package g50.states;
+package g50.controller;
 
-import g50.controller.Controller;
-import g50.controller.GameController;
-import g50.controller.ghost.GhostController;
-import g50.model.Game;
-import g50.model.element.movable.ghost.Ghost;
-
+import g50.states.GameState;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GameStateHandler {
-    private GameController gameController;
     private GameState state;
+    private GameController gameController;
     private List<Integer> times;
     private int frightenedTime;
     private int elapsedSeconds;
     private static int defaultFrightenedTime = 6;
-    private List<Controller<Ghost>> observers;
+    private List<Controller<?>> observers;
 
-    public GameStateHandler(GameController gameController){
+    public GameStateHandler(GameController gameController, List<Integer> timeIntervals){
         this.state = GameState.GAME_SCATTER;
-        this.times = Arrays.asList(7, 20, 7, 20, 5, 20, 5, Integer.MAX_VALUE);
+        this.times = timeIntervals;
         this.observers = new ArrayList<>();
         this.frightenedTime = 0;
         this.elapsedSeconds = 0;
@@ -38,11 +32,11 @@ public class GameStateHandler {
 
         int timeForState = elapsedSeconds;
         for(Integer value: this.times){
-            if (value == Integer.MAX_VALUE || timeForState - value < 0) {
+            if (value == Integer.MAX_VALUE || timeForState - value < 0){
                 if (this.state != newState) setCurrentState(newState);
                 return;
             }
-            if (newState == GameState.GAME_SCATTER) newState = GameState.GAME_CHASE;
+            newState = newState == GameState.GAME_SCATTER ? GameState.GAME_CHASE : GameState.GAME_SCATTER;
             timeForState -= value;
         }
     }
@@ -56,4 +50,8 @@ public class GameStateHandler {
     }
 
     public GameState getState() { return state; }
+
+    public void resetCurrentState() {
+        this.state = GameState.GAME_SCATTER;
+    }
 }

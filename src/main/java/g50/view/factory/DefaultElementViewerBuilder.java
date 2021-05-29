@@ -3,7 +3,7 @@ package g50.view.factory;
 import g50.model.element.fixed.collectable.PacDot;
 import g50.model.element.fixed.collectable.PowerPellet;
 import g50.model.element.fixed.nonCollectable.*;
-import g50.view.menu.ViewProperty;
+import g50.view.ViewProperty;
 
 public class DefaultElementViewerBuilder extends ElementViewerBuilder {
     public DefaultElementViewerBuilder(){

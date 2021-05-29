@@ -42,7 +42,7 @@ public class Position implements Cloneable {
     }
 
     public Position getAdjacent(Orientation orientation){
-        switch (orientation){
+        switch (orientation) {
             case UP: return getUp();
             case RIGHT: return getRight();
             case DOWN: return getDown();

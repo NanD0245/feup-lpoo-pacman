@@ -1,7 +1,7 @@
 package g50.view.factory;
 
 import g50.model.element.Element;
-import g50.view.menu.ViewProperty;
+import g50.view.ViewProperty;
 
 public class CustomElementViewerBuilder extends ElementViewerBuilder {
     public void addViewer(Class<? extends Element> elementClass, ViewProperty viewProperty){

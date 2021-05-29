@@ -26,7 +26,7 @@ public class GameMapTest {
 
         ghosts.add(newGhost);
 
-        GameMap map = new GameMap(newList, ghosts, new PacMan(new Position(1, 1)));
+        GameMap map = new GameMap(newList, ghosts, new PacMan(new Position(1, 1)), new Position(1,1), new Position(1,2));
 
         Assertions.assertEquals(map.getPacman().getPosition(), new Position(1,1));
         Assertions.assertEquals(map.getGhosts().size(), 1);

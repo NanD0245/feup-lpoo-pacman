@@ -1,7 +1,5 @@
 package g50.controller;
 
-import g50.controller.Controller;
-import g50.controller.GameController;
 import g50.Application;
 import g50.gui.GUI;
 import g50.model.element.Position;
@@ -18,8 +16,6 @@ public class PacManController extends Controller<PacMan> {
     private final GameController gameController;
     private final GameMap gameMap;
     private Orientation nextOrientation;
-    private int speed = 8;
-
     private static final Map<GUI.KBD_ACTION, Orientation> actionToOrientation = new HashMap<>() {{
                 put(GUI.KBD_ACTION.UP, Orientation.UP);
                 put(GUI.KBD_ACTION.DOWN, Orientation.DOWN);
@@ -29,62 +25,47 @@ public class PacManController extends Controller<PacMan> {
                 put(GUI.KBD_ACTION.QUIT, null);
     }};
 
-
     public PacManController(GameController gameController){
         super(gameController.getModel().getGameMap().getPacman());
         this.gameController = gameController;
         this.gameMap = gameController.getModel().getGameMap();
+        this.getModel().setFramesAndDefaultFramesPerPosition(gameController.getModel().getLevelInfo().getPacManFramesPerMovement());
     }
 
 
     public void addPendingKBDAction(GUI.KBD_ACTION action) {
-        List<Orientation> oris =
+        List<Orientation> orientations =
                 gameMap.getAvailableOrientations(getModel().getPosition());
-
-        for(Orientation orientation: oris){
+        for(Orientation orientation: orientations){
             if(gameController.getModel().getGameMap().getElement(getModel().getPosition().getAdjacent(orientation)) instanceof Door){
-                oris.remove(orientation);
+                orientations.remove(orientation);
                 break;
             }
         }
-
         Orientation actionOrientation = actionToOrientation.get(action);
-        if(actionOrientation == null || actionOrientation == getModel().getOrientation()) return;
-
-        if(oris.contains(actionOrientation)){
+        if (actionOrientation == null || actionOrientation == getModel().getOrientation()) return;
+        if (orientations.contains(actionOrientation)){
             getModel().setOrientation(actionOrientation);
-            if(nextOrientation == actionOrientation.getOpposite()) nextOrientation = null;
+            if (nextOrientation == actionOrientation.getOpposite()) nextOrientation = null;
         }
         else this.nextOrientation = actionOrientation;
     }
 
-    private void moveToNewPosition(List<Orientation> oris){
-        if(oris.contains(nextOrientation)) {
-            getModel().move(nextOrientation, gameMap.getColumns(), gameMap.getLines());
-            nextOrientation = null;
-        } else if(oris.contains(getModel().getOrientation()))
-            getModel().move(getModel().getOrientation(), gameMap.getColumns(), gameMap.getLines());
-    }
-
     @Override
     public void update(Application application, int frame) {
-        if(frame % speed != 0) return;
-
+        if(frame % 20 == 0) Application.playSound("pacman_chomp.wav");
+        if(frame % getModel().getFramesPerPosition() != 0) return;
         gameController.consumeMapElement(super.getModel().getPosition());
-
         Position currentPos = super.getModel().getPosition();
         moveToNewPosition(gameMap.getAvailableOrientations(super.getModel().getPosition()), currentPos);
     }
 
-    private void moveToNewPosition(List<Orientation> oris, Position currentPos){
-        if(oris.contains(nextOrientation)
+    private void moveToNewPosition(List<Orientation> orientations, Position currentPos){
+        if (orientations.contains(nextOrientation)
         && !(gameMap.getElement(currentPos.getAdjacent(nextOrientation)) instanceof Door)){
             super.getModel().move(nextOrientation, gameMap.getColumns(), gameMap.getLines());
             nextOrientation = null;
-        } else if(oris.contains(super.getModel().getOrientation()))
+        } else if (orientations.contains(super.getModel().getOrientation()))
             super.getModel().move(super.getModel().getOrientation(), gameMap.getColumns(), gameMap.getLines());
     }
-
-    public Position getControllablePosition() { return super.getModel().getPosition(); }
-
 }

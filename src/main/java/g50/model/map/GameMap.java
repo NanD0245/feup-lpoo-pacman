@@ -4,7 +4,6 @@ import g50.model.element.Position;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
-import g50.model.element.movable.ghost.BlinkyGhost;
 import g50.model.element.movable.ghost.Ghost;
 
 import java.util.*;
@@ -14,16 +13,15 @@ public class GameMap {
     private final List<List<FixedElement>> map;
     private final List<Ghost> ghosts;
     private final PacMan pacman;
-    private Position ghostStartPos;
+    private final Position ghostSpawnPosition;
+    private final Position fruitPosition;
 
-    public GameMap(List<List<FixedElement>> map, List<Ghost> ghosts, PacMan pacman) {
+    public GameMap(List<List<FixedElement>> map, List<Ghost> ghosts, PacMan pacman, Position startPos, Position fruitPos) {
         this.map = map;
         this.ghosts = ghosts;
         this.pacman = pacman;
-        for(Ghost ghost: ghosts)
-            if(this.ghostStartPos == null
-                    || ghost instanceof BlinkyGhost)
-                this.ghostStartPos = new Position(ghost.getPosition());
+        this.ghostSpawnPosition = startPos;
+        this.fruitPosition = fruitPos;
     }
 
     public List<List<FixedElement>> getMap(){
@@ -92,14 +90,11 @@ public class GameMap {
     }
 
     public Orientation getOrientationOfShortestPath(Position origin, Position destiny, Orientation currentOrientation){
-
         List<Position> path = new ArrayList<>();
         PriorityQueue<Position.Entry> pq = new PriorityQueue<>();
         Set<Position.Entry> closedSet = new HashSet<>();
         pq.add(new Position.Entry(origin, destiny));
-
         boolean firstNode = true;
-
         while(pq.size() > 0){
             Position.Entry currentPositionEntry = pq.poll();
             if(currentPositionEntry.getKey().equals(destiny)){
@@ -110,7 +105,6 @@ public class GameMap {
                 break;
             }
             List<Position> neighbours = getAvailableNeighbours(currentPositionEntry.getKey());
-
             for(Position neighbour: neighbours) {
                 Position.Entry newPositionEntry = new Position.Entry(neighbour, destiny);
                 if (closedSet.contains(newPositionEntry)) continue;
@@ -135,9 +129,11 @@ public class GameMap {
         return Position.getDirection(origin, path.get(0));
     }
 
-    public Position getGhostStartPos(){
-        return this.ghostStartPos;
+    public Position getGhostSpawnPosition(){
+        return this.ghostSpawnPosition;
     }
+
+    public Position getFruitPosition() { return this.fruitPosition; }
 
     public void resetPositions() {
         for (Ghost ghost : ghosts) {

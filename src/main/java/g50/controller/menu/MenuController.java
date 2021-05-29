@@ -26,7 +26,7 @@ public abstract class MenuController extends Controller<Menu> implements GUIObse
     }
 
     @Override
-    public void update(Application application, int frame) {
+    public void update(Application application, int frame) throws IOException {
         if (lastAction != GUI.KBD_ACTION.NONE){
             handleKBDAction(application, lastAction);
             lastAction = GUI.KBD_ACTION.NONE;
@@ -39,4 +39,12 @@ public abstract class MenuController extends Controller<Menu> implements GUIObse
     }
 
     public abstract void handleKBDAction(Application application, GUI.KBD_ACTION action);
+
+    public MenuViewer getMenuViewer() {
+        return menuViewer;
+    }
+
+    public GUI getGui() {
+        return gui;
+    }
 }

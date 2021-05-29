@@ -3,6 +3,7 @@ package g50.view.menu;
 import g50.gui.GUI;
 import g50.model.element.Position;
 import g50.model.menu.MainMenu;
+import g50.view.ViewProperty;
 
 import java.io.IOException;
 import java.util.ArrayList;
