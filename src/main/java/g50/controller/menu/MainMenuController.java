@@ -26,6 +26,8 @@ public class MainMenuController extends MenuController {
                     application.setState(AppState.IN_GAME);
                 if (((MainMenu) getModel()).isSelectedControls())
                     application.setState(AppState.CONTROLS_MENU);
+                if (((MainMenu) getModel()).isSelectedHighScore())
+                    application.setState(AppState.HIGH_SCORE_MENU);
                 if (((MainMenu) getModel()).isSelectedCredits())
                     application.setState(AppState.CREDITS_MENU);
                 if (((MainMenu) getModel()).isSelectedExit())

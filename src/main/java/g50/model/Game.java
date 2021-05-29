@@ -9,13 +9,13 @@ public class Game {
     private final GameMap map;
     private int score;
     private final int highScore;
-    private final Level levelInfo;
+    private final Level level;
 
     public Game(int highScore, int level) throws IOException {
         this.map = new DefaultGameMapBuilder().getBuild();
         this.highScore = highScore;
         this.score = 0;
-        this.levelInfo = new Level(level);
+        this.level = new Level(level);
     }
 
     public GameMap getGameMap() {
@@ -30,7 +30,7 @@ public class Game {
         return highScore;
     }
 
-    public Level getLevelInfo() { return levelInfo; }
+    public Level getLevel() { return level; }
 
     public void incrementScore(int increment) { score += increment; }
 

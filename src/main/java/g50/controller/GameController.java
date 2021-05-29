@@ -49,7 +49,7 @@ public class GameController extends Controller<Game> {
         this.pacManController = new PacManController(this);
         this.viewer = new GameViewer(game);
         this.gui = gui;
-        this.gameStateHandler = new GameStateHandler(this, this.getModel().getLevelInfo().getGameStateIntervals());
+        this.gameStateHandler = new GameStateHandler(this, this.getModel().getLevel().getGameStateIntervals());
         setUpGhosts();
         this.currentBonus = 200;
         this.pause = false;
@@ -63,7 +63,7 @@ public class GameController extends Controller<Game> {
     public void setUpGhosts(){
         for (Ghost ghost: getModel().getGameMap().getGhosts()) {
             this.ghostsController.add(new GhostController(ghost));
-            ghost.setFramesAndDefaultFramesPerPosition(getModel().getLevelInfo().getGhostFramesPerMovement());
+            ghost.setFramesAndDefaultFramesPerPosition(getModel().getLevel().getGhostFramesPerMovement());
         }
     }
 
@@ -133,7 +133,7 @@ public class GameController extends Controller<Game> {
 
         if (this.fruitDotLimit == 0) {
             try {
-                Fruit fruit = this.getModel().getLevelInfo().getFruit(this.getModel().getGameMap().getFruitPosition());
+                Fruit fruit = this.getModel().getLevel().getFruit(this.getModel().getGameMap().getFruitPosition());
                 super.getModel().getGameMap().setElement(fruit, this.getModel().getGameMap().getFruitPosition());
                 this.fruitDotLimit = 70;
             } catch(Exception e){

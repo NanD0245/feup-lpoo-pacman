@@ -136,6 +136,10 @@ public class Application implements GUIObserver {
                     this.menu = new ControlsMenu();
                     this.controller = new ControlsMenuController(gui,(ControlsMenu)menu);
                     break;
+                case HIGH_SCORE_MENU:
+                    this.menu = new HighScoreMenu(highScore);
+                    this.controller = new HighScoreMenuController(gui,(HighScoreMenu) menu);
+                    break;
                 case CREDITS_MENU:
                     this.menu = new CreditsMenu();
                     this.controller = new CreditsMenuController(gui,(CreditsMenu)menu);

@@ -30,6 +30,8 @@ public class GameViewer extends Viewer<Game> {
             this.gameMapViewer.getPacManViewerBuilder().getViewer(new PacMan(new Position(i, 34))).draw(gui);
         }
 
+        gui.drawText("LEVEL: " + getModel().getLevel().getLevelNumber(), new Position(18,34));
+
         gui.refresh();
     }
 
