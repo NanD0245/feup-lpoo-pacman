@@ -1,8 +1,8 @@
 package g50.view.factory;
 
 import g50.model.element.Position;
-import g50.model.element.fixed.nonCollectable.EmptySpace;
-import g50.model.element.fixed.nonCollectable.Wall;
+import g50.model.element.fixed.noncollectable.EmptySpace;
+import g50.model.element.fixed.noncollectable.Wall;
 import g50.view.ElementViewer;
 import g50.view.ViewProperty;
 

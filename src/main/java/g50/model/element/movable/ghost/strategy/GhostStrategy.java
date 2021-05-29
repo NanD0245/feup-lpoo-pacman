@@ -2,7 +2,7 @@ package g50.model.element.movable.ghost.strategy;
 
 import g50.states.GhostState;
 import g50.model.element.Position;
-import g50.model.element.fixed.nonCollectable.Door;
+import g50.model.element.fixed.noncollectable.Door;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;

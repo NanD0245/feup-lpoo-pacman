@@ -3,7 +3,7 @@ package g50.controller;
 import g50.Application;
 import g50.gui.GUI;
 import g50.model.element.Position;
-import g50.model.element.fixed.nonCollectable.Door;
+import g50.model.element.fixed.noncollectable.Door;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.model.map.GameMap;

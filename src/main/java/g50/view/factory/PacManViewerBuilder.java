@@ -1,7 +1,7 @@
 package g50.view.factory;
 
 import g50.model.element.Position;
-import g50.model.element.fixed.nonCollectable.EmptySpace;
+import g50.model.element.fixed.noncollectable.EmptySpace;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.view.ElementViewer;

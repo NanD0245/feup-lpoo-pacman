@@ -1,4 +1,4 @@
-package g50.model.element.fixed.nonCollectable;
+package g50.model.element.fixed.noncollectable;
 
 import g50.model.element.Position;
 import g50.model.element.fixed.FixedElement;

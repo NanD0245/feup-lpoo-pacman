@@ -4,7 +4,7 @@ import g50.model.element.Position;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.collectable.PacDot;
 import g50.model.element.fixed.collectable.PowerPellet;
-import g50.model.element.fixed.nonCollectable.*;
+import g50.model.element.fixed.noncollectable.*;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.*;

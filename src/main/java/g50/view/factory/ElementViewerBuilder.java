@@ -2,7 +2,7 @@ package g50.view.factory;
 
 import g50.model.element.Position;
 import g50.model.element.Element;
-import g50.model.element.fixed.nonCollectable.*;
+import g50.model.element.fixed.noncollectable.*;
 import g50.view.ElementViewer;
 import g50.view.ViewProperty;
 

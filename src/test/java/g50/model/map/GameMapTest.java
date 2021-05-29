@@ -2,7 +2,7 @@ package g50.model.map;
 
 import g50.model.element.Position;
 import g50.model.element.fixed.FixedElement;
-import g50.model.element.fixed.nonCollectable.Target;
+import g50.model.element.fixed.noncollectable.Target;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.BlinkyGhost;

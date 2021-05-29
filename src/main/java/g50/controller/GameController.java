@@ -15,7 +15,7 @@ import g50.model.element.Position;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.collectable.Collectable;
 import g50.model.element.fixed.collectable.CollectableTriggers;
-import g50.model.element.fixed.nonCollectable.EmptySpace;
+import g50.model.element.fixed.noncollectable.EmptySpace;
 import g50.model.element.movable.ghost.strategy.*;
 import g50.view.GameViewer;
 

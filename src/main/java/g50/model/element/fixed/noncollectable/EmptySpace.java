@@ -1,17 +1,16 @@
-package g50.model.element.fixed.nonCollectable;
+package g50.model.element.fixed.noncollectable;
 
 import g50.model.element.Position;
 import g50.model.element.fixed.FixedElement;
 
-public class SpawnArea extends NonCollectable{
-
-    public SpawnArea(Position position) {
+public class EmptySpace extends NonCollectable {
+    public EmptySpace(Position position) {
         super(position);
     }
 
     @Override
     public FixedElement generate(Position position) {
-        return new SpawnArea(position);
+        return new EmptySpace(position);
     }
 
     @Override
