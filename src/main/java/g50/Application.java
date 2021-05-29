@@ -12,11 +12,13 @@ import g50.model.menu.Menu;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
 import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
 
 import static java.lang.Integer.parseInt;
 
@@ -200,18 +202,21 @@ public class Application implements GUIObserver {
     }
 
     public static synchronized void playSound(final String url) {
-        new Thread(new Runnable() {
-            // The wrapper thread is unnecessary, unless it blocks on the
-            // Clip finishing; see comments.
-            public void run() {
-                try {
-                    File file = new File("src/main/resources/sound/" + url);
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(AudioSystem.getAudioInputStream(file));
-                    clip.start();
-                } catch (Exception e) {
-                    System.err.println(e.getMessage());
-                }
+        CountDownLatch syncLatch = new CountDownLatch(1);
+        new Thread(() -> {
+            try {
+                File file = new File("src/main/resources/sound/" + url);
+                Clip clip = AudioSystem.getClip();
+                clip.addLineListener(e -> {
+                    if (e.getType() == LineEvent.Type.STOP) {
+                        syncLatch.countDown();
+                    }
+                });
+                clip.open(AudioSystem.getAudioInputStream(file));
+                clip.start();
+                syncLatch.await();
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
             }
         }).start();
     }

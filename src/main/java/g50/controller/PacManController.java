@@ -53,7 +53,6 @@ public class PacManController extends Controller<PacMan> {
 
     @Override
     public void update(Application application, int frame) {
-        if(frame % 20 == 0) Application.playSound("pacman_chomp.wav");
         if(frame % getModel().getFramesPerPosition() != 0) return;
         gameController.consumeMapElement(super.getModel().getPosition());
         Position currentPos = super.getModel().getPosition();

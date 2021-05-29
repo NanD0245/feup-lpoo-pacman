@@ -22,8 +22,8 @@ public class GameStateHandler {
         this.gameController = gameController;
     }
 
-    public void update(int frame, int framerate) {
-        elapsedSeconds = frame/framerate;
+    public void update(int gameFrames, int framerate) {
+        elapsedSeconds = gameFrames/framerate;
 
         if(state.equals(GameState.GAME_FRIGHTENED))
             if(elapsedSeconds - frightenedTime < defaultFrightenedTime) return;
