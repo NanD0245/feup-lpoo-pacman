@@ -15,10 +15,10 @@ public class MainMenuViewer extends MenuViewer {
     public MainMenuViewer(MainMenu menu) {
         super(menu);
         this.elementViewers = new ArrayList<>();
-        initViewerBuilder();
+        initElementViewers();
     }
 
-    public void initViewerBuilder() {
+    public void initElementViewers() {
         this.elementViewers.add(new ViewProperty("#DEA185",(char)(199)));
         this.elementViewers.add(new ViewProperty("#DEA185",(char)(201)));
         this.elementViewers.add(new ViewProperty("#FFFF00",(char)(193)));
@@ -31,9 +31,7 @@ public class MainMenuViewer extends MenuViewer {
     @Override
     public void draw(GUI gui) throws IOException {
         gui.clear();
-
         gui.drawText((getModel()).getTitle(),new Position(10,5), "#FFFF00");
-
 
         for (int i = 0; i < elementViewers.size(); i++)
             gui.drawText(String.valueOf(elementViewers.get(i).getCharacter()),
@@ -41,7 +39,6 @@ public class MainMenuViewer extends MenuViewer {
                     elementViewers.get(i).getColor());
 
         int selected = getModel().getCurrentEntry();
-
         for (int i = 0; i < getModel().getNumberEntries(); i++) {
             if (selected == i)
                 gui.drawText('>' + map.get(getModel().getEntry(i)), new Position(5 - 1,15 + 3 * i), "#FFFF00");

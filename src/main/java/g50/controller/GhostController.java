@@ -1,6 +1,5 @@
 package g50.controller;
 
-import g50.model.element.Position;
 import g50.states.GameState;
 import g50.states.GhostState;
 import g50.gui.GUI;
@@ -21,35 +20,36 @@ public class GhostController extends Controller<Ghost> {
 
     @Override
     public void update(Application application, int frame) {
-        GhostState currState = getModel().getState();
-        Position currPosition = getModel().getPosition();
+        GameController gameController = (GameController) application.getController();
+        updateGhostState(gameController);
+        updateGhostSpeed(gameController);
+        if (frame % getModel().getFramesPerPosition() == 0)
+            updatePositions(gameController);
+    }
 
-        if (currState == GhostState.DEAD && currPosition.equals(getModel().getSpawnPosition()))
-            getModel().setState(GhostState.IN_CAGE);
-
-        else if (currState == GhostState.IN_CAGE && getModel().getStrategy().getDotLimit() == 0)
-            getModel().setState(GhostState.LEAVING_CAGE);
-
-        else if (currState != GhostState.IN_CAGE && currState != GhostState.DEAD
-                && currState != GhostState.LEAVING_CAGE ||
-                (currState == GhostState.LEAVING_CAGE && currPosition.
-                        equals(((GameController)(application.getController())).getModel().getGameMap().getGhostSpawnPosition())))
-
-            updateGhostState(((GameController)(application.getController())).getGameStateHandler().getState());
-
-        if(currState == GhostState.FRIGHTENED)
-            getModel().setFramesPerPosition(((GameController)(application.getController())).getModel().getLevel().getFrightenedGhostFramesPerMovement());
+    private void updateGhostSpeed(GameController gameController) {
+        if(getModel().getState().equals(GhostState.FRIGHTENED))
+            getModel().setFramesPerPosition(gameController.getModel().getLevel().getFrightenedGhostFramesPerMovement());
         else
             getModel().setDefaultFramesPerPosition();
+    }
 
-        if (frame % getModel().getFramesPerPosition() != 0) return;
-        Orientation newOrientation = getModel().getStrategy().getNextOrientation(application.getGame().getGameMap(),
+    private void updateGhostState(GameController gameController) {
+        if (isDeadInSpawnPosition())
+            getModel().setState(GhostState.IN_CAGE);
+        else if (isReadyToLeaveCage())
+            getModel().setState(GhostState.LEAVING_CAGE);
+        else if (isRegularState() || isReadyToEnterRegularState(gameController))
+            updateGhostState(gameController.getGameStateHandler().getState());
+    }
+
+    private void updatePositions(GameController gameController){
+        Orientation newOrientation = getModel().getStrategy().getNextOrientation(gameController.getModel().getGameMap(),
                 getModel(), getModel().getState());
         if (newOrientation == null) return;
         else getModel().setOrientation(newOrientation);
-        moveToNewPosition(((GameController)(application.getController())).getModel().getGameMap(),
-                ((GameController)(application.getController())).getModel().getGameMap().
-                        getAvailableOrientations(getModel().getPosition()));
+        moveToNewPosition(gameController.getModel().getGameMap(), gameController.getModel().getGameMap().
+                getAvailableOrientations(getModel().getPosition()));
     }
 
     private void moveToNewPosition(GameMap gameMap, List<Orientation> orientations){
@@ -96,5 +96,24 @@ public class GhostController extends Controller<Ghost> {
         if (this.getModel().getState() != GhostState.LEAVING_CAGE &&
                 this.getModel().getState() != GhostState.IN_CAGE && this.getModel().getState() != GhostState.DEAD)
             setNextBufferedOrientation(getModel().getOrientation().getOpposite());
+    }
+
+    private boolean isDeadInSpawnPosition(){
+        return getModel().getState() == GhostState.DEAD && getModel().getPosition().equals(getModel().getSpawnPosition());
+    }
+
+    private boolean isReadyToLeaveCage() {
+        return getModel().getState() == GhostState.IN_CAGE && getModel().getStrategy().getDotLimit() == 0;
+    }
+
+    private boolean isRegularState(){
+        GhostState state = getModel().getState();
+        return state != GhostState.IN_CAGE && state != GhostState.DEAD
+                && state != GhostState.LEAVING_CAGE;
+    }
+
+    private boolean isReadyToEnterRegularState(GameController gameController) {
+        return getModel().getState() == GhostState.LEAVING_CAGE && getModel().getPosition().
+                equals(gameController.getModel().getGameMap().getGhostSpawnPosition());
     }
 }
