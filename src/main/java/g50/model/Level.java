@@ -15,12 +15,13 @@ public class Level {
     private final int levelNumber;
 
     private static final Map<Integer, Class<? extends Collectable>> fruit = new HashMap<>() {{
-        put(1, Cherry.class);
-        put(2, Strawberry.class);
-        put(3, Orange.class);
+        put(1, Manjaro.class);
+        put(2, Cherry.class);
+        put(3, Strawberry.class);
         put(4, Orange.class);
-        put(5, Apple.class);
+        put(5, Orange.class);
         put(6, Apple.class);
+        put(7, Apple.class);
     }};
 
     private static final Map<Integer, Integer> pacManFramesPerMovement = new HashMap<>(){{
@@ -64,7 +65,7 @@ public class Level {
     }
 
     public Fruit getFruit(Position pos) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        return (Fruit) fruit.getOrDefault(levelNumber, Apple.class).getConstructor(Position.class).newInstance(pos);
+        return (Fruit) fruit.getOrDefault(levelNumber, Manjaro.class).getConstructor(Position.class).newInstance(pos);
     }
 
     public int getPacManFramesPerMovement(){
