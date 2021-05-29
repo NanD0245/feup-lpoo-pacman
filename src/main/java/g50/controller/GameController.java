@@ -38,7 +38,6 @@ public class GameController extends Controller<Game> {
     private GUI.KBD_ACTION lastAction;
     private int fruitDotLimit = 70;
     private int gameFrames = 0;
-    // refactor!!
     private boolean started;
 
     private static final List<Class<? extends GhostStrategy>> priorities = Arrays.asList(
@@ -102,16 +101,12 @@ public class GameController extends Controller<Game> {
             gameFrames++;
             gameStateHandler.update(application.getFrameRate());
             pacManController.update(application, gameFrames);
-            controlGhosts(application, gameFrames);
-            if(frame % 15 == 0) Application.playSound("pacman_chomp.wav");
             try {
                 checkPacmanGhostCollision();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            try {
+                controlGhosts(application, gameFrames);
+                if(frame % 15 == 0) Application.playSound("pacman_chomp.wav");
                 viewer.draw(gui);
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
             if (this.started) {
@@ -125,8 +120,6 @@ public class GameController extends Controller<Game> {
             }
         }
     }
-
-
 
     private void controlGhosts(Application application, int frame) {
         for(GhostController ghostController: ghostsController){

@@ -39,10 +39,10 @@ public class GameMapViewer extends Viewer<GameMap> {
             }
         }
 
-        this.pacManViewerBuilder.getViewer(getModel().getPacman()).draw(gui);
         for (Ghost ghost : getModel().getGhosts()){
             this.ghostViewerBuilder.getViewer(ghost).draw(gui);
         }
+        this.pacManViewerBuilder.getViewer(getModel().getPacman()).draw(gui);
     }
 
     public PacManViewerBuilder getPacManViewerBuilder() {
