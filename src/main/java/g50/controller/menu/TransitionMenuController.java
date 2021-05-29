@@ -5,6 +5,7 @@ import g50.gui.GUI;
 import g50.model.element.movable.Orientation;
 import g50.model.menu.Menu;
 import g50.model.menu.TransitionMenu;
+import g50.states.AppState;
 import g50.view.menu.MenuViewer;
 import g50.view.menu.TransitionMenuViewer;
 
@@ -66,6 +67,9 @@ public class TransitionMenuController extends MenuController {
             }
         }
         this.getMenuViewer().draw(this.getGui());
+        if (!direction && ((TransitionMenu) getModel()).getPacMan().getPosition().getX() > 28) {
+            application.setState(AppState.NEXT_LEVEL);
+        }
     }
 
     @Override

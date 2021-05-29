@@ -32,6 +32,7 @@ public class Application implements GUIObserver {
     private AppState lastAppState;
     private Game game;
     private Menu menu;
+    private int level;
 
     Application(GUI gui) throws FileNotFoundException {
         setHighScore(readHighScore(highScoreFile));
@@ -43,6 +44,7 @@ public class Application implements GUIObserver {
         this.state = AppState.MAIN_MENU;
         this.lastAppState = AppState.MAIN_MENU;
         this.game = null;
+        this.level = 1;
     }
 
     public static void main(String[] args) throws IOException, URISyntaxException, FontFormatException {
@@ -110,18 +112,29 @@ public class Application implements GUIObserver {
 
     public void update(int frame) throws IOException {
         if (!lastAppState.equals(state)) {
-            if (!(lastAppState.equals(AppState.PAUSE_MENU) || lastAppState.equals(AppState.IN_GAME)))
-                this.game = null;
             switch (state) {
                 case MAIN_MENU:
                     this.menu = new MainMenu();
                     this.controller = new MainMenuController(gui,(MainMenu)menu);
                     break;
                 case IN_GAME:
-                    if (this.game == null) {
-                        this.game = new Game(highScore, 1); // change level!!
+                    if (!lastAppState.equals(AppState.PAUSE_MENU)) {
+                        this.level = 1;
+                        this.game = new Game(highScore, level); // change level!!
                         this.controller = new GameController(gui, game);
                     }
+                    break;
+                case NEXT_LEVEL:
+                    if (!lastAppState.equals(AppState.PAUSE_MENU)) {
+                        this.level++;
+                        int score = this.game.getScore();
+                        this.game = new Game(highScore, level,score); // change level!!
+                        this.controller = new GameController(gui, game);
+                    }
+                    break;
+                case NEXT_LEVEL_MENU:
+                    this.menu = new TransitionMenu();
+                    this.controller = new TransitionMenuController(gui,(TransitionMenu) menu);
                     break;
                 case CONTROLS_MENU:
                     this.menu = new ControlsMenu();
@@ -153,6 +166,10 @@ public class Application implements GUIObserver {
                 }
                 this.menu = new GameOverMenu();
                 this.controller = new GameOverMenuController(gui, (GameOverMenu) menu);
+            }
+            else if (this.controller instanceof GameController && ((GameController) this.controller).isNextLevel()) {
+                this.menu = new TransitionMenu();
+                this.controller = new TransitionMenuController(gui, (TransitionMenu) menu);
             }
         }
         this.controller.update(this, frame);

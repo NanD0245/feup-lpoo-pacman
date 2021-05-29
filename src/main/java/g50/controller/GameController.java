@@ -211,10 +211,13 @@ public class GameController extends Controller<Game> {
     private void resetBonus() { this.currentBonus = bonusMultiplier; }
 
     public boolean isGameOver() {
+        return !getModel().getGameMap().getPacman().isAlive();
+    }
+
+    public boolean isNextLevel()  {
         return getModel().getGameMap().getMap()
                 .stream().flatMap(Collection::stream).collect(Collectors.toList())
-                .stream().noneMatch(x -> x instanceof PacDot)
-        || !getModel().getGameMap().getPacman().isAlive();
+                .stream().noneMatch(x -> x instanceof PacDot);
     }
 
     public List<GhostController> getGhostsController() { return ghostsController; }

@@ -18,6 +18,13 @@ public class Game {
         this.level = new Level(level);
     }
 
+    public Game(int highScore, int level, int score) throws IOException {
+        this.map = new DefaultGameMapBuilder().getBuild();
+        this.highScore = highScore;
+        this.score = score;
+        this.level = new Level(level);
+    }
+
     public GameMap getGameMap() {
         return map;
     }
