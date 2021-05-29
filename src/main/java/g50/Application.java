@@ -38,7 +38,6 @@ public class Application implements GUIObserver {
 
     Application(GUI gui) throws FileNotFoundException {
         setHighScore(readHighScore(highScoreFile));
-        System.out.println(readHighScore(highScoreFile));
         this.menu = new MainMenu();
         this.gui = gui;
         gui.addObserver(this);

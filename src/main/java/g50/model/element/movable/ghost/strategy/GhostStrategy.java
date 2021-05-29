@@ -32,18 +32,16 @@ public abstract class GhostStrategy {
         return map.getOrientationOfShortestPath(ghost.getPosition(), map.getPacman().getPosition(), ghost.getOrientation());
     }
 
-    protected Orientation inFrightned(GameMap map, Ghost ghost){
-        List<Orientation> availableOris =  map.getAvailableOrientations(ghost.getPosition());
-
-        removeOrientationTowardsCage(map, ghost, availableOris);
-        removeReverseOrientation(ghost, availableOris);
-
-        return availableOris.get(new Random().nextInt(availableOris.size()));
+    protected Orientation inFrightened(GameMap map, Ghost ghost){
+        List<Orientation> availableOrientations =  map.getAvailableOrientations(ghost.getPosition());
+        removeOrientationTowardsCage(map, ghost, availableOrientations);
+        removeReverseOrientation(ghost, availableOrientations);
+        return availableOrientations.get(new Random().nextInt(availableOrientations.size()));
     }
 
     protected Orientation inCage(GameMap map, Ghost ghost){
-        List<Orientation> availableOris =  map.getAvailableOrientations(ghost.getPosition());
-        if(!availableOris.contains(ghost.getOrientation()) ||
+        List<Orientation> availableOrientations =  map.getAvailableOrientations(ghost.getPosition());
+        if(!availableOrientations.contains(ghost.getOrientation()) ||
                 map.getElement(ghost.getPosition().getAdjacent(ghost.getOrientation())) instanceof Door)
             ghost.setOrientation(ghost.getOrientation().getOpposite());
         return ghost.getOrientation();
@@ -81,13 +79,13 @@ public abstract class GhostStrategy {
                 case DEAD: return inDead(map,ghost);
                 case CHASE: return inChase(map,ghost);
                 case SCATTER: return inScatter(map,ghost);
-                default: return inFrightned(map,ghost);
+                default: return inFrightened(map,ghost);
             }
         } else {
-            List<Orientation> oris = map.getAvailableOrientations(ghost.getPosition());
-            if(oris.contains(ghost.getOrientation())) return ghost.getOrientation();
-            oris.remove(ghost.getOrientation().getOpposite());
-            if(oris.size() > 0) return oris.get(0);
+            List<Orientation> orientations = map.getAvailableOrientations(ghost.getPosition());
+            if(orientations.contains(ghost.getOrientation())) return ghost.getOrientation();
+            orientations.remove(ghost.getOrientation().getOpposite());
+            if(orientations.size() > 0) return orientations.get(0);
             else return null;
         }
     }
@@ -115,7 +113,24 @@ public abstract class GhostStrategy {
         }
     }
 
-    private void removeReverseOrientation(Ghost ghost, List<Orientation> oris){
-        oris.remove(ghost.getOrientation().getOpposite());
+    private void removeReverseOrientation(Ghost ghost, List<Orientation> orientations){
+        orientations.remove(ghost.getOrientation().getOpposite());
+    }
+
+    public Orientation getBestOrientation(GameMap map, Ghost ghost, Position targetPosition){
+        List<Orientation> availableOris =  map.getAvailableOrientations(ghost.getPosition());
+        availableOris.remove(ghost.getOrientation().getOpposite());
+        Orientation bestOrientation = null;
+        double bestDistance = Double.POSITIVE_INFINITY;
+
+        for(Orientation ori: availableOris){
+            if(map.getElement(ghost.getPosition().getAdjacent(ori)) instanceof Door) continue;
+            double currDistance = calculateDistance(ghost.getPosition().getAdjacent(ori), targetPosition);
+            if(currDistance < bestDistance){
+                bestOrientation = ori;
+                bestDistance = currDistance;
+            }
+        }
+        return bestOrientation;
     }
 }

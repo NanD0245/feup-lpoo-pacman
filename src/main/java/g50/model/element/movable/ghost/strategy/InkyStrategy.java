@@ -12,7 +12,7 @@ import java.util.List;
 import static g50.model.element.Position.calculateDistance;
 
 public class InkyStrategy extends GhostStrategy {
-    private static int defaultDotLimit = 30;
+    private static final int defaultDotLimit = 30;
     private BlinkyGhost blinkyGhost;
 
     public InkyStrategy(BlinkyGhost blinkyGhost) {
@@ -22,8 +22,7 @@ public class InkyStrategy extends GhostStrategy {
 
     @Override
     protected Orientation inChase(GameMap map, Ghost ghost) {
-        if(blinkyGhost == null){
-            System.out.println("tenso");
+        if (blinkyGhost == null){
             return super.inChase(map, ghost);
         }
 
@@ -34,22 +33,7 @@ public class InkyStrategy extends GhostStrategy {
 
         targetPos = new Position(2 * (targetPos.getX() - blinkyGhost.getPosition().getX()),
                 2 * (targetPos.getY() - blinkyGhost.getPosition().getY()));
-
-        List<Orientation> availableOris =  map.getAvailableOrientations(ghost.getPosition());
-        availableOris.remove(ghost.getOrientation().getOpposite());
-        Orientation bestOrientation = null;
-        double bestDistance = Double.POSITIVE_INFINITY;
-
-        for(Orientation ori: availableOris){
-            if(map.getElement(ghost.getPosition().getAdjacent(ori)) instanceof Door) continue;
-            double currDistance = calculateDistance(ghost.getPosition().getAdjacent(ori), targetPos);
-            if(currDistance < bestDistance){
-                bestOrientation = ori;
-                bestDistance = currDistance;
-            }
-        }
-
-        return bestOrientation;
+        return getBestOrientation(map, ghost, targetPos);
     }
 
     public void setBlinkyGhost(BlinkyGhost blinkyGhost) {

@@ -7,7 +7,7 @@ import g50.model.map.GameMap;
 
 public class ClydeStrategy extends GhostStrategy {
 
-    private static int defaultDotLimit = 60;
+    private static final int defaultDotLimit = 60;
 
     public ClydeStrategy() {
         super(defaultDotLimit);
