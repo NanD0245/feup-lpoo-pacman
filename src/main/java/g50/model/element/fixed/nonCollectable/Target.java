@@ -1,6 +1,6 @@
 package g50.model.element.fixed.nonCollectable;
 
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.fixed.FixedElement;
 
 public class Target extends NonCollectable{

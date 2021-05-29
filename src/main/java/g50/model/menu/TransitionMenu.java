@@ -1,13 +1,12 @@
 package g50.model.menu;
 
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.BlinkyGhost;
 import g50.model.element.movable.ghost.Ghost;
 
 import java.util.Collections;
-import java.util.List;
 
 public class TransitionMenu extends Menu {
     private final PacMan pacMan;

@@ -1,4 +1,4 @@
-package g50.model;
+package g50.model.element;
 
 import g50.model.element.movable.Orientation;
 
@@ -14,7 +14,7 @@ public class Position implements Cloneable {
     }
 
     public Position(Position pos){
-        if(pos == null) return;
+        if (pos == null) return;
         this.x = pos.getX();
         this.y = pos.getY();
     }
@@ -42,7 +42,7 @@ public class Position implements Cloneable {
     }
 
     public Position getAdjacent(Orientation orientation){
-        switch (orientation){
+        switch (orientation) {
             case UP: return getUp();
             case RIGHT: return getRight();
             case DOWN: return getDown();
@@ -79,4 +79,61 @@ public class Position implements Cloneable {
         return Math.sqrt(deltaX + deltaY);
     }
 
+    public static Orientation getDirection(Position startPosition, Position targetPosition){
+        int xOffset = targetPosition.getX() - startPosition.getX();
+        int yOffset = targetPosition.getY() - startPosition.getY();
+        if (xOffset != 0) return xOffset > 0 ? Orientation.RIGHT : Orientation.LEFT;
+        else return yOffset > 0 ? Orientation.DOWN : Orientation.UP;
+    }
+
+    public static class Entry implements Comparable<Entry>{
+        private final Position key;
+        private Integer distance = 0;
+        private Entry parent = null;
+        private final Position destiny;
+
+        public Entry(Position key, Position destiny){
+            this.key = key;
+            this.destiny = destiny;
+        }
+
+        public void setParent(Entry positionEntry){
+            this.parent = positionEntry;
+        }
+
+        public void setDistance(Integer distance){
+            this.distance = distance;
+        }
+
+        @Override
+        public int compareTo(Entry o) {
+            return (int)((this.distance + calculateDistance(this.key, this.destiny)) -
+                    (o.distance + calculateDistance(o.key, o.destiny)));
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Entry positionEntry = (Entry) o;
+            return Objects.equals(key, positionEntry.key);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(key);
+        }
+
+        public Position getKey() {
+            return key;
+        }
+
+        public Integer getDistance() {
+            return distance;
+        }
+
+        public Entry getParent() {
+            return parent;
+        }
+    }
 }

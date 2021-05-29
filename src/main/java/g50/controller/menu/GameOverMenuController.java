@@ -1,11 +1,10 @@
 package g50.controller.menu;
 
-import g50.controller.states.GameState;
-import g50.controller.states.app_states.AppState;
+import g50.Application;
+import g50.states.AppState;
 import g50.gui.GUI;
 import g50.model.menu.GameOverMenu;
 import g50.view.menu.GameOverViewer;
-import g50.view.menu.MenuViewer;
 
 public class GameOverMenuController extends MenuController {
 
@@ -14,14 +13,9 @@ public class GameOverMenuController extends MenuController {
     }
 
     @Override
-    public void addPendingKBDAction(GUI.KBD_ACTION action) {
+    public void handleKBDAction(Application application, GUI.KBD_ACTION action) {
         if (action == GUI.KBD_ACTION.SELECT) {
-            setState(AppState.MAIN_MENU);
+            application.setState(AppState.MAIN_MENU);
         }
-    }
-
-    @Override
-    public void notify(GameState state) {
-
     }
 }

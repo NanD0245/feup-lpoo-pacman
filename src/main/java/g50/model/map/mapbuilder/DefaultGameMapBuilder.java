@@ -8,10 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DefaultGameMapBuilder extends GameMapBuilder {
-
-    private static final String defaultFilename = "src/main/resources/maps/default.txt";
-
     public DefaultGameMapBuilder(){
-        super(defaultFilename);
+        super("src/main/resources/maps/default.txt");
     }
 }

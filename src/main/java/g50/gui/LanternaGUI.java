@@ -8,7 +8,7 @@ import com.googlecode.lanterna.screen.*;
 import com.googlecode.lanterna.terminal.*;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
-import g50.model.Position;
+import g50.model.element.Position;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

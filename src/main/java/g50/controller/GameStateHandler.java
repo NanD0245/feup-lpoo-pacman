@@ -1,66 +1,57 @@
 package g50.controller;
 
-import g50.Application;
-import g50.controller.states.GameState;
-
+import g50.states.GameState;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-class GameStateHandler {
+public class GameStateHandler {
     private GameState state;
+    private GameController gameController;
     private List<Integer> times;
-    private int frightnedTime;
+    private int frightenedTime;
     private int elapsedSeconds;
-    private static int defaultFrightnedTime = 6;
-    private List<Controller> observers;
+    private static int defaultFrightenedTime = 6;
+    private List<Controller<?>> observers;
 
-    public GameStateHandler(List<Integer> timeIntervals){
-        this.state = GameState.GameScatter;
+    public GameStateHandler(GameController gameController, List<Integer> timeIntervals){
+        this.state = GameState.GAME_SCATTER;
         this.times = timeIntervals;
         this.observers = new ArrayList<>();
-        this.frightnedTime = 0;
+        this.frightenedTime = 0;
         this.elapsedSeconds = 0;
+        this.gameController = gameController;
     }
 
     public void update(int frame, int framerate) {
         elapsedSeconds = frame/framerate;
 
-        if(state.equals(GameState.GameFrightned))
-            if(elapsedSeconds - frightnedTime < defaultFrightnedTime) return;
+        if(state.equals(GameState.GAME_FRIGHTENED))
+            if(elapsedSeconds - frightenedTime < defaultFrightenedTime) return;
 
-        GameState newState = GameState.GameScatter;
+        GameState newState = GameState.GAME_SCATTER;
 
         int timeForState = elapsedSeconds;
         for(Integer value: this.times){
-            if(value == Integer.MAX_VALUE || timeForState - value < 0){
-                if(this.state == null || this.state != newState) setCurrentState(newState);
+            if (value == Integer.MAX_VALUE || timeForState - value < 0){
+                if (this.state != newState) setCurrentState(newState);
                 return;
             }
-            newState = newState == GameState.GameScatter ? GameState.GameChase : GameState.GameScatter;
+            newState = newState == GameState.GAME_SCATTER ? GameState.GAME_CHASE : GameState.GAME_SCATTER;
             timeForState -= value;
         }
     }
 
     public void setCurrentState(GameState newState){
         this.state = newState;
-        notifyObservers();
-        if(newState == GameState.GameFrightned) frightnedTime = elapsedSeconds;
-    }
-
-    public void addObserver(Controller controller){
-        this.observers.add(controller);
-    }
-
-    private void notifyObservers(){
-        for(Controller controller: observers){
-            controller.notify(this.state);
+        if (newState == GameState.GAME_FRIGHTENED) frightenedTime = elapsedSeconds;
+        for (GhostController ghostController: gameController.getGhostsController()){
+            ghostController.reverseOrientation();
         }
     }
 
     public GameState getState() { return state; }
 
     public void resetCurrentState() {
-        this.state = GameState.GameScatter;
+        this.state = GameState.GAME_SCATTER;
     }
 }

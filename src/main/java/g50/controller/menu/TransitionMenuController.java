@@ -1,7 +1,6 @@
 package g50.controller.menu;
 
 import g50.Application;
-import g50.controller.states.GameState;
 import g50.gui.GUI;
 import g50.model.element.movable.Orientation;
 import g50.model.menu.Menu;
@@ -22,11 +21,6 @@ public class TransitionMenuController extends MenuController {
         this.count = 0;
         this.direction = true;
         this.started = false;
-    }
-
-    @Override
-    public void notify(GameState gameState) {
-
     }
 
     @Override
@@ -72,5 +66,10 @@ public class TransitionMenuController extends MenuController {
             }
         }
         this.getMenuViewer().draw(this.getGui());
+    }
+
+    @Override
+    public void handleKBDAction(Application application, GUI.KBD_ACTION action) {
+
     }
 }

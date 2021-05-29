@@ -1,29 +1,21 @@
 package g50.controller;
 
-import g50.controller.states.GameState;
 import g50.Application;
 import g50.gui.GUI;
-import g50.gui.GUIObserver;
-import g50.model.Position;
-import g50.model.element.fixed.FixedElement;
-import g50.model.element.fixed.collectable.Collectable;
+import g50.model.element.Position;
 import g50.model.element.fixed.nonCollectable.Door;
-import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
 import g50.model.map.GameMap;
-import g50.view.Viewer;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 public class PacManController extends Controller<PacMan> {
     private final GameController gameController;
     private final GameMap gameMap;
-    private Orientation nextBufferedOrientation;
-
+    private Orientation nextOrientation;
     private static final Map<GUI.KBD_ACTION, Orientation> actionToOrientation = new HashMap<>() {{
                 put(GUI.KBD_ACTION.UP, Orientation.UP);
                 put(GUI.KBD_ACTION.DOWN, Orientation.DOWN);
@@ -33,67 +25,47 @@ public class PacManController extends Controller<PacMan> {
                 put(GUI.KBD_ACTION.QUIT, null);
     }};
 
-
     public PacManController(GameController gameController){
         super(gameController.getModel().getGameMap().getPacman());
         this.gameController = gameController;
         this.gameMap = gameController.getModel().getGameMap();
-        this.getModel().defineFramesPerPosition(gameController.getLevelInfo().getPacManFramesPerMovement());
+        this.getModel().setFramesAndDefaultFramesPerPosition(gameController.getModel().getLevelInfo().getPacManFramesPerMovement());
     }
 
 
     public void addPendingKBDAction(GUI.KBD_ACTION action) {
-        List<Orientation> oris =
+        List<Orientation> orientations =
                 gameMap.getAvailableOrientations(getModel().getPosition());
-
-        for(Orientation orientation: oris){
+        for(Orientation orientation: orientations){
             if(gameController.getModel().getGameMap().getElement(getModel().getPosition().getAdjacent(orientation)) instanceof Door){
-                oris.remove(orientation);
+                orientations.remove(orientation);
                 break;
             }
         }
-
         Orientation actionOrientation = actionToOrientation.get(action);
-        if(actionOrientation == null || actionOrientation == getModel().getOrientation()) return;
-
-        if(oris.contains(actionOrientation)){
+        if (actionOrientation == null || actionOrientation == getModel().getOrientation()) return;
+        if (orientations.contains(actionOrientation)){
             getModel().setOrientation(actionOrientation);
-            if(nextBufferedOrientation == actionOrientation.getOpposite()) nextBufferedOrientation = null;
+            if (nextOrientation == actionOrientation.getOpposite()) nextOrientation = null;
         }
-        else this.nextBufferedOrientation = actionOrientation;
-    }
-
-    private void moveToNewPosition(List<Orientation> oris){
-        if(oris.contains(nextBufferedOrientation)) {
-            getModel().move(nextBufferedOrientation, gameMap.getColumns(), gameMap.getLines());
-            nextBufferedOrientation = null;
-        } else if(oris.contains(getModel().getOrientation()))
-            getModel().move(getModel().getOrientation(), gameMap.getColumns(), gameMap.getLines());
+        else this.nextOrientation = actionOrientation;
     }
 
     @Override
     public void update(Application application, int frame) {
         if(frame % 20 == 0) Application.playSound("pacman_chomp.wav");
-        if(frame % gameMap.getPacman().getFramesPerPosition() != 0) return;
-
+        if(frame % getModel().getFramesPerPosition() != 0) return;
         gameController.consumeMapElement(super.getModel().getPosition());
-
         Position currentPos = super.getModel().getPosition();
         moveToNewPosition(gameMap.getAvailableOrientations(super.getModel().getPosition()), currentPos);
     }
 
-    @Override
-    public void notify(GameState state) { }
-
-    private void moveToNewPosition(List<Orientation> oris, Position currentPos){
-        if(oris.contains(nextBufferedOrientation)
-        && !(gameMap.getElement(currentPos.getAdjacent(nextBufferedOrientation)) instanceof Door)){
-            super.getModel().move(nextBufferedOrientation, gameMap.getColumns(), gameMap.getLines());
-            nextBufferedOrientation = null;
-        } else if(oris.contains(super.getModel().getOrientation()))
+    private void moveToNewPosition(List<Orientation> orientations, Position currentPos){
+        if (orientations.contains(nextOrientation)
+        && !(gameMap.getElement(currentPos.getAdjacent(nextOrientation)) instanceof Door)){
+            super.getModel().move(nextOrientation, gameMap.getColumns(), gameMap.getLines());
+            nextOrientation = null;
+        } else if (orientations.contains(super.getModel().getOrientation()))
             super.getModel().move(super.getModel().getOrientation(), gameMap.getColumns(), gameMap.getLines());
     }
-
-    public Position getControllablePosition() { return super.getModel().getPosition(); }
-
 }

@@ -1,8 +1,5 @@
-package g50.view.wallviewerfactory;
+package g50.view.factory;
 
-import g50.controller.GameController;
-import g50.controller.states.GhostState;
-import g50.model.element.movable.ghost.*;
 import g50.view.ViewProperty;
 
 import java.util.BitSet;

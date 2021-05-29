@@ -1,5 +1,6 @@
 package g50.model;
 
+import g50.model.element.Position;
 import g50.model.element.fixed.collectable.Collectable;
 import g50.model.element.fixed.collectable.fruit.*;
 
@@ -9,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LevelInfo {
+public class Level {
 
     private final int level;
 
@@ -20,31 +21,27 @@ public class LevelInfo {
         put(4, Orange.class);
         put(5, Apple.class);
         put(6, Apple.class);
-        put(7, Melon.class);
-        put(8, Melon.class);
-        put(9, GalaxianBoss.class);
-        put(10, GalaxianBoss.class);
     }};
 
     private static final Map<Integer, Integer> pacManFramesPerMovement = new HashMap<>(){{
-        put(1, 25);
-        put(2, 20);
-        put(3, 20);
-        put(4, 20);
+        put(1, 12);
+        put(2, 10);
+        put(3, 10);
+        put(4, 10);
     }};
 
     private static final Map<Integer, Integer> ghostFramesPerMovement =  new HashMap<>() {{
-        put(1, 35);
-        put(2, 30);
-        put(3, 25);
-        put(4, 25);
+        put(1, 17);
+        put(2, 15);
+        put(3, 12);
+        put(4, 12);
     }};
 
-    private static final Map<Integer, Integer> frightnedGhostFramesPerMovement = new HashMap<>() {{
-       put(1, 60);
-       put(2, 55);
-       put(3, 55);
-       put(4, 55);
+    private static final Map<Integer, Integer> frightenedGhostFramesPerMovement = new HashMap<>() {{
+       put(1, 30);
+       put(2, 27);
+       put(3, 27);
+       put(4, 27);
     }};
 
     private static final Map<Integer, List<Integer>> gameStateIntervals = new HashMap<>() {{
@@ -55,23 +52,23 @@ public class LevelInfo {
     }};
 
 
-    LevelInfo(int level){
+    Level(int level){
         this.level = level;
     }
 
     public Fruit getFruit(Position pos) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        return (Fruit) fruit.getOrDefault(level, Key.class).getConstructor(Position.class).newInstance(pos);
+        return (Fruit) fruit.getOrDefault(level, Apple.class).getConstructor(Position.class).newInstance(pos);
     }
 
     public int getPacManFramesPerMovement(){
-        return pacManFramesPerMovement.getOrDefault(level, 15);
+        return pacManFramesPerMovement.getOrDefault(level, 7);
     }
 
     public int getGhostFramesPerMovement() {
-        return ghostFramesPerMovement.getOrDefault(level, 20);
+        return ghostFramesPerMovement.getOrDefault(level, 10);
     }
 
-    public int getFrightnedGhostFramesPerMovement() { return frightnedGhostFramesPerMovement.getOrDefault(level, 50); }
+    public int getFrightenedGhostFramesPerMovement() { return frightenedGhostFramesPerMovement.getOrDefault(level, 25); }
 
     public List<Integer> getGameStateIntervals() {
         return gameStateIntervals.getOrDefault(level,Arrays.asList(5,20,5,20,5,1037,1));

@@ -1,6 +1,6 @@
 package g50.model;
 
-import g50.model.Position;
+import g50.model.element.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,26 +1,25 @@
-package g50.controller.ghost_strategy;
+package g50.model.element.movable.ghost.strategy;
 
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.fixed.nonCollectable.Door;
-import g50.model.element.fixed.nonCollectable.Target;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
 
 import java.util.List;
 
-import static g50.model.Position.calculateDistance;
+import static g50.model.element.Position.calculateDistance;
 
 public class PinkyStrategy extends GhostStrategy {
 
     private static int defaultDotLimit = 0;
 
-    public PinkyStrategy(GameMap map, Ghost ghost) {
-        super(map, ghost, defaultDotLimit);
+    public PinkyStrategy() {
+        super(defaultDotLimit);
     }
 
     @Override
-    protected Orientation inChase() {
+    protected Orientation inChase(GameMap map, Ghost ghost) {
         Position targetPos = map.getPacman().getPosition();
         Orientation pacmanOrientation = map.getPacman().getOrientation();
 

@@ -1,89 +1,86 @@
 package g50;
 
-import com.sun.tools.javac.Main;
 import g50.controller.Controller;
 import g50.controller.GameController;
 import g50.controller.menu.*;
-import g50.controller.states.app_states.AppState;
+import g50.states.AppState;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
-import g50.gui.LanternaGUI;
 import g50.model.Game;
-import g50.model.map.GameMap;
-import g50.model.map.mapbuilder.DefaultGameMapBuilder;
 import g50.model.menu.*;
 import g50.model.menu.Menu;
 
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import static java.lang.Integer.parseInt;
 
 public class Application implements GUIObserver {
-    private int highscore;
+    private int highScore;
 
-    static final String highscore_file = "src/main/resources/highscore/highscore.txt";
-    private int frameRate = 60;
+    static final String highScoreFile = "src/main/resources/highscore/highscore.txt";
+    private int frameRate;
     private Timer timer;
-    private Controller controller;
+    private Controller<?> controller;
     private final GUI gui;
     private AppState state;
     private AppState lastAppState;
     private Game game;
     private Menu menu;
+    private PauseMenu pauseMenu;
+    private PauseMenuController pauseMenuController;
 
     Application(GUI gui) throws FileNotFoundException {
-        setHighscore(readHighscore(highscore_file));
-        System.out.println(readHighscore(highscore_file));
+        setHighScore(readHighScore(highScoreFile));
+        System.out.println(readHighScore(highScoreFile));
         this.menu = new MainMenu();
-        //this.menu = new TransitionMenu();
         this.gui = gui;
         gui.addObserver(this);
         this.controller = new MainMenuController(gui,(MainMenu)menu);
-        //this.controller = new TransitionMenuController(gui, (TransitionMenu)menu);
         this.state = AppState.MAIN_MENU;
         this.lastAppState = AppState.MAIN_MENU;
         this.game = null;
+
+        this.pauseMenu = new PauseMenu();
+        this.pauseMenuController = new PauseMenuController(gui,pauseMenu);
     }
 
     public static void main(String[] args) throws IOException, URISyntaxException, FontFormatException {
         Application application =
                 new Application(new g50.gui.LanternaGUI(28,38));
-        application.setUp(60);
+        application.setUp(30);
     }
 
-    public int readHighscore(String file) throws FileNotFoundException {
+    public int readHighScore(String file) throws FileNotFoundException {
         BufferedReader buffer = new BufferedReader(new FileReader(file));
-        int highscore = 0;
+        int highScore = 0;
         try {
             String score_s = buffer.readLine();
             if (score_s != null && !score_s.equals(""))
-                highscore =  parseInt(score_s);
+                highScore =  parseInt(score_s);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return highscore;
+        return highScore;
     }
 
-    public void writeHighscore(String file) throws IOException {
+    public void writeHighScore(String file) throws IOException {
         FileWriter writer = new FileWriter(file);
-        writer.write(String.valueOf(getHighscore()));
+        writer.write(String.valueOf(getHighScore()));
         writer.close();
     }
 
-    public void setHighscore(int highscore) {
-        this.highscore = highscore;
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
     }
 
-    public int getHighscore() {
-        return highscore;
+    public int getHighScore() {
+        return highScore;
     }
 
     public void setUp(int frameRate){
@@ -107,27 +104,33 @@ public class Application implements GUIObserver {
     public void terminate() throws IOException {
         timer.cancel();
         this.gui.close();
-        writeHighscore(highscore_file);
+        writeHighScore(highScoreFile);
     }
 
     @Override
     public void addPendingKBDAction(GUI.KBD_ACTION action) throws IOException {
         if(action == GUI.KBD_ACTION.QUIT) terminate();
-        this.controller.addPendingKBDAction(action);
-        if (this.controller.state != null)
-            this.state = this.controller.state;
+        if (!state.equals(AppState.PAUSE_MENU))
+            this.controller.addPendingKBDAction(action);
+        else this.pauseMenuController.addPendingKBDAction(action);
     }
 
     public void update(int frame) throws IOException {
         if (!lastAppState.equals(state)) {
+            if (!(lastAppState.equals(AppState.PAUSE_MENU) || lastAppState.equals(AppState.IN_GAME)))
+                this.game = null;
             switch (state) {
                 case MAIN_MENU:
                     this.menu = new MainMenu();
                     this.controller = new MainMenuController(gui,(MainMenu)menu);
                     break;
                 case IN_GAME:
-                    this.game = new Game();
-                    this.controller = new GameController(gui, game, frameRate);
+                    if (this.game == null) {
+                        this.game = new Game(highScore, 1); // change level!!
+                        this.controller = new GameController(gui, game);
+                    } else {
+                        ((GameController) controller).setPause(false);
+                    }
                     break;
                 case CONTROLS_MENU:
                     this.menu = new ControlsMenu();
@@ -146,15 +149,40 @@ public class Application implements GUIObserver {
                     break;
             }
             lastAppState = state;
-            System.out.println(lastAppState);
         }
         else {
             if (this.controller instanceof GameController && ((GameController) this.controller).isGameOver()) {
+                if (this.game.getScore() > this.highScore) {
+                    this.highScore = this.getGame().getScore();
+                }
                 this.menu = new GameOverMenu();
                 this.controller = new GameOverMenuController(gui, (GameOverMenu) menu);
             }
         }
-        this.controller.update(this, frame);
+        if (state.equals(AppState.PAUSE_MENU)) {
+            this.pauseMenuController.update(this,frame);
+        }
+        else this.controller.update(this, frame);
+    }
+
+    public Controller<?> getController() {
+        return controller;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setState(AppState state) {
+        this.state = state;
+    }
+
+    public int getFrameRate() {
+        return frameRate;
     }
 
     public static synchronized void playSound(final String url) {

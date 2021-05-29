@@ -1,17 +1,26 @@
 package g50.model.element.movable.ghost;
 
-import g50.model.Position;
+import g50.states.GhostState;
+import g50.model.element.Position;
 import g50.model.element.fixed.nonCollectable.Target;
 import g50.model.element.movable.MovableElement;
 import g50.model.element.movable.Orientation;
+import g50.model.element.movable.ghost.strategy.GhostStrategy;
 
 public abstract class Ghost extends MovableElement {
-    private Target target;
-    private Orientation startOrientation;
+    private final Target target;
+    private final GhostStrategy strategy;
+    private GhostState state;
+    private final GhostState startState;
+    private final Orientation startOrientation;
 
-    public Ghost(String name, Position position, Orientation orientation, Target target) {
+    public Ghost(String name, Position position, Orientation orientation,
+                 GhostState state, GhostStrategy strategy, Target target) {
         super(name, position, orientation);
         this.target = target;
+        this.strategy = strategy;
+        this.state = state;
+        this.startState = state;
         this.startOrientation = orientation;
     }
 
@@ -19,7 +28,22 @@ public abstract class Ghost extends MovableElement {
         return target;
     }
 
-    public void resetOrientation() {
+    public GhostState getState() {
+        return state;
+    }
+
+    public GhostStrategy getStrategy() {
+        return strategy;
+    }
+
+    public void setState(GhostState state) {
+        this.state = state;
+    }
+
+    public void reset() {
+        this.state = startState;
         this.setOrientation(this.startOrientation);
+        this.strategy.resetDotLimit();
+        setDefaultFramesPerPosition();
     }
 }

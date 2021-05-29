@@ -1,41 +1,35 @@
 package g50.view;
 
-import g50.controller.GameController;
 import g50.gui.GUI;
-import g50.model.Position;
 import g50.model.element.Element;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.nonCollectable.Wall;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
-import g50.view.ghostViewerFactory.DefaultGhostViewerBuilder;
-import g50.view.ghostViewerFactory.GhostViewerBuilder;
-import g50.view.pacmanViewerFactory.DefaultPacManViewerBuilder;
-import g50.view.pacmanViewerFactory.PacManViewerBuilder;
-import g50.view.wallviewerfactory.DefaultWallViewerBuilder;
-import g50.view.wallviewerfactory.WallViewerBuilder;
+import g50.view.factory.*;
 
 import java.io.IOException;
 import java.util.List;
 
-public class GameMapViewer {
+public class GameMapViewer extends Viewer<GameMap> {
     private final ElementViewerBuilder elementViewerBuilder;
     private final PacManViewerBuilder pacManViewerBuilder;
     private final GhostViewerBuilder ghostViewerBuilder;
     private final WallViewerBuilder wallViewerBuilder;
 
-    public GameMapViewer(GameController gameController){
+    public GameMapViewer(GameMap gameMap){
+        super(gameMap);
         this.elementViewerBuilder = new DefaultElementViewerBuilder();
         this.pacManViewerBuilder = new DefaultPacManViewerBuilder();
-        this.ghostViewerBuilder = new DefaultGhostViewerBuilder(gameController);
+        this.ghostViewerBuilder = new DefaultGhostViewerBuilder();
         this.wallViewerBuilder = new DefaultWallViewerBuilder();
     }
 
-    public void draw(GUI gui, GameMap gameMap) throws IOException {
-        final List<List<FixedElement>> map = gameMap.getMap();
-        for (int line = 0; line < gameMap.getLines(); line++){
-            for (int column = 0; column < gameMap.getColumns(); column++){
-                Position position = new Position(column, line);
+    @Override
+    public void draw(GUI gui) throws IOException {
+        final List<List<FixedElement>> map = getModel().getMap();
+        for (int line = 0; line < getModel().getLines(); line++){
+            for (int column = 0; column < getModel().getColumns(); column++){
                 Element element = map.get(line).get(column);
                 if (element instanceof Wall) {
                     this.wallViewerBuilder.getViewer((Wall)element).draw(gui);
@@ -45,9 +39,21 @@ public class GameMapViewer {
             }
         }
 
-        this.pacManViewerBuilder.getViewer(gameMap.getPacman()).draw(gui);
-        for (Ghost ghost : gameMap.getGhosts()){
+        this.pacManViewerBuilder.getViewer(getModel().getPacman()).draw(gui);
+        for (Ghost ghost : getModel().getGhosts()){
             this.ghostViewerBuilder.getViewer(ghost).draw(gui);
         }
+    }
+
+    public PacManViewerBuilder getPacManViewerBuilder() {
+        return pacManViewerBuilder;
+    }
+
+    public GhostViewerBuilder getGhostViewerBuilder() {
+        return ghostViewerBuilder;
+    }
+
+    public WallViewerBuilder getWallViewerBuilder() {
+        return wallViewerBuilder;
     }
 }

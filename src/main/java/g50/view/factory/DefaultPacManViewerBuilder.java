@@ -1,6 +1,5 @@
-package g50.view.pacmanViewerFactory;
+package g50.view.factory;
 
-import g50.controller.GameController;
 import g50.model.element.movable.Orientation;
 import g50.view.ViewProperty;
 

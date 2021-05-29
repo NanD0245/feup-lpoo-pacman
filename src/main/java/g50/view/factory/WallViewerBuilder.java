@@ -1,10 +1,8 @@
-package g50.view.wallviewerfactory;
+package g50.view.factory;
 
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.fixed.nonCollectable.Wall;
-import g50.model.element.movable.Orientation;
-import g50.model.element.movable.PacMan;
 import g50.view.ElementViewer;
 import g50.view.ViewProperty;
 

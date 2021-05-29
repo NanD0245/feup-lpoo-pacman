@@ -1,27 +1,21 @@
 package g50.controller;
 
-import g50.controller.ghost_strategy.*;
-import g50.controller.states.GameState;
-import g50.controller.states.GhostState;
+import g50.states.AppState;
+import g50.states.GameState;
+import g50.states.GhostState;
 import g50.Application;
-import g50.controller.states.app_states.AppState;
 import g50.gui.GUI;
 import g50.model.Game;
-import g50.model.LevelInfo;
 import g50.model.element.fixed.collectable.PacDot;
 import g50.model.element.fixed.collectable.fruit.Fruit;
 import g50.model.element.movable.ghost.Ghost;
-import g50.gui.GUIObserver;
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.collectable.Collectable;
 import g50.model.element.fixed.collectable.CollectableTriggers;
 import g50.model.element.fixed.nonCollectable.EmptySpace;
-import g50.model.element.movable.ghost.*;
-import g50.model.map.GameMap;
-import g50.view.GameMapViewer;
+import g50.model.element.movable.ghost.strategy.*;
 import g50.view.GameViewer;
-import g50.view.Viewer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,84 +23,62 @@ import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
 public class GameController extends Controller<Game> {
     private final List<GhostController> ghostsController;
     private final PacManController pacManController;
     private final GameViewer viewer;
     private final GUI gui;
-    private final GameStateHandler gameState;
-    private final List<Class<? extends GhostStrategy>> priorities;
-    private int currBonus;
-    private static int bonus = 200;
-    private int frameRate;
+    private final GameStateHandler gameStateHandler;
+    private int currentBonus;
+    private static final int bonusMultiplier = 200;
+
+    // refactor!!
     private boolean pause;
     private boolean started;
     private int fruitDotLimit = 70;
 
+    private static final List<Class<? extends GhostStrategy>> priorities = Arrays.asList(
+            BlinkyStrategy.class,
+            PinkyStrategy.class,
+            InkyStrategy.class,
+            ClydeStrategy.class);
 
-    public GameController(GUI gui, Game game, int frameRate) {
+    public GameController(GUI gui, Game game) {
         super(game);
         this.ghostsController = new ArrayList<>();
         this.pacManController = new PacManController(this);
-        this.viewer = new GameViewer(game, this);
+        this.viewer = new GameViewer(game);
         this.gui = gui;
-        this.gameState = new GameStateHandler(this.getModel().getLevelInfo().getGameStateIntervals());
-        this.gameState.addObserver(this);
+        this.gameStateHandler = new GameStateHandler(this, this.getModel().getLevelInfo().getGameStateIntervals());
         setUpGhosts();
+        this.currentBonus = 200;
+        this.pause = false;
         this.started = true;
+    }
 
-        this.priorities = Arrays.asList(
-                BlinkyStrategy.class,
-                PinkyStrategy.class,
-                InkyStrategy.class,
-                ClydeStrategy.class);
-
-        this.bonus = 200;
-        this.frameRate = frameRate;
+    public void setPause(boolean pause) {
+        this.pause = pause;
     }
 
     public void setUpGhosts(){
-
-        BlinkyGhost currentBlinky = null;
-
-        for(Ghost ghost: super.getModel().getGameMap().getGhosts())
-            if(ghost instanceof BlinkyGhost) currentBlinky = (BlinkyGhost) ghost;
-
-        for(Ghost ghost: super.getModel().getGameMap().getGhosts()) {
-            GhostController newGhostController;
-            if(ghost instanceof InkyGhost)
-                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new InkyStrategy(super.getModel().getGameMap(), ghost, currentBlinky));
-            else if(ghost instanceof ClydeGhost)
-                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new ClydeStrategy(super.getModel().getGameMap(), ghost));
-            else if(ghost instanceof PinkyGhost)
-                newGhostController = new GhostController(this, ghost, GhostState.INCAGE, new PinkyStrategy(super.getModel().getGameMap(), ghost));
-            else {
-                newGhostController = new GhostController(this, ghost, GhostState.CHASE, new BlinkyStrategy(super.getModel().getGameMap(), ghost));
-                currentBlinky = (BlinkyGhost) ghost;
-            }
-
-            this.ghostsController.add(newGhostController);
-            this.gameState.addObserver(newGhostController);
+        for (Ghost ghost: getModel().getGameMap().getGhosts()) {
+            this.ghostsController.add(new GhostController(ghost));
+            ghost.setFramesAndDefaultFramesPerPosition(getModel().getLevelInfo().getGhostFramesPerMovement());
         }
     }
 
-
     public void addPendingKBDAction(GUI.KBD_ACTION action) {
-        if (action.equals(GUI.KBD_ACTION.ESQ))
+        if (action == GUI.KBD_ACTION.ESQ) {
             pause = true;
-        else {
+        } else {
             pacManController.addPendingKBDAction(action);
         }
     }
 
-    public boolean isPause() {
-        return pause;
-    }
-
     @Override
     public void update(Application application, int frame) {
-        gameState.update(frame, frameRate);
+        if (pause) application.setState(AppState.PAUSE_MENU);
+        gameStateHandler.update(frame, application.getFrameRate());
         controlGhosts(application, frame);
         pacManController.update(application, frame);
         try {
@@ -115,11 +87,11 @@ public class GameController extends Controller<Game> {
             e.printStackTrace();
         }
         try {
-            viewer.draw(gui, this.getModel().getGameMap());
+            viewer.draw(gui);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(this.started){
+        if (this.started){
             try {
                 Application.playSound("pacman_beginning.wav");
                 Thread.sleep(4000);
@@ -152,17 +124,17 @@ public class GameController extends Controller<Game> {
                     this.fruitDotLimit--;
                     break;
                 case FRIGHTEN:
-                    gameState.setCurrentState(GameState.GameFrightned);
+                    gameStateHandler.setCurrentState(GameState.GAME_FRIGHTENED);
                     break;
                 default: break;
             }
             this.getModel().incrementScore(((Collectable) currentElement).collect());
         }
 
-        if(this.fruitDotLimit == 0) {
+        if (this.fruitDotLimit == 0) {
             try {
-                Fruit fruit = this.getModel().getLevelInfo().getFruit(this.getModel().getGameMap().getFruitPos());
-                super.getModel().getGameMap().setElement(fruit, this.getModel().getGameMap().getFruitPos());
+                Fruit fruit = this.getModel().getLevelInfo().getFruit(this.getModel().getGameMap().getFruitPosition());
+                super.getModel().getGameMap().setElement(fruit, this.getModel().getGameMap().getFruitPosition());
                 this.fruitDotLimit = 70;
             } catch(Exception e){
                 e.printStackTrace();
@@ -171,10 +143,10 @@ public class GameController extends Controller<Game> {
     }
 
     private void decreaseDotsOnHighestPriorityGhost(){
-        for(Class classType: this.priorities){
-            for(GhostController ghostController: this.ghostsController){
-                if(classType.equals(ghostController.getStrategy().getClass())
-                        && ghostController.getState().equals(GhostState.INCAGE)){
+        for (Class<? extends GhostStrategy> classType: priorities){
+            for (GhostController ghostController: ghostsController){
+                if (classType.equals(ghostController.getModel().getStrategy().getClass())
+                        && ghostController.getModel().getState().equals(GhostState.IN_CAGE)){
                     ghostController.decrementStrategyDotLimit();
                     return;
                 }
@@ -183,15 +155,15 @@ public class GameController extends Controller<Game> {
     }
 
     private void checkPacmanGhostCollision() throws InterruptedException {
-        for(GhostController ghostController: ghostsController){
-            if(ghostController.getControllablePosition().equals(pacManController.getModel().getPosition())){
-                if(ghostController.getState().equals(GhostState.FRIGHTENED)){
+        for (GhostController ghostController: ghostsController){
+            if (ghostController.getModel().getPosition().equals(pacManController.getModel().getPosition())){
+                if (ghostController.getModel().getState().equals(GhostState.FRIGHTENED)){
                     ghostController.consumeGhost();
-                    this.getModel().incrementScore(this.currBonus);
-                    this.currBonus *= 2;
+                    this.getModel().incrementScore(this.currentBonus);
+                    this.currentBonus *= 2;
                     Application.playSound("pacman_eatghost.wav");
                 }
-                else if(!ghostController.getState().equals(GhostState.DEAD)){
+                else if (!ghostController.getModel().getState().equals(GhostState.DEAD)){
                     getModel().getGameMap().getPacman().decreaseLives();
                     if (getModel().getGameMap().getPacman().isAlive()) {
                         Application.playSound("pacman_death.wav");
@@ -208,17 +180,12 @@ public class GameController extends Controller<Game> {
     }
 
     private void resetStates() {
-        this.gameState.resetCurrentState();
+        this.gameStateHandler.resetCurrentState();
         for(GhostController controller: ghostsController)
-            controller.resetState();
+            controller.getModel().reset();
     }
 
-    @Override
-    public void notify(GameState state) {
-        resetBonus();
-    }
-
-    private void resetBonus() { this.currBonus = bonus; }
+    private void resetBonus() { this.currentBonus = bonusMultiplier; }
 
     public boolean isGameOver() {
         return getModel().getGameMap().getMap()
@@ -231,7 +198,7 @@ public class GameController extends Controller<Game> {
 
     public PacManController getPacManController() { return pacManController; }
 
-    public LevelInfo getLevelInfo() {
-        return this.getModel().getLevelInfo();
+    public GameStateHandler getGameStateHandler() {
+        return gameStateHandler;
     }
 }

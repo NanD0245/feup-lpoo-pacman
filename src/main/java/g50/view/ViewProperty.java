@@ -1,7 +1,5 @@
 package g50.view;
 
-import g50.model.Position;
-
 import java.util.Objects;
 
 public class ViewProperty {

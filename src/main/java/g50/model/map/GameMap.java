@@ -1,32 +1,27 @@
 package g50.model.map;
 
-import g50.model.Position;
+import g50.model.element.Position;
 import g50.model.element.fixed.FixedElement;
-import g50.model.element.fixed.collectable.Collectable;
-import g50.model.element.fixed.nonCollectable.EmptySpace;
 import g50.model.element.movable.Orientation;
 import g50.model.element.movable.PacMan;
-import g50.model.element.movable.ghost.BlinkyGhost;
 import g50.model.element.movable.ghost.Ghost;
 
 import java.util.*;
-
-import static g50.model.Position.calculateDistance;
 
 public class GameMap {
 
     private final List<List<FixedElement>> map;
     private final List<Ghost> ghosts;
     private final PacMan pacman;
-    private Position ghostStartPos;
-    private Position fruitPos;
+    private final Position ghostSpawnPosition;
+    private final Position fruitPosition;
 
     public GameMap(List<List<FixedElement>> map, List<Ghost> ghosts, PacMan pacman, Position startPos, Position fruitPos) {
         this.map = map;
         this.ghosts = ghosts;
         this.pacman = pacman;
-        this.ghostStartPos = startPos;
-        this.fruitPos = fruitPos;
+        this.ghostSpawnPosition = startPos;
+        this.fruitPosition = fruitPos;
     }
 
     public List<List<FixedElement>> getMap(){
@@ -57,10 +52,9 @@ public class GameMap {
         return elem;
     }
 
-    public Map<Orientation, FixedElement> getSurroundings(Position pos){
-
-        int x = pos.getX(), y = pos.getY();
-        return new HashMap<Orientation, FixedElement>() {{
+    public Map<Orientation, FixedElement> getSurroundings(Position position){
+        int x = position.getX(), y = position.getY();
+        return new HashMap<>() {{
             put(Orientation.UP, getElement(new Position(x, y-1)));
             put(Orientation.DOWN, getElement(new Position(x, y+1)));
             put(Orientation.LEFT, getElement(new Position(x-1, y)));
@@ -68,159 +62,84 @@ public class GameMap {
         }};
     }
 
-    public List<Orientation> getAvailableOrientations(Position pos){
-
-        FixedElement elem = getElement(pos);
-        if(!elem.isWalkable()) return new ArrayList<>();
-
-        Map<Orientation, FixedElement> surroundings = getSurroundings(pos);
-
-        List<Orientation> newOrientations = new ArrayList<Orientation>();
-
-        for(Orientation orientation: surroundings.keySet()){
+    public List<Orientation> getAvailableOrientations(Position position){
+        if (!getElement(position).isWalkable()) return new ArrayList<>();
+        Map<Orientation, FixedElement> surroundings = getSurroundings(position);
+        List<Orientation> orientations = new ArrayList<>();
+        for (Orientation orientation: surroundings.keySet()) {
             FixedElement element = surroundings.get(orientation);
-            if(element.isWalkable()) newOrientations.add(orientation);
+            if (element.isWalkable()) orientations.add(orientation);
         }
-
-        return newOrientations;
+        return orientations;
     }
 
-    public List<Position> getNeighbours(Position pos){
-        FixedElement elem = getElement(pos);
-        if(!elem.isWalkable()) return new ArrayList<>();
-
-        Map<Orientation, FixedElement> surroundings = getSurroundings(pos);
-
-        List<Position> newPositions = new ArrayList<Position>();
-
-        for(Orientation orientation: surroundings.keySet()){
-            FixedElement element = surroundings.get(orientation);
-            if(element.isWalkable()) newPositions.add(element.getPosition());
+    public List<Position> getAvailableNeighbours(Position position){
+        List<Position> availableNeighbours = new ArrayList<>();
+        for (Orientation orientation : getAvailableOrientations(position)){
+            availableNeighbours.add(position.getAdjacent(orientation));
         }
-
-        return newPositions;
+        return availableNeighbours;
     }
 
-    public boolean isIntersection(Position pos){
-        return getAvailableOrientations(pos).size() > 2;
+    public boolean isIntersection(Position position){
+        return getAvailableOrientations(position).size() > 2;
     }
 
-    public void setElement(FixedElement elem, Position pos) {
-        map.get(pos.getY()).set(pos.getX(), elem);
-    }
-
-    public Orientation getDirection(Position pos1, Position pos2){
-        int xOffset = pos2.getX() - pos1.getX();
-        int yOffset = pos2.getY() - pos1.getY();
-        if(xOffset != 0) return xOffset == 1 ? Orientation.RIGHT : Orientation.LEFT;
-        else return yOffset == 1 ? Orientation.DOWN : Orientation.UP;
+    public void setElement(FixedElement elem, Position position) {
+        map.get(position.getY()).set(position.getX(), elem);
     }
 
     public Orientation getOrientationOfShortestPath(Position origin, Position destiny, Orientation currentOrientation){
-
         List<Position> path = new ArrayList<>();
-        PriorityQueue<Entry> pq = new PriorityQueue<>();
-        Set<Entry> closedSet = new HashSet<>();
-        pq.add(new Entry(origin, destiny));
-
+        PriorityQueue<Position.Entry> pq = new PriorityQueue<>();
+        Set<Position.Entry> closedSet = new HashSet<>();
+        pq.add(new Position.Entry(origin, destiny));
         boolean firstNode = true;
-
         while(pq.size() > 0){
-            Entry currentEntry = pq.poll();
-            if(currentEntry.getKey().equals(destiny)){
-                while(!currentEntry.getKey().equals(origin)){
-                    path.add(0, currentEntry.getKey());
-                    currentEntry = currentEntry.getParent();
+            Position.Entry currentPositionEntry = pq.poll();
+            if(currentPositionEntry.getKey().equals(destiny)){
+                while(!currentPositionEntry.getKey().equals(origin)){
+                    path.add(0, currentPositionEntry.getKey());
+                    currentPositionEntry = currentPositionEntry.getParent();
                 }
                 break;
             }
-            List<Position> neighbours = getNeighbours(currentEntry.getKey());
-
+            List<Position> neighbours = getAvailableNeighbours(currentPositionEntry.getKey());
             for(Position neighbour: neighbours) {
-                Entry newEntry = new Entry(neighbour, destiny);
-                if (closedSet.contains(newEntry)) continue;
-                if (firstNode && getDirection(currentEntry.getKey(), neighbour).equals(currentOrientation.getOpposite())) {
+                Position.Entry newPositionEntry = new Position.Entry(neighbour, destiny);
+                if (closedSet.contains(newPositionEntry)) continue;
+                if (firstNode && Position.getDirection(currentPositionEntry.getKey(), neighbour).
+                        equals(currentOrientation.getOpposite())) {
                     firstNode = false;
-                    closedSet.add(newEntry);
+                    closedSet.add(newPositionEntry);
                     continue;
                 }
-                newEntry.setDistance(currentEntry.getDistance() + 1);
-                newEntry.setParent(currentEntry);
-                if (!pq.contains(newEntry)) pq.add(newEntry);
+                newPositionEntry.setDistance(currentPositionEntry.getDistance() + 1);
+                newPositionEntry.setParent(currentPositionEntry);
+                if (!pq.contains(newPositionEntry)) pq.add(newPositionEntry);
             }
-            closedSet.add(currentEntry);
+            closedSet.add(currentPositionEntry);
         }
         if(path.size() < 1) {
-            List<Orientation> oris = getAvailableOrientations(origin);
-            oris.remove(currentOrientation.getOpposite());
-            if(oris.size() >= 1) return oris.get(0);
+            List<Orientation> orientations = getAvailableOrientations(origin);
+            orientations.remove(currentOrientation.getOpposite());
+            if(orientations.size() >= 1) return orientations.get(0);
             else return null;
         }
-        return getDirection(origin, path.get(0));
+        return Position.getDirection(origin, path.get(0));
     }
 
-    public Position getGhostStartPos(){
-        return this.ghostStartPos;
+    public Position getGhostSpawnPosition(){
+        return this.ghostSpawnPosition;
     }
 
-    public Position getFruitPos() { return this.fruitPos; }
+    public Position getFruitPosition() { return this.fruitPosition; }
 
     public void resetPositions() {
         for (Ghost ghost : ghosts) {
-            ghost.setPosition(ghost.getStartPosition());
+            ghost.setPosition(ghost.getSpawnPosition());
         }
         pacman.setPosition(new Position(13, 25));
         pacman.setOrientation(Orientation.LEFT);
-    }
-}
-
-class Entry implements Comparable<Entry>{
-    private final Position key;
-    private Integer distance = 0;
-    private Entry parent = null;
-    private final Position destiny;
-
-    public Entry(Position key, Position destiny){
-        this.key = key;
-        this.destiny = destiny;
-    }
-
-    public void setParent(Entry entry){
-        this.parent = entry;
-    }
-
-    public void setDistance(Integer distance){
-        this.distance = distance;
-    }
-
-    @Override
-    public int compareTo(Entry o) {
-        return (int)((this.distance + calculateDistance(this.key, this.destiny)) -
-                (o.distance + calculateDistance(o.key, o.destiny)));
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Entry entry = (Entry) o;
-        return Objects.equals(key, entry.key);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(key);
-    }
-
-    public Position getKey() {
-        return key;
-    }
-
-    public Integer getDistance() {
-        return distance;
-    }
-
-    public Entry getParent() {
-        return parent;
     }
 }
