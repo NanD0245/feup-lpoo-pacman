@@ -29,7 +29,7 @@ public class PauseMenuViewer extends MenuViewer {
             }
         }
 
-        gui.drawText("CURRENT SCORE: ", new Position(5, 25));
+        gui.drawText("CURRENT SCORE: " + ((PauseMenu)getModel()).getScore(), new Position(5, 25));
 
         gui.refresh();
     }

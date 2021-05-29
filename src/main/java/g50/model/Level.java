@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class Level {
 
-    private final int level;
+    private final int levelNumber;
 
     private static final Map<Integer, Class<? extends Collectable>> fruit = new HashMap<>() {{
         put(1, Cherry.class);
@@ -53,24 +53,28 @@ public class Level {
 
 
     Level(int level){
-        this.level = level;
+        this.levelNumber = level;
     }
 
     public Fruit getFruit(Position pos) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        return (Fruit) fruit.getOrDefault(level, Apple.class).getConstructor(Position.class).newInstance(pos);
+        return (Fruit) fruit.getOrDefault(levelNumber, Apple.class).getConstructor(Position.class).newInstance(pos);
     }
 
     public int getPacManFramesPerMovement(){
-        return pacManFramesPerMovement.getOrDefault(level, 7);
+        return pacManFramesPerMovement.getOrDefault(levelNumber, 7);
     }
 
     public int getGhostFramesPerMovement() {
-        return ghostFramesPerMovement.getOrDefault(level, 10);
+        return ghostFramesPerMovement.getOrDefault(levelNumber, 10);
     }
 
-    public int getFrightenedGhostFramesPerMovement() { return frightenedGhostFramesPerMovement.getOrDefault(level, 25); }
+    public int getFrightenedGhostFramesPerMovement() { return frightenedGhostFramesPerMovement.getOrDefault(levelNumber, 25); }
 
     public List<Integer> getGameStateIntervals() {
-        return gameStateIntervals.getOrDefault(level,Arrays.asList(5,20,5,20,5,1037,1));
+        return gameStateIntervals.getOrDefault(levelNumber,Arrays.asList(5,20,5,20,5,1037,1));
+    }
+
+    public int getLevelNumber() {
+        return levelNumber;
     }
 }

@@ -1,7 +1,5 @@
 package g50.controller;
 
-import g50.controller.Controller;
-import g50.controller.GameController;
 import g50.states.GameState;
 import g50.states.GhostState;
 import g50.gui.GUI;
@@ -34,7 +32,7 @@ public class GhostController extends Controller<Ghost> {
             updateGhostState(((GameController)(application.getController())).getGameStateHandler().getState());
 
         if(this.getModel().getState() == GhostState.FRIGHTENED)
-            this.getModel().setFramesPerPosition(((GameController)(application.getController())).getModel().getLevelInfo().getFrightenedGhostFramesPerMovement());
+            this.getModel().setFramesPerPosition(((GameController)(application.getController())).getModel().getLevel().getFrightenedGhostFramesPerMovement());
         else
             this.getModel().setDefaultFramesPerPosition();
 

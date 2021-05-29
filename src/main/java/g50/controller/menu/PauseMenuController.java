@@ -24,8 +24,11 @@ public class PauseMenuController extends MenuController {
             case SELECT:
                 if (((PauseMenu)getModel()).isSelectedResume())
                     application.setState(AppState.IN_GAME);
-                if (((PauseMenu)getModel()).isSelectedExit())
+                if (((PauseMenu)getModel()).isSelectedExit()) {
                     application.setState(AppState.MAIN_MENU);
+                    if (((PauseMenu) getModel()).getScore() > application.getHighScore())
+                        application.setHighScore(((PauseMenu) getModel()).getScore());
+                }
                 break;
         }
     }
