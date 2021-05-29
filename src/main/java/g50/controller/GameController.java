@@ -37,6 +37,7 @@ public class GameController extends Controller<Game> {
     private final PauseMenuController pauseMenuController;
     private GUI.KBD_ACTION lastAction;
     private int fruitDotLimit = 70;
+    private int gameFrames = 0;
     // refactor!!
     private boolean started;
 
@@ -98,9 +99,11 @@ public class GameController extends Controller<Game> {
             pauseMenuController.update(application,frame);
         }
         else {
-            gameStateHandler.update(frame, application.getFrameRate());
-            controlGhosts(application, frame);
-            pacManController.update(application, frame);
+            gameFrames++;
+            gameStateHandler.update(gameFrames, application.getFrameRate());
+            pacManController.update(application, gameFrames);
+            controlGhosts(application, gameFrames);
+            if(frame % 15 == 0) Application.playSound("pacman_chomp.wav");
             try {
                 checkPacmanGhostCollision();
             } catch (InterruptedException e) {
@@ -129,6 +132,7 @@ public class GameController extends Controller<Game> {
         for(GhostController ghostController: ghostsController){
             ghostController.update(application, frame);
         }
+        if(!gameStateHandler.getState().equals(GameState.GAME_FRIGHTENED)) resetBonus();
     }
 
     public void consumeMapElement(Position pos){
@@ -148,7 +152,8 @@ public class GameController extends Controller<Game> {
                     break;
                 case FRIGHTEN:
                     gameStateHandler.setCurrentState(GameState.GAME_FRIGHTENED);
-                    break;
+                case BONUS:
+                    Application.playSound("pacman_eatfruit.wav");
                 default: break;
             }
             this.getModel().incrementScore(((Collectable) currentElement).collect());
@@ -206,6 +211,7 @@ public class GameController extends Controller<Game> {
         this.gameStateHandler.resetCurrentState();
         for(GhostController controller: ghostsController)
             controller.getModel().reset();
+        resetBonus();
     }
 
     private void resetBonus() { this.currentBonus = bonusMultiplier; }

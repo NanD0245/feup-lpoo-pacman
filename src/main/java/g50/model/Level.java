@@ -24,24 +24,24 @@ public class Level {
     }};
 
     private static final Map<Integer, Integer> pacManFramesPerMovement = new HashMap<>(){{
-        put(1, 12);
-        put(2, 10);
-        put(3, 10);
-        put(4, 10);
+        put(1, 8);
+        put(2, 6);
+        put(3, 6);
+        put(4, 6);
     }};
 
     private static final Map<Integer, Integer> ghostFramesPerMovement =  new HashMap<>() {{
-        put(1, 17);
-        put(2, 15);
-        put(3, 12);
-        put(4, 12);
+        put(1, 9);
+        put(2, 7);
+        put(3, 7);
+        put(4, 7);
     }};
 
     private static final Map<Integer, Integer> frightenedGhostFramesPerMovement = new HashMap<>() {{
-       put(1, 30);
-       put(2, 27);
-       put(3, 27);
-       put(4, 27);
+       put(1, 14);
+       put(2, 13);
+       put(3, 13);
+       put(4, 13);
     }};
 
     private static final Map<Integer, List<Integer>> gameStateIntervals = new HashMap<>() {{
@@ -61,14 +61,14 @@ public class Level {
     }
 
     public int getPacManFramesPerMovement(){
-        return pacManFramesPerMovement.getOrDefault(levelNumber, 7);
+        return pacManFramesPerMovement.getOrDefault(levelNumber, 4);
     }
 
     public int getGhostFramesPerMovement() {
-        return ghostFramesPerMovement.getOrDefault(levelNumber, 10);
+        return ghostFramesPerMovement.getOrDefault(levelNumber, 5);
     }
 
-    public int getFrightenedGhostFramesPerMovement() { return frightenedGhostFramesPerMovement.getOrDefault(levelNumber, 25); }
+    public int getFrightenedGhostFramesPerMovement() { return frightenedGhostFramesPerMovement.getOrDefault(levelNumber, 12); }
 
     public List<Integer> getGameStateIntervals() {
         return gameStateIntervals.getOrDefault(levelNumber,Arrays.asList(5,20,5,20,5,1037,1));

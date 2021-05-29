@@ -1,5 +1,6 @@
 package g50.controller;
 
+import g50.model.element.Position;
 import g50.states.GameState;
 import g50.states.GhostState;
 import g50.gui.GUI;
@@ -20,21 +21,26 @@ public class GhostController extends Controller<Ghost> {
 
     @Override
     public void update(Application application, int frame) {
-        // refactor!!
-        if (getModel().getState() == GhostState.DEAD && getModel().getPosition().equals(getModel().getSpawnPosition()))
+        GhostState currState = getModel().getState();
+        Position currPosition = getModel().getPosition();
+
+        if (currState == GhostState.DEAD && currPosition.equals(getModel().getSpawnPosition()))
             getModel().setState(GhostState.IN_CAGE);
-        else if (getModel().getState() == GhostState.IN_CAGE && getModel().getStrategy().getDotLimit() == 0)
+
+        else if (currState == GhostState.IN_CAGE && getModel().getStrategy().getDotLimit() == 0)
             getModel().setState(GhostState.LEAVING_CAGE);
-        else if (getModel().getState() != GhostState.IN_CAGE && getModel().getState() != GhostState.DEAD
-                && getModel().getState() != GhostState.LEAVING_CAGE ||
-                (getModel().getState() == GhostState.LEAVING_CAGE && getModel().getPosition().
+
+        else if (currState != GhostState.IN_CAGE && currState != GhostState.DEAD
+                && currState != GhostState.LEAVING_CAGE ||
+                (currState == GhostState.LEAVING_CAGE && currPosition.
                         equals(((GameController)(application.getController())).getModel().getGameMap().getGhostSpawnPosition())))
+
             updateGhostState(((GameController)(application.getController())).getGameStateHandler().getState());
 
-        if(this.getModel().getState() == GhostState.FRIGHTENED)
-            this.getModel().setFramesPerPosition(((GameController)(application.getController())).getModel().getLevel().getFrightenedGhostFramesPerMovement());
+        if(currState == GhostState.FRIGHTENED)
+            getModel().setFramesPerPosition(((GameController)(application.getController())).getModel().getLevel().getFrightenedGhostFramesPerMovement());
         else
-            this.getModel().setDefaultFramesPerPosition();
+            getModel().setDefaultFramesPerPosition();
 
         if (frame % getModel().getFramesPerPosition() != 0) return;
         Orientation newOrientation = getModel().getStrategy().getNextOrientation(application.getGame().getGameMap(),
