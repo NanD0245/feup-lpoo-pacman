@@ -153,18 +153,13 @@ public class Application implements GUIObserver {
             }
             lastAppState = state;
         }
-        else {
-            if (this.controller instanceof GameController && ((GameController) this.controller).isGameOver()) {
-                if (this.game.getScore() > this.highScore) {
-                    this.highScore = this.getGame().getScore();
-                }
-                this.state = AppState.GAME_OVER;
-            }
-            else if (this.controller instanceof GameController && ((GameController) this.controller).isNextLevel())
-                this.state = AppState.NEXT_LEVEL_MENU;
-
-        }
         this.controller.update(this, frame);
+    }
+
+    public void checkHighScore() {
+        if (this.game.getScore() > this.highScore) {
+            this.highScore = this.getGame().getScore();
+        }
     }
 
     public Controller<?> getController() {

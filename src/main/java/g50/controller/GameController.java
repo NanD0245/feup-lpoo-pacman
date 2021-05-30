@@ -89,6 +89,14 @@ public class GameController extends Controller<Game> {
 
     @Override
     public void update(Application application, int frame) throws IOException {
+        if (isGameOver()) {
+            application.checkHighScore();
+            application.setState(AppState.GAME_OVER);
+            return;
+        }
+        else if (isNextLevel()) {
+            application.setState(AppState.NEXT_LEVEL_MENU);
+        }
         if (lastAction != GUI.KBD_ACTION.NONE){
             handleKBDAction(application, lastAction);
             lastAction = GUI.KBD_ACTION.NONE;
