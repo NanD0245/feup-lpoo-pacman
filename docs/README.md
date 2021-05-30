@@ -27,7 +27,7 @@ Developed by Bruno Mendes (up20212121@fe.up.pt), Fernando Rego (up2123131@fe.up.
 - Level transition
 - Difficulty adaptation per level  
 - Application menus
-- Pause state  
+- Pause state
 - Sound effects
 - Package manager easter eggs
 
@@ -53,13 +53,31 @@ Responsible for the flow of the application:
 
 ## Design Problems
 
-builder para a view
-observers na gui
-strategy pattern
-gui facade 
-decorator gamemapviewer
-composite de controladores
-extract dos passos do ghost controller
+#### Viewer builder
+###### Problem in context
+In our terminal-based graphical user interface, each game map element is represented by a single character, which removes the need for a compositor-like Sprite class. In spite of this, the aspect of some elements depends on their state: the ghosts must alternate between dead, frightened and regular (chase/scatter) modes, and the PacMan should point to the right direction, giving the user a visual hint of his orientation.
+Doing these kinds of checks in the GameMapViewer draw() method would make things cumbersome and not easily scalable.
+
+###### The pattern
+To go around this issue, we created a builder class for generic map elements, which do not hold a state, and builders for the elements that do. The GameMapViewer draw() method is responsible for calling the appropriate builder.
+
+###### Implementation
+
+###### Consequences
+This approach did allow to modularize the code and hide complicated implementation details (such as getting the wall character based on its surroundings), but could be improved by making the ElementViewerBuilder class a factory calling the appropriate builder, which would reduce the draw() method complexity even further.
+
+#### GUI Observers
+
+#### Ghost strategies
+
+#### Lanterna Framework Facade
+
+#### Game Map Viewer Decorator
+
+#### Controller composites
+
+#### Ghost controller modularity
+
 
 ## Testing
 
