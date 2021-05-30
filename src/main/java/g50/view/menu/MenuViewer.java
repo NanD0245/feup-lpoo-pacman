@@ -12,7 +12,7 @@ public abstract class MenuViewer extends Viewer<Menu> {
         super(model);
     }
 
-    protected static final Map<Menu.ENTRIES, String> map = new HashMap<>() {{
+    protected static final Map<Menu.ENTRIES, String> map = new HashMap<Menu.ENTRIES, String>() {{
         put(Menu.ENTRIES.START, "START");
         put(Menu.ENTRIES.CONTROLS, "CONTROLS");
         put(Menu.ENTRIES.HIGH_SCORE, "HIGH-SCORE");

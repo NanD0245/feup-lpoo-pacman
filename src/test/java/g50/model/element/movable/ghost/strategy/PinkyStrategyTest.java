@@ -36,5 +36,14 @@ public class PinkyStrategyTest {
         gameMap.getPacman().setOrientation(Orientation.LEFT);
 
         Assertions.assertEquals(pinkyStrategy.inChase(gameMap, pinkyGhost), Orientation.UP);
+
+        gameMap.getPacman().setPosition(new Position(14, 19));
+        gameMap.getPacman().setOrientation(Orientation.RIGHT);
+
+        pinkyGhost.setPosition(new Position(18, 22));
+        pinkyGhost.setOrientation(Orientation.UP);
+
+        Assertions.assertEquals(pinkyStrategy.inChase(gameMap, pinkyGhost), Orientation.UP);
+
     }
 }

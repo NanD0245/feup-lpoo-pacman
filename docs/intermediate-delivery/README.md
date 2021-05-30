@@ -1,4 +1,4 @@
-# Final Delivery
+# Intermediate Report
 
 ## sudo PacMan
 
@@ -7,28 +7,19 @@ A clone of the classic PacMan game played in the arcade machines of the good old
   <img src="images/pacman-gif.gif" alt="PacMan g50.model.Game">
 </p>
 
-Developed by Bruno Mendes (up20212121@fe.up.pt), Fernando Rego (up2123131@fe.up.pt) and Nuno Costa(up201906272@fe.up.pt).
-
-## Implemented Features
-
-- Map Loader from a file 
-    - Loads a map from a file in order to increase compatibility, making it possible to load different pacman maps, as long as it sticks to the defined structure
-- Game Map Display
-    - Custom font for a more precise replica of the original game elements
-    - Usage of bitmasks for different Wall generation
-    - 
+## Current development state
+Implemented:
+- Map loader from a file
+- g50.model.Game map view
 - PacMan movement with the keyboard
-- PacDot collection
+- PacDot collections
+
+To be implemented:
 - Ghost movement and states
-- Different ghost strategies  
 - Scoring and abilities with collectables
-- Keeps track of the highest score  
-- Defeat screen (endless game, no winning screen)
-- Level transition
-- Difficulty adaptation per level  
-- Application menus
-- Pause state  
-- Sound effects
+- Win/defeat scenarios
+- Level transitions
+- g50.Application menus
 - Package manager easter eggs
 
 ## Architectural Design
@@ -50,15 +41,6 @@ Responsible for the flow of the application:
 - Updates the screen at a given frame rate
 - Updates the game state based on the input received from the GUI
 - Switches between game menus based on game rules logic and user input (later)
-
-## Design Problems
-
-builder para a view
-observers na gui
-strategy pattern
-gui facade 
-decorator gamemapviewer
-composite de controladores
 
 ## Testing
 

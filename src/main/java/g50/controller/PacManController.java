@@ -16,7 +16,7 @@ public class PacManController extends Controller<PacMan> {
     private final GameController gameController;
     private final GameMap gameMap;
     private Orientation nextOrientation;
-    private static final Map<GUI.KBD_ACTION, Orientation> actionToOrientation = new HashMap<>() {{
+    private static final Map<GUI.KBD_ACTION, Orientation> actionToOrientation = new HashMap<GUI.KBD_ACTION, Orientation>() {{
                 put(GUI.KBD_ACTION.UP, Orientation.UP);
                 put(GUI.KBD_ACTION.DOWN, Orientation.DOWN);
                 put(GUI.KBD_ACTION.LEFT, Orientation.LEFT);

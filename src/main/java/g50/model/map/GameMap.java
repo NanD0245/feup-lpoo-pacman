@@ -54,7 +54,7 @@ public class GameMap {
 
     public Map<Orientation, FixedElement> getSurroundings(Position position){
         int x = position.getX(), y = position.getY();
-        return new LinkedHashMap<>() {{
+        return new LinkedHashMap<Orientation, FixedElement>() {{
             put(Orientation.UP, getElement(new Position(x, y-1)));
             put(Orientation.LEFT, getElement(new Position(x-1, y)));
             put(Orientation.DOWN, getElement(new Position(x, y+1)));

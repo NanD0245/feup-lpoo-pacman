@@ -9,6 +9,8 @@ import g50.model.element.fixed.collectable.fruit.Manjaro;
 import g50.model.element.fixed.collectable.fruit.Orange;
 import g50.model.element.fixed.noncollectable.Door;
 import g50.model.element.fixed.noncollectable.EmptySpace;
+import g50.model.element.fixed.noncollectable.SpawnArea;
+import g50.model.element.fixed.noncollectable.Target;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +35,9 @@ public class FixedElementTest {
                 new Manjaro(pos1),
                 new Orange(pos1),
                 new Apple(pos1),
-                new PowerPellet(pos1));
+                new PowerPellet(pos1),
+                new Target(pos1, ""),
+                new SpawnArea(pos1));
     }
 
     @Test

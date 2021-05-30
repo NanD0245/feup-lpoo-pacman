@@ -21,19 +21,21 @@ import java.util.*;
 public abstract class GameMapBuilder {
     private final String filename;
     private BufferedReader buffer;
-    private static final Map<Character, FixedElement> charToElement = Map.of(
-            ' ', new EmptySpace(new Position(-1,-1)),
-            '@', new PowerPellet(new Position(-1,-1)),
-            'W', new Wall(new Position(-1,-1)),
-            'P', new PacDot(new Position(-1,-1)),
-            '1', new Target(new Position(-1,-1), "Pinky"),
-            '2', new Target(new Position(-1,-1), "Blinky"),
-            '3', new Target(new Position(-1,-1), "Clyde"),
-            '4', new Target(new Position(-1,-1), "Inky"),
-            'D', new Door(new Position(-1,-1)),
-            'S', new SpawnArea(new Position(-1,-1))
-    );
-    private static final Map<String, Class <? extends Ghost>> ghostClass = new HashMap<>(){{
+    private static final Map<Character, FixedElement> charToElement = new HashMap<Character, FixedElement>() {{
+        put(' ', new EmptySpace(new Position(-1,-1)));
+        put('@', new PowerPellet(new Position(-1,-1)));
+        put('W', new Wall(new Position(-1,-1)));
+        put('P', new PacDot(new Position(-1,-1)));
+        put('1', new Target(new Position(-1,-1), "Pinky"));
+        put('2', new Target(new Position(-1,-1), "Blinky"));
+        put('3', new Target(new Position(-1,-1), "Clyde"));
+        put('4', new Target(new Position(-1,-1), "Inky"));
+        put('D', new Door(new Position(-1,-1)));
+        put('S', new SpawnArea(new Position(-1,-1)));
+
+    }};
+
+    private static final Map<String, Class <? extends Ghost>> ghostClass = new HashMap<String, Class <? extends Ghost>>(){{
         put("Blinky", BlinkyGhost.class);
         put("Clyde", ClydeGhost.class);
         put("Inky", InkyGhost.class);

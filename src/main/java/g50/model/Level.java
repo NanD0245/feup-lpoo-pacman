@@ -14,7 +14,7 @@ public class Level {
 
     private final int levelNumber;
 
-    private static final Map<Integer, Class<? extends Collectable>> fruit = new HashMap<>() {{
+    private static final Map<Integer, Class<? extends Collectable>> fruit = new HashMap<Integer, Class<? extends Collectable>>() {{
         put(1, Manjaro.class);
         put(2, Cherry.class);
         put(3, Strawberry.class);
@@ -24,35 +24,35 @@ public class Level {
         put(7, Apple.class);
     }};
 
-    private static final Map<Integer, Integer> pacManFramesPerMovement = new HashMap<>(){{
+    private static final Map<Integer, Integer> pacManFramesPerMovement = new HashMap<Integer, Integer>(){{
         put(1, 8);
         put(2, 6);
         put(3, 6);
         put(4, 6);
     }};
 
-    private static final Map<Integer, Integer> ghostFramesPerMovement =  new HashMap<>() {{
+    private static final Map<Integer, Integer> ghostFramesPerMovement =  new HashMap<Integer, Integer>() {{
         put(1, 9);
         put(2, 7);
         put(3, 7);
         put(4, 7);
     }};
 
-    private static final Map<Integer, Integer> frightenedGhostFramesPerMovement = new HashMap<>() {{
+    private static final Map<Integer, Integer> frightenedGhostFramesPerMovement = new HashMap<Integer, Integer>() {{
        put(1, 14);
        put(2, 13);
        put(3, 13);
        put(4, 13);
     }};
 
-    private static final Map<Integer, List<Integer>> gameStateIntervals = new HashMap<>() {{
+    private static final Map<Integer, List<Integer>> gameStateIntervals = new HashMap<Integer, List<Integer>>() {{
        put(1, Arrays.asList(7,20,7,20,5,20,5));
        put(2, Arrays.asList(7,20,7,20,5,1033,1));
        put(3, Arrays.asList(7,20,7,20,5,1033,1));
        put(4, Arrays.asList(7,20,7,20,5,1033,1));
     }};
 
-    private static final Map<Integer, Integer> ghostFrightenedTime = new HashMap<>() {{
+    private static final Map<Integer, Integer> ghostFrightenedTime = new HashMap<Integer, Integer>() {{
         put(1, 6);
         put(2, 5);
         put(3, 4);

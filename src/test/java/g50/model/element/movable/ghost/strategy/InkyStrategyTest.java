@@ -38,5 +38,12 @@ public class InkyStrategyTest {
 
         Assertions.assertEquals(inkyStrategy.inChase(gameMap, inkyGhost), Orientation.LEFT);
 
+        gameMap.getPacman().setPosition(new Position(16, 19));
+        gameMap.getPacman().setOrientation(Orientation.RIGHT);
+
+        inkyGhost.setPosition(new Position(18, 22));
+        inkyGhost.setOrientation(Orientation.UP);
+
+        Assertions.assertEquals(inkyStrategy.inChase(gameMap, inkyGhost), Orientation.UP);
     }
 }

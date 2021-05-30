@@ -33,7 +33,7 @@ public class ClydeStrategyTest {
         ClydeStrategy clydeStrategy = new ClydeStrategy();
         ClydeGhost clydeGhost = new ClydeGhost("clyde", new Position(12, 25), Orientation.DOWN, new Target(new Position(5, 5), "target"));;
 
-        gameMap.getPacman().setPosition(new Position(15, 25));
+        gameMap.getPacman().setPosition(new Position(15, 23));
 
         Assertions.assertEquals(clydeStrategy.inChase(gameMap, clydeGhost), Orientation.LEFT);
 

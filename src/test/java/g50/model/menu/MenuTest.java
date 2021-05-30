@@ -1,7 +1,5 @@
 package g50.model.menu;
 
-import com.sun.tools.javac.Main;
-import g50.model.element.Position;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 
 public class MenuTest {
