@@ -70,15 +70,11 @@ To go around this issue, we created a builder class for generic map elements, wh
   <img src="images/builder.png" alt="Builder">
 </p>
 
-[GameMapViewer](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/c3121d3b31d1fb2c9c448e99c8bbff370a5b2a62/src/main/java/com/g50/view/GameMapViewer.java#L28-L46)
-
-[ElementViewerBuilder](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/c3121d3b31d1fb2c9c448e99c8bbff370a5b2a62/src/main/java/com/g50/view/builders/ElementViewerBuilder.java#L19-L28)
-
-[GhostViewerBuilder](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/c3121d3b31d1fb2c9c448e99c8bbff370a5b2a62/src/main/java/com/g50/view/builders/GhostViewerBuilder.java#L22-L37)
-
-[PacManViewerBuilder](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/c3121d3b31d1fb2c9c448e99c8bbff370a5b2a62/src/main/java/com/g50/view/builders/PacManViewerBuilder.java#L20-L29)
-
-[WallViewerBuilder](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/c3121d3b31d1fb2c9c448e99c8bbff370a5b2a62/src/main/java/com/g50/view/builders/WallViewerBuilder.java#L20-L29)
+- [GameMapViewer](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/c3121d3b31d1fb2c9c448e99c8bbff370a5b2a62/src/main/java/com/g50/view/GameMapViewer.java#L28-L46)
+- [ElementViewerBuilder](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/c3121d3b31d1fb2c9c448e99c8bbff370a5b2a62/src/main/java/com/g50/view/builders/ElementViewerBuilder.java#L19-L28)
+- [GhostViewerBuilder](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/c3121d3b31d1fb2c9c448e99c8bbff370a5b2a62/src/main/java/com/g50/view/builders/GhostViewerBuilder.java#L22-L37)
+- [PacManViewerBuilder](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/c3121d3b31d1fb2c9c448e99c8bbff370a5b2a62/src/main/java/com/g50/view/builders/PacManViewerBuilder.java#L20-L29)
+- [WallViewerBuilder](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/c3121d3b31d1fb2c9c448e99c8bbff370a5b2a62/src/main/java/com/g50/view/builders/WallViewerBuilder.java#L20-L29)
 
 ###### Consequences
 This approach did allow to modularize the code and hide complicated implementation details (such as getting the wall character based on its surroundings), but could be improved by making the ElementViewerBuilder class a factory calling the appropriate builder, which would reduce the draw() method complexity even further.
@@ -96,6 +92,14 @@ The GUI is responsible for informing all interested observers when it is time to
 <p align="center">
   <img src="images/observer.png" alt="Observer">
 </p>
+
+- [Application](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/Application.java#L112-L116)
+- [GUI](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/gui/LanternaGUI.java#L124-L133)
+- [Controller](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/controller/Controller.java#L8-L20)
+- [GameController](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/controller/GameController.java#L88-L127)
+- [GhostController](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/controller/GhostController.java#L21-L28)
+- [PacManController](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/controller/PacManController.java#L53-L58)
+- [MenuController](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/controller/menu/MenuController.java#L28-L39)
 
 ###### Consequences
 An interrupt-like solution involved, as expected, some extra complexity and the possible raise of concurrency issues, but we found the extra precision given by the timer and the aspect of the code to compensate these concerns.
@@ -140,6 +144,11 @@ The GUI interface presents the user all important terminal methods, not dependin
   <img src="images/facade.png" alt="Facade">
 </p>
 
+- [Application](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/Application.java)
+- [GUI](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/gui/GUI.java)
+- [LanternaGUI](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/gui/LanternaGUI.java#L30-L108)
+
+
 ###### Consequences
 This approach simplifies the viewer code and presents no concerns.
 
@@ -156,6 +165,9 @@ A game viewer class contains a board viewer and displays the extra information o
 <p align="center">
   <img src="images/decorator.png" alt="Decorator">
 </p>
+
+- [GameViewer](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/view/GameViewer.java#L18-L36)
+- [GameMapViewer](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/view/GameMapViewer.java#L28-L46)
 
 ###### Consequences
 This approach has the potential to expand the game functionality: if we ever need to include a back button or a settings wheel icon, only a new "view port" decorating the existing ones would be necessary. This, however, is not a solution for all kinds of problems: as of now, there is no easy way for decoupling the map position from the terminal screen position, which would require an intervention in all viewer classes.
