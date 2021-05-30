@@ -26,7 +26,7 @@ public class ViewProperty {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof ViewProperty)) return false;
         ViewProperty that = (ViewProperty) o;
         return getCharacter() == that.getCharacter() && getColor().equals(that.getColor());
     }

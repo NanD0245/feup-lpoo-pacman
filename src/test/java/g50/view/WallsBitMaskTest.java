@@ -1,6 +1,6 @@
 package g50.view;
 
-import g50.model.element.fixed.nonCollectable.Wall;
+import g50.model.element.fixed.noncollectable.Wall;
 import g50.model.map.GameMap;
 import g50.model.map.mapbuilder.FileGameMapBuilder;
 import g50.model.map.mapbuilder.GameMapBuilder;

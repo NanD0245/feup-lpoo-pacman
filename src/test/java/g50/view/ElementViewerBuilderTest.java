@@ -1,6 +1,9 @@
 package g50.view;
 
 import g50.gui.GUI;
+import g50.model.element.fixed.collectable.PacDot;
+import g50.model.element.fixed.collectable.PowerPellet;
+import g50.model.element.fixed.collectable.fruit.*;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.*;
 import g50.view.factory.*;
@@ -22,11 +25,11 @@ class ElementViewerBuilderTest {
     @Test
     public void defaultBuilderPacMan(){
         ViewProperty pacmanViewProperty = Mockito.mock(ViewProperty.class);
-        Mockito.when(pacmanViewProperty.getCharacter()).thenReturn((char)(192));
+        Mockito.when(pacmanViewProperty.getCharacter()).thenReturn((char)(193));
         Mockito.when(pacmanViewProperty.getColor()).thenReturn("#FFFF00");
         PacManViewerBuilder pacManViewerBuilder = new DefaultPacManViewerBuilder();
         assertEquals(pacManViewerBuilder.getViewer(new PacMan(null)),
-                new ElementViewer(new PacMan(null), new ViewProperty("#FFFF00", (char)(193))));
+                new ElementViewer(new PacMan(null), pacmanViewProperty));
     }
 
     @Test
@@ -37,16 +40,58 @@ class ElementViewerBuilderTest {
         GhostViewerBuilder ghostViewerBuilder = new DefaultGhostViewerBuilder();
 
         assertEquals(ghostViewerBuilder.getViewer(new BlinkyGhost(null,null,null,null)),
-                new ElementViewer(new BlinkyGhost(null,null,null,null), new ViewProperty("#FF0000", (char)(200))));
+                new ElementViewer(new BlinkyGhost(null,null,null,null), ghostViewProperty));
         Mockito.when(ghostViewProperty.getColor()).thenReturn("#FFB852");
         assertEquals(ghostViewerBuilder.getViewer(new ClydeGhost(null,null,null,null)),
-                new ElementViewer(new BlinkyGhost(null,null,null,null), new ViewProperty("#FFB852", (char)(200))));
+                new ElementViewer(new BlinkyGhost(null,null,null,null), ghostViewProperty));
         Mockito.when(ghostViewProperty.getColor()).thenReturn("#FFB8FF");
         assertEquals(ghostViewerBuilder.getViewer(new PinkyGhost(null,null,null,null)),
-                new ElementViewer(new BlinkyGhost(null,null,null,null), new ViewProperty("#FFB8FF", (char)(200))));
+                new ElementViewer(new BlinkyGhost(null,null,null,null), ghostViewProperty));
         Mockito.when(ghostViewProperty.getColor()).thenReturn("#00FFFF");
         assertEquals(ghostViewerBuilder.getViewer(new InkyGhost(null,null,null,null)),
-                new ElementViewer(new BlinkyGhost(null,null,null,null), new ViewProperty("#00FFFF", (char)(200))));
+                new ElementViewer(new BlinkyGhost(null,null,null,null), ghostViewProperty));
+    }
+
+    @Test
+    public void defaultBuilderElements() {
+        ViewProperty defaultViewProperty = Mockito.mock(ViewProperty.class);
+        ElementViewerBuilder elementViewerBuilder = new DefaultElementViewerBuilder();
+
+        Mockito.when(defaultViewProperty.getCharacter()).thenReturn((char)(201));
+        Mockito.when(defaultViewProperty.getColor()).thenReturn("#DEA185");
+        assertEquals(elementViewerBuilder.getViewer(new PacDot(null)),
+                new ElementViewer(new PacDot(null), defaultViewProperty));
+
+        Mockito.when(defaultViewProperty.getCharacter()).thenReturn((char)(199));
+        Mockito.when(defaultViewProperty.getColor()).thenReturn("#DEA185");
+        assertEquals(elementViewerBuilder.getViewer(new PowerPellet(null)),
+                new ElementViewer(new PowerPellet(null), defaultViewProperty));
+
+        Mockito.when(defaultViewProperty.getCharacter()).thenReturn((char)(145));
+        Mockito.when(defaultViewProperty.getColor()).thenReturn("#FF0000");
+        assertEquals(elementViewerBuilder.getViewer(new Apple(null)),
+                new ElementViewer(new Apple(null), defaultViewProperty));
+
+        Mockito.when(defaultViewProperty.getCharacter()).thenReturn((char)(143));
+        Mockito.when(defaultViewProperty.getColor()).thenReturn("#FF0000");
+        assertEquals(elementViewerBuilder.getViewer(new Cherry(null)),
+                new ElementViewer(new Cherry(null), defaultViewProperty));
+
+        Mockito.when(defaultViewProperty.getCharacter()).thenReturn((char)(146));
+        Mockito.when(defaultViewProperty.getColor()).thenReturn("#FFA500");
+        assertEquals(elementViewerBuilder.getViewer(new Orange(null)),
+                new ElementViewer(new Orange(null), defaultViewProperty));
+
+        Mockito.when(defaultViewProperty.getCharacter()).thenReturn((char)(144));
+        Mockito.when(defaultViewProperty.getColor()).thenReturn("#FF0000");
+        assertEquals(elementViewerBuilder.getViewer(new Strawberry(null)),
+                new ElementViewer(new Strawberry(null), defaultViewProperty));
+
+        Mockito.when(defaultViewProperty.getCharacter()).thenReturn((char)(147));
+        Mockito.when(defaultViewProperty.getColor()).thenReturn("#32b858");
+        assertEquals(elementViewerBuilder.getViewer(new Manjaro(null)),
+                new ElementViewer(new Manjaro(null), defaultViewProperty));
+
     }
 
     @Test
@@ -71,4 +116,6 @@ class ElementViewerBuilderTest {
         assertEquals(elementViewerBuilder.getViewer(new PacMan(null)),
                 new ElementViewer(new PacMan(null), new ViewProperty("#FFFFFF", '?')));
     }
+
+
 }
