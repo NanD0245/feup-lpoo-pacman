@@ -169,42 +169,16 @@ This problem can be solved if all the controllers add themselves to the observer
 <p align="center">
   <img src="images/pitest.png" alt="PiTest">
 </p>
-<<<<<<< HEAD
-
-## Design Problems and solutions (UML)
-
-### Multiple views
-Each game element shall be drawn on the screen with the appropriate character and color. While it isn’t feasible to include this data in the model (should we ever switch to a 3D-based viewer framework, that would be highly uncomfortable), it is also lazy to create a different viewer class for each element just to hold different data, and act exactly the same way. To solve this issue, we opted to let a builder create the correct element viewer instance given the class of the given drawable element.
-
-<p align="center">
-  <img src="images/view.png" alt="Multiple Views">
-</p>
-
-### Polling from the GUI
-As seen in the classes, we could poll the input receiver (in our case, the GUI) for the last user action each frame and act upon it. However, with this approach we would lose some precision and possibly some key inputs. We found that the Lanterna framework provides methods for handling interrupts from the keyboard, and used this mechanism to inform any generic GUI observer of an action in “real time”. In our case, the game controller is the observer, acting upon the inputs to move the pacman.
-
-<p align="center">
-  <img src="images/controller.png" alt="Polling from the GUI">
-</p>
-
-### g50.model.Game Map Builder
-To avoid long lines of hard coded insertions in the game map class, it makes sense to have a separate class to do this job in a generic way (read from a file) and return the assembled GameMap object.
-
-<p align="center">
-  <img src="images/mapbuilder.png" alt="g50.model.Game Map Builder">
-</p>
 
 
 ## Highlighted Features
 
 ### Walls and Bitmask
 
-In the construction of the map, specifically the map walls, instead of drawing a whole square for each one, we create 15 characters with 
+In the construction of the map, specifically the map walls, instead of drawing a whole square for each one, we create 2^4 characters with 
 
 ### Ghosts Personality
 
 ### Transition Between Levels
 
 ## Self-Evaluation
-=======
->>>>>>> ffc352d672df5f484e41c6e56b55a7947c6fbb6c
