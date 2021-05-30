@@ -191,7 +191,7 @@ This problem can be solved if all the controllers add themselves to the observer
 
 ### Coverage/Mutations
 <p align="center">
-  <img src="images/coverage-mutation.png" alt="PiTest">
+  <img src="images/coverage-mutation.PNG" alt="PiTest">
 </p>
 
 ## Highlighted Features
