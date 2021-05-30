@@ -231,6 +231,8 @@ This problem can be solved if all the controllers add themselves to the observer
   <img src="images/coverage-mutation.PNG" alt="PiTest">
 </p>
 
+- [Mutation Tests](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/dfcf28cc2c3157ec629c333ecd9918381f89f281/docs/final-delivery/pitest/index.html)
+
 ## Highlighted Features
 
 ### Walls and Bitmask
