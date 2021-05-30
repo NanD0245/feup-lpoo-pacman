@@ -117,19 +117,12 @@ public class Application implements GUIObserver {
                 case MAIN_MENU:
                     this.menu = new MainMenu();
                     this.controller = new MainMenuController(gui,(MainMenu)menu);
+                    this.level = 1;
                     break;
                 case IN_GAME:
                     if (!lastAppState.equals(AppState.PAUSE_MENU)) {
-                        this.level = 1;
-                        this.game = new Game(highScore, level);
-                        this.controller = new GameController(gui, game);
-                    }
-                    break;
-                case NEXT_LEVEL:
-                    if (!lastAppState.equals(AppState.PAUSE_MENU)) {
-                        this.level++;
-                        int score = this.game.getScore();
-                        this.game = new Game(highScore, level, score);
+                        int score = (this.game == null) ? 0 : this.game.getScore();
+                        this.game = new Game(highScore, level++, score);
                         this.controller = new GameController(gui, game);
                     }
                     break;
@@ -165,13 +158,11 @@ public class Application implements GUIObserver {
                 if (this.game.getScore() > this.highScore) {
                     this.highScore = this.getGame().getScore();
                 }
-                this.menu = new GameOverMenu();
-                this.controller = new GameOverMenuController(gui, (GameOverMenu) menu);
+                this.state = AppState.GAME_OVER;
             }
-            else if (this.controller instanceof GameController && ((GameController) this.controller).isNextLevel()) {
-                this.menu = new TransitionMenu();
-                this.controller = new TransitionMenuController(gui, (TransitionMenu) menu);
-            }
+            else if (this.controller instanceof GameController && ((GameController) this.controller).isNextLevel())
+                this.state = AppState.NEXT_LEVEL_MENU;
+
         }
         this.controller.update(this, frame);
     }

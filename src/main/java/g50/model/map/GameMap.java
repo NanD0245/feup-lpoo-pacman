@@ -142,7 +142,7 @@ public class GameMap {
         for (Ghost ghost : ghosts) {
             ghost.setPosition(ghost.getSpawnPosition());
         }
-        pacman.setPosition(pacman.getSpawnPosition());
+        pacman.setPosition(new Position(13, 25));
         pacman.setOrientation(Orientation.LEFT);
     }
 }

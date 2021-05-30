@@ -71,7 +71,4 @@ public class PacManController extends Controller<PacMan> {
         return nextOrientation;
     }
 
-    public Orientation getNextOrientation() {
-        return nextOrientation;
-    }
 }

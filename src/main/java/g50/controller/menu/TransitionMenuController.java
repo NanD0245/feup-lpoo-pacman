@@ -68,7 +68,7 @@ public class TransitionMenuController extends MenuController {
         }
         this.getMenuViewer().draw(this.getGui());
         if (!direction && ((TransitionMenu) getModel()).getPacMan().getPosition().getX() > 28) {
-            application.setState(AppState.NEXT_LEVEL);
+            application.setState(AppState.IN_GAME);
         }
     }
 
