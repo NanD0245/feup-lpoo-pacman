@@ -26,7 +26,7 @@ public class MenuControllerTest {
         Menu menu = null;
         Controller<Menu> menuController = null;
 
-        GUI gui = new g50.gui.LanternaGUI(28,38);
+        GUI gui = new LanternaGUI(28,38);
         Application application = new Application(gui);
 
         assert(application.getMenu() instanceof MainMenu);
