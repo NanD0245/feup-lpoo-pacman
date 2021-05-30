@@ -122,8 +122,15 @@ This approach has the potential to expand the game functionality: if we ever nee
 #### Controller composites
 
 ###### Problem in context
+It is not desirable that a "god" controller exists, and neither that a controller needs to intervene in models that don't belong to it.
 
+###### The pattern
+The compositions in the model are reflected in the controller: for example, the game controller holds the pacman controller and the four ghosts controllers.
 
+###### Implementation
+
+###### Consequences
+In a classic compositor pattern, the ability to add new parts is required. In our implementation, considering the restrictions of the game, only the pacman and the four ghosts are added, by the constructor. In a more generic fashion, more ghosts controllers could be added on the spot.
 
 #### Ghost controller modularity
 
