@@ -6,6 +6,7 @@ WP@W
 4 3
 
 SPAWN POSITIONS
+1 1
 Blinky 2 2
 Pinky 3 3
 Pacman 2 3
