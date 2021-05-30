@@ -175,10 +175,29 @@ This problem can be solved if all the controllers add themselves to the observer
 
 ### Walls and Bitmask
 
-In the construction of the map, specifically the map walls, instead of drawing a whole square for each one, we create 2^4 characters with 
+In the construction of the map, specifically of the walls of the map, instead of drawing a whole square for each one, we created 2 ^ 4 characters that correspond to all possibilities for each wall, with each side of the character corresponding to 1 bit of 4 sides. 
+
+<p align="center">
+  <img src="images/wall-characters.png" alt="PiTest">
+  <img src="images/wall-bits.png" alt="PiTest">
+</p>
+
+Thus, each wall was generated taking into account the elements in the adjacent positions (up, down, left, right) setting the bit corresponding to 1 if a wall is needed on that side of the character. The final result of the map was:
+
+
+<p align="center">
+  <img src="images/map.jpg" alt="PiTest" width="200"/>
+</p>
+
 
 ### Ghosts Personality
 
 ### Transition Between Levels
+
+For the transition between levels, a small animation was created as in the original game with the pacman and one of the ghosts. The final result of the animation was:
+
+<p align="center">
+  <img src="images/level_transition.gif" alt="PiTest" width="300"/>
+</p>
 
 ## Self-Evaluation
