@@ -229,18 +229,19 @@ For the transition between levels, a small animation was created as in the origi
 ### Sound Effects
 
 We added some of the original sound effects to our program, namely into the following situations:
-  -eating ghost
-  -eating power pellet
-  -pacman dies
-  -moving pacman
-  -"ready to start" jingle
+- eating ghost
+- eating power pellet
+- pacman dies
+- moving pacman
+- "ready to start" jingle
 
 Note: on some Linux machines we observed reliability problems, possibly due to the different file encoding audio formats or concurrency issues opening the same audio line.
-
 
 ## Self-Evaluation
 
 Bruno Mendes: 33%
+
 Fernando Rego: 33%
+
 Nuno Costa: 33%
 
