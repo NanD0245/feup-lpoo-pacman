@@ -12,12 +12,12 @@ public class GameStateHandler {
     private int elapsedFrames;
     private final int defaultFrightenedTime;
 
-    public GameStateHandler(Level levelInfo){
+    public GameStateHandler(Level level) {
         this.state = GameState.GAME_SCATTER;
-        this.times = levelInfo.getGameStateIntervals();
+        this.times = level.getGameStateIntervals();
         this.frightenedFrames = 0;
         this.elapsedFrames = 0;
-        this.defaultFrightenedTime = levelInfo.getGhostFrightenedTime();
+        this.defaultFrightenedTime = level.getGhostFrightenedTime();
     }
 
     public void update(int framerate) {
@@ -29,7 +29,7 @@ public class GameStateHandler {
         GameState newState = GameState.GAME_SCATTER;
         int timeForState = elapsedSeconds;
         for (Integer value: this.times){
-            if (value == Integer.MAX_VALUE || timeForState - value < 0){
+            if (timeForState - value < 0){
                 if (this.state != newState) setCurrentState(newState);
                 return;
             }
