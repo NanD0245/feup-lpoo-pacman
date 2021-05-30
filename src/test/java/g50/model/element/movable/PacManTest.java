@@ -19,6 +19,7 @@ public class PacManTest {
         pacMan.decreaseLives();
         pacMan.decreaseLives();
         assertTrue(pacMan.isAlive());
+        assertEquals(pacMan.getLives(), 1);
         pacMan.increaseLives();
         pacMan.decreaseLives();
         assertTrue(pacMan.isAlive());

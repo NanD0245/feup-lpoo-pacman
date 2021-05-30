@@ -57,7 +57,7 @@ public abstract class GhostStrategy {
         return getOrientationTo(ghost, availableOrientations, map.getGhostSpawnPosition());
     }
 
-    private Orientation getOrientationTo(Ghost ghost, List<Orientation> availableOrientations, Position pos){
+    public Orientation getOrientationTo(Ghost ghost, List<Orientation> availableOrientations, Position pos){
         Orientation bestOrientation = null;
         double bestDistance = Double.POSITIVE_INFINITY;
 
@@ -119,7 +119,7 @@ public abstract class GhostStrategy {
 
     public Orientation getBestOrientation(GameMap map, Ghost ghost, Position targetPosition){
         List<Orientation> availableOris =  map.getAvailableOrientations(ghost.getPosition());
-        availableOris.remove(ghost.getOrientation().getOpposite());
+        removeReverseOrientation(ghost, availableOris);
         Orientation bestOrientation = null;
         double bestDistance = Double.POSITIVE_INFINITY;
 

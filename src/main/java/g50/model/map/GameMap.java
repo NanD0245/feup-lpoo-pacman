@@ -1,5 +1,6 @@
 package g50.model.map;
 
+import g50.model.element.Element;
 import g50.model.element.Position;
 import g50.model.element.fixed.FixedElement;
 import g50.model.element.movable.Orientation;
@@ -45,25 +46,25 @@ public class GameMap {
     }
 
     public FixedElement getElement(Position pos){
+        if(getColumns() == 0 || getLines() == 0) return null;
         int x = (pos.getX() + getColumns())  % getColumns();
         int y = (pos.getY() + getLines()) % getLines();
-        FixedElement elem;
-        elem = map.get(y).get(x);
-        return elem;
+        return map.get(y).get(x);
     }
 
     public Map<Orientation, FixedElement> getSurroundings(Position position){
         int x = position.getX(), y = position.getY();
-        return new HashMap<>() {{
+        return new LinkedHashMap<>() {{
             put(Orientation.UP, getElement(new Position(x, y-1)));
-            put(Orientation.DOWN, getElement(new Position(x, y+1)));
             put(Orientation.LEFT, getElement(new Position(x-1, y)));
+            put(Orientation.DOWN, getElement(new Position(x, y+1)));
             put(Orientation.RIGHT, getElement(new Position(x+1, y)));
         }};
     }
 
     public List<Orientation> getAvailableOrientations(Position position){
-        if (!getElement(position).isWalkable()) return new ArrayList<>();
+        FixedElement elem = getElement(position);
+        if (elem == null || !elem.isWalkable()) return new ArrayList<>();
         Map<Orientation, FixedElement> surroundings = getSurroundings(position);
         List<Orientation> orientations = new ArrayList<>();
         for (Orientation orientation: surroundings.keySet()) {
@@ -139,7 +140,7 @@ public class GameMap {
         for (Ghost ghost : ghosts) {
             ghost.setPosition(ghost.getSpawnPosition());
         }
-        pacman.setPosition(new Position(13, 25));
+        pacman.setPosition(new Position(pacman.getSpawnPosition()));
         pacman.setOrientation(Orientation.LEFT);
     }
 }

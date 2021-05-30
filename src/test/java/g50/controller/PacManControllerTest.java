@@ -5,11 +5,13 @@ import g50.gui.GUI;
 import g50.model.Game;
 import g50.model.Level;
 import g50.model.element.Position;
+import g50.model.element.movable.PacMan;
 import g50.model.element.movable.Orientation;
 import g50.model.map.GameMap;
 import g50.model.map.mapbuilder.FileGameMapBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.io.IOException;

@@ -105,7 +105,10 @@ public abstract class GameMapBuilder {
             String name = entityCoords[0];
             x = Integer.parseInt(entityCoords[1]);
             y = Integer.parseInt(entityCoords[2]);
-            if(entityCoords[0].equalsIgnoreCase("PacMan")) pacman.setPosition(new Position(x,y));
+            if(entityCoords[0].equalsIgnoreCase("PacMan")) {
+                pacman.setSpawnPosition(new Position(x,y));
+                pacman.setPosition(new Position(pacman.getSpawnPosition()));
+            }
             else {
                 Constructor<? extends Ghost> ghostConstructor = ghostClass.containsKey(entityCoords[0]) ?
                         ghostClass.get(entityCoords[0]).getConstructor(String.class,
