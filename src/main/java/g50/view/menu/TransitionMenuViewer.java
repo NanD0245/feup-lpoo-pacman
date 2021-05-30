@@ -3,7 +3,7 @@ package g50.view.menu;
 import g50.gui.GUI;
 import g50.model.menu.TransitionMenu;
 import g50.view.ViewProperty;
-import g50.view.factory.DefaultPacManViewerBuilder;
+import g50.view.builders.DefaultPacManViewerBuilder;
 
 import java.io.IOException;
 
