@@ -7,33 +7,28 @@ import java.util.List;
 
 public class GameStateHandler {
     private GameState state;
-    private final GameController gameController;
     private final List<Integer> times;
     private int frightenedFrames;
     private int elapsedFrames;
-    private int defaultFrightenedTime;
+    private final int defaultFrightenedTime;
 
-    public GameStateHandler(GameController gameController, Level levelInfo){
+    public GameStateHandler(Level levelInfo){
         this.state = GameState.GAME_SCATTER;
         this.times = levelInfo.getGameStateIntervals();
         this.frightenedFrames = 0;
         this.elapsedFrames = 0;
-        this.gameController = gameController;
         this.defaultFrightenedTime = levelInfo.getGhostFrightenedTime();
     }
 
     public void update(int framerate) {
         elapsedFrames++;
         int elapsedSeconds =  elapsedFrames/framerate;
-        int frightnedSeconds = frightenedFrames/framerate;
-
-        if(state.equals(GameState.GAME_FRIGHTENED))
-            if(elapsedSeconds - frightnedSeconds < defaultFrightenedTime) return;
+        int frightenedSeconds = frightenedFrames/framerate;
+        if (state.equals(GameState.GAME_FRIGHTENED) && elapsedSeconds - frightenedSeconds < defaultFrightenedTime) return;
 
         GameState newState = GameState.GAME_SCATTER;
-
         int timeForState = elapsedSeconds;
-        for(Integer value: this.times){
+        for (Integer value: this.times){
             if (value == Integer.MAX_VALUE || timeForState - value < 0){
                 if (this.state != newState) setCurrentState(newState);
                 return;
@@ -47,9 +42,6 @@ public class GameStateHandler {
     public void setCurrentState(GameState newState){
         this.state = newState;
         if (newState == GameState.GAME_FRIGHTENED) frightenedFrames = elapsedFrames;
-        for (GhostController ghostController: gameController.getGhostsController()){
-            ghostController.reverseOrientation();
-        }
     }
 
     public GameState getState() { return state; }

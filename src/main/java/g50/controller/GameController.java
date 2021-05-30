@@ -52,7 +52,7 @@ public class GameController extends Controller<Game> {
         this.pacManController = new PacManController(this);
         this.viewer = new GameViewer(game);
         this.gui = gui;
-        this.gameStateHandler = new GameStateHandler(this, this.getModel().getLevel());
+        this.gameStateHandler = new GameStateHandler(this.getModel().getLevel());
         setUpGhosts();
         this.currentBonus = 200;
         this.pauseMenu = new PauseMenu(game.getScore());
@@ -60,7 +60,6 @@ public class GameController extends Controller<Game> {
         this.started = true;
         this.lastAction = GUI.KBD_ACTION.NONE;
     }
-
 
     public void setUpGhosts(){
         for (Ghost ghost: getModel().getGameMap().getGhosts()) {
