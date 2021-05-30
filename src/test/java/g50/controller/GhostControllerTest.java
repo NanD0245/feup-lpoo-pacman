@@ -22,7 +22,7 @@ class GhostControllerTest {
     private Game mockGame;
 
     @BeforeEach
-    private void mockMap() throws IOException {
+    private void mockGame() throws IOException {
         mockMap = new FileGameMapBuilder("src/main/resources/maps/small.txt").getBuild();
         mockGame = Mockito.mock(Game.class);
         Mockito.when(mockGame.getGameMap()).thenReturn(mockMap);

@@ -3,6 +3,7 @@ package g50;
 import g50.controller.Controller;
 import g50.controller.GameController;
 import g50.controller.menu.*;
+import g50.model.map.mapbuilder.DefaultGameMapBuilder;
 import g50.states.AppState;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
@@ -123,7 +124,7 @@ public class Application implements GUIObserver {
                 case IN_GAME:
                     if (!lastAppState.equals(AppState.PAUSE_MENU)) {
                         int score = (this.game == null) ? 0 : this.game.getScore();
-                        this.game = new Game(highScore, level++, score);
+                        this.game = new Game(new DefaultGameMapBuilder().getBuild(), highScore, level++, score);
                         this.controller = new GameController(gui, game);
                     }
                     break;

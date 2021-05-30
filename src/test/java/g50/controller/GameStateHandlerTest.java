@@ -2,7 +2,6 @@ package g50.controller;
 
 import g50.model.Level;
 import g50.states.GameState;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,8 +9,9 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 
 class GameStateHandlerTest {
-    Level level;
-    GameStateHandler gameStateHandler;
+    private Level level;
+    private GameStateHandler gameStateHandler;
+
     @BeforeEach
     void mockLevel(){
         level = Mockito.mock(Level.class);
