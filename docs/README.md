@@ -4,7 +4,7 @@
 
 A clone of the classic PacMan game played in the arcade machines of the good old days, spiced up with some easter eggs related to the package manager of your favorite Linux distro.
 <p align="center">
-  <img src="images/pacman-gif.gif" alt="PacMan g50.model.Game">
+  <img src="images/pacman-gif.gif" alt="PacMan com.g50.model.Game">
 </p>
 
 Developed by Bruno Mendes (up20212121@fe.up.pt), Fernando Rego (up201905951@fe.up.pt) and Nuno Costa(up201906272@fe.up.pt).
@@ -182,10 +182,10 @@ As seen in the classes, we could poll the input receiver (in our case, the GUI) 
   <img src="images/controller.png" alt="Polling from the GUI">
 </p>
 
-### g50.model.Game Map Builder
+### com.g50.model.Game Map Builder
 To avoid long lines of hard coded insertions in the game map class, it makes sense to have a separate class to do this job in a generic way (read from a file) and return the assembled GameMap object.
 
 <p align="center">
-  <img src="images/mapbuilder.png" alt="g50.model.Game Map Builder">
+  <img src="images/mapbuilder.png" alt="com.g50.model.Game Map Builder">
 </p>
 

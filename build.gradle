@@ -4,7 +4,7 @@ plugins {
     id 'info.solidsoft.pitest' version '1.6.0'
 }
 
-group 'g50'
+group 'com.g50'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -20,7 +20,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("g50.Application")
+    mainClass.set("com.g50")
 }
 
 test {
