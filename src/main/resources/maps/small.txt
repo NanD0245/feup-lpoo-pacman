@@ -1,8 +1,8 @@
 6x5
 WWWWWW
-W    W
-W W  W
-W    W
+WPPPPW
+W@WPPW
+WPPP@W
 WWWWWW
 
 SPAWN POSITIONS
@@ -10,5 +10,5 @@ SPAWN POSITIONS
 Blinky 1 1
 Pinky 1 3
 Inky 1 2
-Clyde 3 4
+Clyde 3 3
 PacMan 3 1

@@ -32,7 +32,6 @@ public class PacManController extends Controller<PacMan> {
         this.getModel().setFramesAndDefaultFramesPerPosition(gameController.getModel().getLevel().getPacManFramesPerMovement());
     }
 
-
     public void addPendingKBDAction(GUI.KBD_ACTION action) {
         List<Orientation> orientations =
                 gameMap.getAvailableOrientations(getModel().getPosition());
