@@ -219,7 +219,7 @@ Thus, each wall was generated taking into account the elements in the adjacent p
 As stated in the design problems, each ghost behaves differently. For Blinky, we use a grid-based optimized A-Star algorithm to calculate the best shortest path to the PacMan.
 
 <p align="center">
-  <img src="images/personalities.png" alt="Ghost Personalities" width="300"/>
+  <img src="images/personalities.png" alt="Ghost Personalities"/>
 </p>
 
 ### Transition Between Levels
@@ -227,7 +227,7 @@ As stated in the design problems, each ghost behaves differently. For Blinky, we
 For the transition between levels, a small animation was created as in the original game with the pacman and one of the ghosts. The final result of the animation was:
 
 <p align="center">
-  <img src="images/level_transition.gif" alt="Level Transition"/>
+  <img src="images/level_transition.gif" alt="Level Transition" width="300"/>
 </p>
 
 ### Sound Effects
