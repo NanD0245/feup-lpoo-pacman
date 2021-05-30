@@ -30,6 +30,7 @@ Developed by Bruno Mendes (up20212121@fe.up.pt), Fernando Rego (up201905951@fe.u
   - Animated level transition
 - Sound effects
 - Package manager easter eggs
+  - Manjaro fruit
 
 ## Architectural Design
 <p align="center">
