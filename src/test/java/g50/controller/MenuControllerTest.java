@@ -16,29 +16,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MenuControllerTest {
 
-    private Application mockApp;
-
-    @BeforeEach
-    public void setupViewMock(){
-        mockApp = Mockito.mock(Application.class);
-    }
-
     @Test
     public void mainMenuTest() {
         MainMenu menu = new MainMenu();
         MainMenuController menuController = new MainMenuController(null, menu);
 
         assertTrue(menu.isSelectedStart());
-        menuController.handleKBDAction(mockApp, GUI.KBD_ACTION.DOWN);
+        menuController.handleKBDAction(null, GUI.KBD_ACTION.DOWN);
 
         assertTrue(menu.isSelectedControls());
-        menuController.handleKBDAction(mockApp, GUI.KBD_ACTION.ESQ);
+        menuController.handleKBDAction(null, GUI.KBD_ACTION.ESQ);
         assertTrue(menu.isSelectedControls());
 
-        menuController.handleKBDAction(mockApp, GUI.KBD_ACTION.OTHER);
+        menuController.handleKBDAction(null, GUI.KBD_ACTION.OTHER);
         assertTrue(menu.isSelectedControls());
 
-        menuController.handleKBDAction(mockApp, GUI.KBD_ACTION.DOWN);
+        menuController.handleKBDAction(null, GUI.KBD_ACTION.DOWN);
         assertTrue(menu.isSelectedHighScore());
     }
 
