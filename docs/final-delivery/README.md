@@ -4,10 +4,10 @@
 
 A clone of the classic PacMan game played in the arcade machines of the good old days, spiced up with some easter eggs related to the package manager of your favorite Linux distro.
 <p align="center">
-  <img src="images/pacman-gif.gif" alt="PacMan g50.model.Game">
+  <img src="images/pacman-gif.gif" alt="PacMan" width="400">
 </p>
 
-Developed by Bruno Mendes (up20212121@fe.up.pt), Fernando Rego (up201905951@fe.up.pt) and Nuno Costa(up201906272@fe.up.pt).
+Developed by Bruno Mendes (up201906166@fe.up.pt), Fernando Rego (up201905951@fe.up.pt) and Nuno Costa(up201906272@fe.up.pt).
 
 ## Implemented Features
 
@@ -201,15 +201,16 @@ This problem can be solved if all the controllers add themselves to the observer
 In the construction of the map, specifically of the walls of the map, instead of drawing a whole square for each one, we created 2 ^ 4 characters that correspond to all possibilities for each wall, with each side of the character corresponding to 1 bit of 4 sides. 
 
 <p align="center">
-  <img src="images/wall-characters.png" alt="PiTest">
-  <img src="images/wall-bits.png" alt="PiTest">
+  <img src="images/wall-characters.png" alt="Wall Characters">
+  <br>
+  <img src="images/wall-bits.png" alt="Wall Bits">
 </p>
 
 Thus, each wall was generated taking into account the elements in the adjacent positions (up, down, left, right) setting the bit corresponding to 1 if a wall is needed on that side of the character. The final result of the map was:
 
 
 <p align="center">
-  <img src="images/map.jpg" alt="PiTest" width="200"/>
+  <img src="images/map.jpg" alt="Wall Map" width="200"/>
 </p>
 
 
@@ -222,7 +223,24 @@ As stated in the design problems, each ghost behaves differently. For Blinky, we
 For the transition between levels, a small animation was created as in the original game with the pacman and one of the ghosts. The final result of the animation was:
 
 <p align="center">
-  <img src="images/level_transition.gif" alt="PiTest" width="300"/>
+  <img src="images/level_transition.gif" alt="Level Transition" width="300"/>
 </p>
 
+### Sound Effects
+
+We added some of the original sound effects to our program, namely into the following situations:
+  -eating ghost
+  -eating power pellet
+  -pacman dies
+  -moving pacman
+  -"ready to start" jingle
+
+Note: on some Linux machines we observed reliability problems, possibly due to the different file encoding audio formats or concurrency issues opening the same audio line.
+
+
 ## Self-Evaluation
+
+Bruno Mendes: 33%
+Fernando Rego: 33%
+Nuno Costa: 33%
+
