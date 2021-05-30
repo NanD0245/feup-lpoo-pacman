@@ -205,4 +205,12 @@ public class Application implements GUIObserver {
             }
         }).start();
     }
+
+    public void setController(Controller<?> controller) {
+        this.controller = controller;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
 }
