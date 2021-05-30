@@ -27,8 +27,8 @@ public class LanternaGUI implements GUI{
     private final Screen screen;
     private final List<GUIObserver> observers;
 
-    public LanternaGUI(int width, int height) throws IOException, URISyntaxException, FontFormatException {
-        AWTTerminalFontConfiguration fontConfig = loadFontConfig("fonts/pacman_font.otf", 25);
+    public LanternaGUI(int width, int height, String fontPath) throws IOException, URISyntaxException, FontFormatException {
+        AWTTerminalFontConfiguration fontConfig = loadFontConfig(fontPath, 25);
         Terminal terminal = createTerminal(width, height, fontConfig);
         this.screen = createScreen(terminal);
         this.observers = new ArrayList<>();

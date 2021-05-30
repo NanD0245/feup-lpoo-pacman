@@ -50,7 +50,7 @@ public class Application implements GUIObserver {
 
     public static void main(String[] args) throws IOException, URISyntaxException, FontFormatException {
         Application application =
-                new Application(new g50.gui.LanternaGUI(28,38));
+                new Application(new g50.gui.LanternaGUI(28,38, "fonts/pacman_font.otf"));
         application.setUp(30);
     }
 

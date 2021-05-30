@@ -26,7 +26,7 @@ public class MenuControllerTest {
         Menu menu = null;
         Controller<Menu> menuController = null;
 
-        GUI gui = new LanternaGUI(28,38);
+        GUI gui = new LanternaGUI(28,38, "fonts/pacman_font.otf");
         Application application = new Application(gui);
 
         assert(application.getMenu() instanceof MainMenu);
