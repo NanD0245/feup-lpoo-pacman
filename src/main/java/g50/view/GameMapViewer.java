@@ -6,7 +6,7 @@ import g50.model.element.fixed.FixedElement;
 import g50.model.element.fixed.noncollectable.Wall;
 import g50.model.element.movable.ghost.Ghost;
 import g50.model.map.GameMap;
-import g50.view.factory.*;
+import g50.view.builders.*;
 
 import java.io.IOException;
 import java.util.List;

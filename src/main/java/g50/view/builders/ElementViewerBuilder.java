@@ -1,4 +1,4 @@
-package g50.view.factory;
+package g50.view.builders;
 
 import g50.model.element.Position;
 import g50.model.element.Element;

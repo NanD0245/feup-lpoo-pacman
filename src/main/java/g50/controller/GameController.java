@@ -52,7 +52,7 @@ public class GameController extends Controller<Game> {
         this.pacManController = new PacManController(this);
         this.viewer = new GameViewer(game);
         this.gui = gui;
-        this.gameStateHandler = new GameStateHandler(this, this.getModel().getLevel());
+        this.gameStateHandler = new GameStateHandler(this.getModel().getLevel());
         setUpGhosts();
         this.currentBonus = 200;
         this.pauseMenu = new PauseMenu(game.getScore());
@@ -60,7 +60,6 @@ public class GameController extends Controller<Game> {
         this.started = true;
         this.lastAction = GUI.KBD_ACTION.NONE;
     }
-
 
     public void setUpGhosts(){
         for (Ghost ghost: getModel().getGameMap().getGhosts()) {
@@ -84,7 +83,6 @@ public class GameController extends Controller<Game> {
         else {
             pacManController.addPendingKBDAction(action);
         }
-
     }
 
     @Override
@@ -101,7 +99,6 @@ public class GameController extends Controller<Game> {
             handleKBDAction(application, lastAction);
             lastAction = GUI.KBD_ACTION.NONE;
         }
-
         if (application.getState().equals(AppState.PAUSE_MENU)) {
             pauseMenuController.update(application,frame);
         }
@@ -129,18 +126,18 @@ public class GameController extends Controller<Game> {
         }
     }
 
-    private void controlGhosts(Application application, int frame) {
-        for(GhostController ghostController: ghostsController){
+    public void controlGhosts(Application application, int frame) {
+        for (GhostController ghostController: ghostsController){
             ghostController.update(application, frame);
         }
-        if(!gameStateHandler.getState().equals(GameState.GAME_FRIGHTENED)) resetBonus();
+        if (!gameStateHandler.getState().equals(GameState.GAME_FRIGHTENED)) resetBonus();
     }
 
-    public void consumeMapElement(Position pos){
-        FixedElement currentElement = super.getModel().getGameMap().getElement(pos);
+    public void consumeMapElement(Position position){
+        FixedElement currentElement = super.getModel().getGameMap().getElement(position);
 
-        if(currentElement.isCollectable()){
-            Position newPos = new Position(super.getModel().getGameMap().getPacman().getPosition());
+        if (currentElement.isCollectable()){
+            Position newPos = new Position(position);
             super.getModel().getGameMap().setElement(new EmptySpace(newPos), newPos);
 
             Collectable collectable = (Collectable) currentElement;
@@ -171,7 +168,7 @@ public class GameController extends Controller<Game> {
         }
     }
 
-    private void decreaseDotsOnHighestPriorityGhost(){
+    public void decreaseDotsOnHighestPriorityGhost(){
         for (Class<? extends GhostStrategy> classType: priorities){
             for (GhostController ghostController: ghostsController){
                 if (classType.equals(ghostController.getModel().getStrategy().getClass())
@@ -183,7 +180,7 @@ public class GameController extends Controller<Game> {
         }
     }
 
-    private void checkPacmanGhostCollision() throws InterruptedException {
+    public void checkPacmanGhostCollision() throws InterruptedException {
         for (GhostController ghostController: ghostsController){
             if (ghostController.getModel().getPosition().equals(pacManController.getModel().getPosition())){
                 if (ghostController.getModel().getState().equals(GhostState.FRIGHTENED)){
@@ -221,7 +218,7 @@ public class GameController extends Controller<Game> {
         return !getModel().getGameMap().getPacman().isAlive();
     }
 
-    public boolean isNextLevel()  {
+    public boolean isNextLevel() {
         return getModel().getGameMap().getMap()
                 .stream().flatMap(Collection::stream).collect(Collectors.toList())
                 .stream().noneMatch(x -> x instanceof PacDot);

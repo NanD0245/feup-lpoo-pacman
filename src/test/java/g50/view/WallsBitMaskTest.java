@@ -4,8 +4,8 @@ import g50.model.element.fixed.noncollectable.Wall;
 import g50.model.map.GameMap;
 import g50.model.map.mapbuilder.FileGameMapBuilder;
 import g50.model.map.mapbuilder.GameMapBuilder;
-import g50.view.factory.DefaultWallViewerBuilder;
-import g50.view.factory.WallViewerBuilder;
+import g50.view.builders.DefaultWallViewerBuilder;
+import g50.view.builders.WallViewerBuilder;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

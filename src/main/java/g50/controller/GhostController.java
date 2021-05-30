@@ -61,16 +61,20 @@ public class GhostController extends Controller<Ghost> {
     private void updateGhostState(GameState gameState) {
         switch (gameState) {
             case GAME_CHASE: {
+                if (getModel().getState() == GhostState.FRIGHTENED) reverseOrientation();
                 getModel().setState(GhostState.CHASE);
                 break;
             }
             case GAME_SCATTER: {
+                if (getModel().getState() == GhostState.FRIGHTENED) reverseOrientation();
                 getModel().setState(GhostState.SCATTER);
                 break;
             }
-            case GAME_FRIGHTENED:
+            case GAME_FRIGHTENED: {
+                if (getModel().getState() != GhostState.FRIGHTENED) reverseOrientation();
                 getModel().setState(GhostState.FRIGHTENED);
                 break;
+            }
         }
     }
 
@@ -91,8 +95,8 @@ public class GhostController extends Controller<Ghost> {
     public void addPendingKBDAction(GUI.KBD_ACTION action) throws IOException {}
 
     public void reverseOrientation(){
-        if (this.getModel().getState() != GhostState.LEAVING_CAGE &&
-                this.getModel().getState() != GhostState.IN_CAGE && this.getModel().getState() != GhostState.DEAD)
+        if (getModel().getState() != GhostState.LEAVING_CAGE &&
+                getModel().getState() != GhostState.IN_CAGE && this.getModel().getState() != GhostState.DEAD)
             setNextBufferedOrientation(getModel().getOrientation().getOpposite());
     }
 

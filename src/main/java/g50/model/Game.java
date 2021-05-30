@@ -11,15 +11,16 @@ public class Game {
     private final int highScore;
     private final Level level;
 
-    public Game(int highScore, int level) throws IOException {
-        this.map = new DefaultGameMapBuilder().getBuild();
+    public Game(GameMap map, int highScore, int level) throws IOException {
+        assert level > 0;
+        this.map = map;
         this.highScore = highScore;
         this.score = 0;
         this.level = new Level(level);
     }
 
-    public Game(int highScore, int level, int score) throws IOException {
-        this.map = new DefaultGameMapBuilder().getBuild();
+    public Game(GameMap map, int highScore, int level, int score) throws IOException {
+        this.map = map;
         this.highScore = highScore;
         this.score = score;
         this.level = new Level(level);

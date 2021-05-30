@@ -14,7 +14,7 @@ public class GameMap {
     private final List<List<FixedElement>> map;
     private final List<Ghost> ghosts;
     private final PacMan pacman;
-    private final Position ghostSpawnPosition;
+    private Position ghostSpawnPosition;
     private final Position fruitPosition;
 
     public GameMap(List<List<FixedElement>> map, List<Ghost> ghosts, PacMan pacman, Position startPos, Position fruitPos) {
@@ -142,5 +142,9 @@ public class GameMap {
         }
         pacman.setPosition(new Position(pacman.getSpawnPosition()));
         pacman.setOrientation(Orientation.LEFT);
+    }
+
+    public void setGhostSpawnPosition(Position ghostSpawnPosition) {
+        this.ghostSpawnPosition = ghostSpawnPosition;
     }
 }

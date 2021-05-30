@@ -3,6 +3,7 @@ package g50;
 import g50.controller.Controller;
 import g50.controller.GameController;
 import g50.controller.menu.*;
+import g50.model.map.mapbuilder.DefaultGameMapBuilder;
 import g50.states.AppState;
 import g50.gui.GUI;
 import g50.gui.GUIObserver;
@@ -24,7 +25,6 @@ import static java.lang.Integer.parseInt;
 
 public class Application implements GUIObserver {
     private int highScore;
-
     static final String highScoreFile = "src/main/resources/highscore/highscore.txt";
     private int frameRate;
     private Timer timer;
@@ -35,6 +35,7 @@ public class Application implements GUIObserver {
     private Game game;
     private Menu menu;
     private int level;
+    static boolean compatibleAudio;
 
     public Application(GUI gui) throws FileNotFoundException {
         setHighScore(readHighScore(highScoreFile));
@@ -46,6 +47,7 @@ public class Application implements GUIObserver {
         this.lastAppState = AppState.MAIN_MENU;
         this.game = null;
         this.level = 1;
+        compatibleAudio = true;
     }
 
     public static void main(String[] args) throws IOException, URISyntaxException, FontFormatException {
@@ -122,7 +124,7 @@ public class Application implements GUIObserver {
                 case IN_GAME:
                     if (!lastAppState.equals(AppState.PAUSE_MENU)) {
                         int score = (this.game == null) ? 0 : this.game.getScore();
-                        this.game = new Game(highScore, level++, score);
+                        this.game = new Game(new DefaultGameMapBuilder().getBuild(), highScore, level++, score);
                         this.controller = new GameController(gui, game);
                     }
                     break;
@@ -201,7 +203,11 @@ public class Application implements GUIObserver {
                 clip.start();
                 syncLatch.await();
             } catch (Exception e) {
-                System.err.println(e.getMessage());
+                if (compatibleAudio) {
+                    System.err.println("Audio play failed: " + e.getMessage());
+                    System.err.println("Your machine may not be compatible with our audio file encoding");
+                    compatibleAudio = false;
+                }
             }
         }).start();
     }

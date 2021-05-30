@@ -6,7 +6,7 @@ import g50.model.element.fixed.collectable.PowerPellet;
 import g50.model.element.fixed.collectable.fruit.*;
 import g50.model.element.movable.PacMan;
 import g50.model.element.movable.ghost.*;
-import g50.view.factory.*;
+import g50.view.builders.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
