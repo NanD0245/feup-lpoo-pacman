@@ -115,6 +115,20 @@ The next step for a ghost is determined by its strategy. The strategy is respons
   <img src="images/strategy.png" alt="Strategy">
 </p>
 
+[Ghost](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/fe389c5baf728187495f94d4bcc764819abba61c/src/main/java/com/g50/model/element/movable/ghost/Ghost.java)
+
+[GhostController](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/fe389c5baf728187495f94d4bcc764819abba61c/src/main/java/com/g50/controller/GhostController.java)
+
+[GhostStrategy](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/fe389c5baf728187495f94d4bcc764819abba61c/src/main/java/com/g50/model/element/movable/ghost/strategy/GhostStrategy.java)
+
+[BlinkyStrategy](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/fe389c5baf728187495f94d4bcc764819abba61c/src/main/java/com/g50/model/element/movable/ghost/strategy/BlinkyStrategy.java)
+
+[PinkyStrategy](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/fe389c5baf728187495f94d4bcc764819abba61c/src/main/java/com/g50/model/element/movable/ghost/strategy/PinkyStrategy.java)
+
+[InkyStrategy](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/fe389c5baf728187495f94d4bcc764819abba61c/src/main/java/com/g50/model/element/movable/ghost/strategy/InkyStrategy.java)
+
+[ClydeStrategy](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/fe389c5baf728187495f94d4bcc764819abba61c/src/main/java/com/g50/model/element/movable/ghost/strategy/ClydeStrategy.java)
+
 ###### Consequences
 This approach allows ghosts to have any kind of personality, hiding the details from the controller, and presents no concerns.
 
