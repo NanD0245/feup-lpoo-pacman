@@ -46,10 +46,12 @@ public class GhostController extends Controller<Ghost> {
     private void updatePositions(GameController gameController){
         Orientation newOrientation = getModel().getStrategy().getNextOrientation(gameController.getModel().getGameMap(),
                 getModel(), getModel().getState());
+
         if (newOrientation == null) return;
         else getModel().setOrientation(newOrientation);
         moveToNewPosition(gameController.getModel().getGameMap(), gameController.getModel().getGameMap().
                 getAvailableOrientations(getModel().getPosition()));
+
     }
 
     private void moveToNewPosition(GameMap gameMap, List<Orientation> orientations){
