@@ -68,7 +68,21 @@ This approach did allow to modularize the code and hide complicated implementati
 
 #### GUI Observers
 
+###### Problem in context
+Fetching actions from the GUI (in our case, only the keyboard input, but same could be said for mouse input), as seen in the classes, involved polling in a not so pretty busy wait game loop. To add to this issue, several calls were made to the kernel to fetch the time to determine whether to draw a new frame or not.
+
+###### The pattern
+The GUI is responsible for informing all interested observers when it is time to update the game state and draw a new frame. In the game, the Application class adds itself to the list of GUI observers and delegates responsability to the appropriate controller, each frame, to update the game state and refresh the screen.
+
+###### Implementation
+
+###### Consequences
+An interrupt-like solution involved, as expected, some extra complexity and the possible raise of concurrency issues, but we found the extra precision given by the timer and the aspect of the code to compensate these concerns.
+
 #### Ghost strategies
+
+###### Problem in context
+
 
 #### Lanterna Framework Facade
 
