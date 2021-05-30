@@ -54,17 +54,20 @@ public class PacManController extends Controller<PacMan> {
     @Override
     public void update(Application application, int frame) {
         if(frame % getModel().getFramesPerPosition() != 0) return;
-        gameController.consumeMapElement(super.getModel().getPosition());
-        Position currentPos = super.getModel().getPosition();
-        moveToNewPosition(gameMap.getAvailableOrientations(super.getModel().getPosition()), currentPos);
+        gameController.consumeMapElement(getModel().getPosition());
+        moveToNewPosition(gameMap.getAvailableOrientations(getModel().getPosition()), getModel().getPosition());
     }
 
     private void moveToNewPosition(List<Orientation> orientations, Position currentPos){
         if (orientations.contains(nextOrientation)
         && !(gameMap.getElement(currentPos.getAdjacent(nextOrientation)) instanceof Door)){
-            super.getModel().move(nextOrientation, gameMap.getColumns(), gameMap.getLines());
+            getModel().move(nextOrientation, gameMap.getColumns(), gameMap.getLines());
             nextOrientation = null;
-        } else if (orientations.contains(super.getModel().getOrientation()))
-            super.getModel().move(super.getModel().getOrientation(), gameMap.getColumns(), gameMap.getLines());
+        } else if (orientations.contains(getModel().getOrientation()))
+            getModel().move(super.getModel().getOrientation(), gameMap.getColumns(), gameMap.getLines());
+    }
+
+    public Orientation getNextOrientation() {
+        return nextOrientation;
     }
 }

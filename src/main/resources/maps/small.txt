@@ -1,0 +1,14 @@
+6x5
+WWWWWW
+W    W
+W W  W
+W    W
+WWWWWW
+
+SPAWN POSITIONS
+3 3
+Blinky 1 1
+Pinky 1 3
+Inky 1 2
+Clyde 3 4
+PacMan 3 1

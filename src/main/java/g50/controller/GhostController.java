@@ -24,17 +24,17 @@ public class GhostController extends Controller<Ghost> {
         updateGhostState(gameController);
         updateGhostSpeed(gameController);
         if (frame % getModel().getFramesPerPosition() == 0)
-            updatePositions(gameController);
+            updatePositions(gameController.getModel().getGameMap());
     }
 
-    private void updateGhostSpeed(GameController gameController) {
+    public void updateGhostSpeed(GameController gameController) {
         if(getModel().getState().equals(GhostState.FRIGHTENED))
             getModel().setFramesPerPosition(gameController.getModel().getLevel().getFrightenedGhostFramesPerMovement());
         else
             getModel().setDefaultFramesPerPosition();
     }
 
-    private void updateGhostState(GameController gameController) {
+    public void updateGhostState(GameController gameController) {
         if (isDeadInSpawnPosition())
             getModel().setState(GhostState.IN_CAGE);
         else if (isReadyToLeaveCage())
@@ -43,13 +43,11 @@ public class GhostController extends Controller<Ghost> {
             updateGhostState(gameController.getGameStateHandler().getState());
     }
 
-    private void updatePositions(GameController gameController){
-        Orientation newOrientation = getModel().getStrategy().getNextOrientation(gameController.getModel().getGameMap(),
-                getModel(), getModel().getState());
+    public void updatePositions(GameMap gameMap){
+        Orientation newOrientation = getModel().getStrategy().getNextOrientation(gameMap, getModel(), getModel().getState());
         if (newOrientation == null) return;
         else getModel().setOrientation(newOrientation);
-        moveToNewPosition(gameController.getModel().getGameMap(), gameController.getModel().getGameMap().
-                getAvailableOrientations(getModel().getPosition()));
+        moveToNewPosition(gameMap, gameMap.getAvailableOrientations(getModel().getPosition()));
     }
 
     private void moveToNewPosition(GameMap gameMap, List<Orientation> orientations){
