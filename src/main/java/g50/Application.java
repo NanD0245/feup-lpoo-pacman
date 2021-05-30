@@ -36,7 +36,7 @@ public class Application implements GUIObserver {
     private Menu menu;
     private int level;
 
-    Application(GUI gui) throws FileNotFoundException {
+    public Application(GUI gui) throws FileNotFoundException {
         setHighScore(readHighScore(highScoreFile));
         this.menu = new MainMenu();
         this.gui = gui;
