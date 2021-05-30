@@ -22,6 +22,8 @@ public class Wall extends NonCollectable {
         this.bitmask.set(bitIndex);
     }
 
+    public void setBitmask(BitSet bitmask) { this.bitmask = bitmask; }
+
     public BitSet getBitmask() {
         return bitmask;
     }
