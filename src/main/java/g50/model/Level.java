@@ -25,8 +25,8 @@ public class Level {
     }};
 
     private static final Map<Integer, Integer> pacManFramesPerMovement = new HashMap<>(){{
-        put(1, 3);
-        put(2, 3);
+        put(1, 8);
+        put(2, 6);
         put(3, 6);
         put(4, 6);
     }};
