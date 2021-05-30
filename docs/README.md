@@ -16,18 +16,18 @@ Developed by Bruno Mendes (up20212121@fe.up.pt), Fernando Rego (up201905951@fe.u
 - Game Map Display
     - Custom font for a more precise replica of the original game elements
     - Usage of bitmasks for different Wall generation
-    - 
 - PacMan movement with the keyboard
-- PacDot collection
 - Ghost movement and states
-- Different ghost strategies  
+- Different ghost strategies
+  - Usage of the A-Star algorithm for a more precise path-finding solution
 - Scoring and abilities with collectables
-- Keeps track of the highest score  
-- Defeat screen (endless game, no winning screen)
-- Level transition
-- Difficulty adaptation per level  
+  - Usage of streams to recognize end-of-game status (no more PacDots)
+- Keeping track of the highest score
+- Increasing difficulty per level 
 - Application menus
-- Pause state
+  - Defeat screen (endless game, no winning screen)
+  - In-game pause state  
+  - Animated level transition
 - Sound effects
 - Package manager easter eggs
 
@@ -40,16 +40,18 @@ The architectural design followed in this project was the MVC (particularly the 
 Each of its components is briefly described below.
 
 ### Model
-Contains the entities that exist semantically in the game: the pacman, the ghosts, the map and its elements.
+Contains the entities that exist semantically in the game: the pacman, the ghosts, the map and its elements. It also contains the status of certain elements (the pacman, for example), which are to be updated and changed by the controller.
 
 ### View
-Responsible for drawing the game elements and the menus in a way that makes sense considering the model and is suited for any terminal-based view framework (in our case, Lanterna).
+
+Responsible for drawing the game elements (and the menus) in a way that makes sense considering the model. Is suited for any terminal-based view framework (in our case, Lanterna).
 
 ### Controller
 Responsible for the flow of the application:
 - Updates the screen at a given frame rate
 - Updates the game state based on the input received from the GUI
-- Switches between game menus based on game rules logic and user input
+- Switches between game menus according to either in-game logic or user input
+- Defines the game-flow
 
 ## Design Problems
 
@@ -137,7 +139,7 @@ In a classic compositor pattern, the ability to add new parts is required. In ou
 ###### Problem in context
 
 
-## Known Code Smells and Regactoring Suggestions
+## Known Code Smells and Refactoring Suggestions
 
 ### Data Class
 
@@ -170,10 +172,6 @@ This problem can be solved if all the controllers add themselves to the observer
 <p align="center">
   <img src="images/pitest.png" alt="PiTest">
 </p>
-
-### Particular test highlights
-- ElementViewFactory: provided this class’ methods require knowledge from other classes (namely, the ViewProperty and the GUI), stubs were used to ensure the correct decouple of the tests, and dummy parameters were injected where needed (namely, to create a model entity to be drawn).
-- GameMapTest: a smoke test was executed on a smaller test map to ensure that the main map load features were working properly.
 
 ## Design Problems and solutions (UML)
 
