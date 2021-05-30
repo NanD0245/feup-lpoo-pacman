@@ -4,11 +4,13 @@ import g50.Application;
 import g50.controller.menu.*;
 import g50.gui.GUI;
 import g50.gui.LanternaGUI;
+import g50.model.element.Position;
 import g50.model.menu.*;
 import g50.model.menu.Menu;
 import g50.states.AppState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.awt.*;
@@ -25,8 +27,7 @@ public class MenuControllerTest {
     public void MenuControllersTest() throws IOException, URISyntaxException, FontFormatException {
         Menu menu = null;
         Controller<Menu> menuController = null;
-
-        GUI gui = new LanternaGUI(28,38, "fonts/pacman_font.otf");
+        LanternaGUI gui = Mockito.mock(LanternaGUI.class);
         Application application = new Application(gui);
 
         assert(application.getMenu() instanceof MainMenu);
@@ -113,5 +114,57 @@ public class MenuControllerTest {
         ((MainMenuController)application.getController()).handleKBDAction(application,GUI.KBD_ACTION.DOWN);
         ((MainMenuController)application.getController()).handleKBDAction(application,GUI.KBD_ACTION.DOWN);
         assertTrue(((MainMenu) application.getMenu()).isSelectedExit());
+
+        menu = new GameOverMenu();
+        menuController = new GameOverMenuController(gui, (GameOverMenu) menu);
+        application.setMenu(menu);
+        application.setController(menuController);
+        application.setState(AppState.GAME_OVER);
+
+        ((GameOverMenuController)application.getController()).handleKBDAction(application,GUI.KBD_ACTION.DOWN);
+
+        assertEquals(application.getState(), AppState.GAME_OVER);
+
+        ((GameOverMenuController)application.getController()).handleKBDAction(application,GUI.KBD_ACTION.SELECT);
+
+        assertEquals(application.getState(), AppState.MAIN_MENU);
+
+        menu = new PauseMenu(0);
+        menuController = new PauseMenuController(gui,(PauseMenu) menu);
+        application.setMenu(menu);
+        application.setController(menuController);
+
+        ((PauseMenuController)application.getController()).handleKBDAction(application,GUI.KBD_ACTION.UP);
+        assertTrue(((PauseMenu) application.getMenu()).isSelectedExit());
+        ((PauseMenuController)application.getController()).handleKBDAction(application,GUI.KBD_ACTION.OTHER);
+        assertTrue(((PauseMenu) application.getMenu()).isSelectedExit());
+        ((PauseMenuController)application.getController()).handleKBDAction(application,GUI.KBD_ACTION.DOWN);
+        assertTrue(((PauseMenu) application.getMenu()).isSelectedResume());
+        ((PauseMenuController)application.getController()).handleKBDAction(application,GUI.KBD_ACTION.SELECT);
+        assertEquals(application.getState(), AppState.IN_GAME);
+
+        application.setState(AppState.PAUSE_MENU);
+
+        ((PauseMenuController)application.getController()).handleKBDAction(application,GUI.KBD_ACTION.UP);
+        assertTrue(((PauseMenu) application.getMenu()).isSelectedExit());
+        ((PauseMenuController)application.getController()).handleKBDAction(application,GUI.KBD_ACTION.SELECT);
+        assertEquals(application.getState(), AppState.MAIN_MENU);
+
+        menu = new TransitionMenu();
+        menuController = new TransitionMenuController(gui,(TransitionMenu) menu);
+        application.setMenu(menu);
+        application.setController(menuController);
+        application.setState(AppState.NEXT_LEVEL_MENU);
+
+        ((TransitionMenu) menu).getGhost().setPosition(new Position(-1, 0));
+        menuController.update(application, 1);
+        assertEquals(application.getState(), AppState.NEXT_LEVEL_MENU);
+        ((TransitionMenu) menu).getPacMan().setPosition(new Position(28, 0));
+        menuController.update(application, 1);
+        assertEquals(application.getState(), AppState.NEXT_LEVEL_MENU);
+        ((TransitionMenu) menu).getPacMan().setPosition(new Position(29, 0));
+        menuController.update(application, 1);
+        assertEquals(application.getState(), AppState.IN_GAME);
+
     }
 }

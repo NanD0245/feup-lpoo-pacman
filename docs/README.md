@@ -59,6 +59,7 @@ strategy pattern
 gui facade 
 decorator gamemapviewer
 composite de controladores
+extract dos passos do ghost controller
 
 ## Testing
 
