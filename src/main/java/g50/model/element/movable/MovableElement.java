@@ -6,7 +6,7 @@ import g50.model.element.Element;
 public abstract class MovableElement extends Element {
     private final String name;
     private Orientation orientation;
-    private final Position spawnPosition;
+    private Position spawnPosition;
     protected int framesPerPosition = 10;
     protected int defaultFramesPerPosition = 10;
 
@@ -83,5 +83,9 @@ public abstract class MovableElement extends Element {
     public void setFramesAndDefaultFramesPerPosition(int framesPerMovement){
         this.defaultFramesPerPosition = framesPerMovement;
         setFramesPerPosition(this.defaultFramesPerPosition);
+    }
+
+    public void setSpawnPosition(Position position){
+        this.spawnPosition = position;
     }
 }
