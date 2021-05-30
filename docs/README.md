@@ -1,6 +1,6 @@
 # Final Delivery
 
-## sudo PacMan
+## PacMan
 
 A clone of the classic PacMan game played in the arcade machines of the good old days, spiced up with some easter eggs related to the package manager of your favorite Linux distro.
 <p align="center">
@@ -43,13 +43,13 @@ Each of its components is briefly described below.
 Contains the entities that exist semantically in the game: the pacman, the ghosts, the map and its elements.
 
 ### View
-Responsible for drawing the game elements (and, later, the menus) in a way that makes sense considering the model and is suited for any terminal-based view framework (in our case, Lanterna).
+Responsible for drawing the game elements and the menus in a way that makes sense considering the model and is suited for any terminal-based view framework (in our case, Lanterna).
 
 ### Controller
 Responsible for the flow of the application:
 - Updates the screen at a given frame rate
 - Updates the game state based on the input received from the GUI
-- Switches between game menus based on game rules logic and user input (later)
+- Switches between game menus based on game rules logic and user input
 
 ## Design Problems
 
@@ -82,15 +82,52 @@ An interrupt-like solution involved, as expected, some extra complexity and the 
 #### Ghost strategies
 
 ###### Problem in context
+The ghost behaviour in the classic PacMan game is a surpringly difficult matter. When scattered (walking around a fixed point), frightened (after the PacMan consumes a PacDot), dead (returning the cage after getting eaten), or in-cage, all ghosts behave similarly, but in chase mode, each of the little ones has a different personality.
+Blinky follows the PacMan directly in the shortest path available, Inky tries to corner the PacMan knowing Blinky's position, Pinky tries to go in front of the PacMan (targeting 4 tiles above his position) and Clyde tries to keep a fair distance (8 tiles) from PacMan, not too close, not too far.
 
+###### The pattern
+The next step for a ghost is determined by its strategy. The strategy is responsible to calculate a new target and set the ghost orientation based on it, and is called by the controller when it's time to update the ghosts positions.
+
+###### Implementation
+
+###### Consequences
+This approach allows ghosts to have any kind of personality, hiding the details from the controller, and presents no concerns.
 
 #### Lanterna Framework Facade
 
+###### Problem in context
+It is desired that the game is correctly displayed on any terminal-based UI capable of loading a square font.
+
+###### The pattern
+The GUI interface presents the user all important terminal methods, not depending on any particular framework. The LanternaGUI class implements the above interface, using the Lanterna Terminal Graphics framework in a way that's easily understandable and flexible to the view programmer, who does not need to worry about lower level Lanterna calls.
+
+###### Implementation
+
+###### Consequences
+This approach simplifies the viewer code and presents no concerns.
+
 #### Game Map Viewer Decorator
+
+###### Problem in context
+Besides drawing the main game board, the game must present the player some more information regarding the current score, the all time high score, the remaining lives and the current game level.
+
+###### The pattern
+A game viewer class contains a board viewer and displays the extra information on top of it, effectively decorating the basic viewer in a semantic way.
+
+###### Implementation
+
+###### Consequences
+This approach has the potential to expand the game functionality: if we ever need to include a back button or a settings wheel icon, only a new "view port" decorating the existing ones would be necessary. This, however, is not a solution for all kinds of problems: as of now, there is no easy way for decoupling the map position from the terminal screen position, which would require an intervention in all viewer classes.
 
 #### Controller composites
 
+###### Problem in context
+
+
+
 #### Ghost controller modularity
+
+###### Problem in context
 
 
 ## Known Code Smells and Regactoring Suggestions
