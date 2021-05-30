@@ -227,7 +227,7 @@ As stated in the design problems, each ghost behaves differently. For Blinky, we
 For the transition between levels, a small animation was created as in the original game with the pacman and one of the ghosts. The final result of the animation was:
 
 <p align="center">
-  <img src="images/level_transition.gif" alt="Level Transition" width="300"/>
+  <img src="images/level_transition.gif" alt="Level Transition"/>
 </p>
 
 ### Sound Effects
