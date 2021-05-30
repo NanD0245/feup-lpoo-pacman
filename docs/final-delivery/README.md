@@ -166,6 +166,13 @@ The compositions in the model are reflected in the controller: for example, the 
   <img src="images/composite.png" alt="Composite">
 </p>
 
+- [Controller](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/controller/Controller.java)
+- [PacmanController](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/controller/PacManController.java)
+- [GhostController](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/controller/GhostController.java)
+- [PauseMenuController](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/controller/menu/PauseMenuController.java)
+- [GameController](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/5fe692a6ff58dfa0ed70aca9449b48b76fd043eb/src/main/java/com/g50/controller/GameController.java)
+
+
 ###### Consequences
 In a classic compositor pattern, the ability to add new parts is required. In our implementation, considering the restrictions of the game, only the pacman and the four ghosts are added, by the constructor. In a more generic fashion, more ghosts controllers could be added on the spot.
 
