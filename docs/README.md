@@ -189,3 +189,15 @@ To avoid long lines of hard coded insertions in the game map class, it makes sen
   <img src="images/mapbuilder.png" alt="g50.model.Game Map Builder">
 </p>
 
+
+## Highlighted Features
+
+### Walls and Bitmask
+
+In the construction of the map, specifically the map walls, instead of drawing a whole square for each one, we create 15 characters with 
+
+### Ghosts Personality
+
+### Transition Between Levels
+
+## Self-Evaluation
