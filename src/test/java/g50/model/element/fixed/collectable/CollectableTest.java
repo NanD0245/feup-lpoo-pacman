@@ -8,21 +8,24 @@ import org.junit.jupiter.api.Test;
 public class CollectableTest {
 
     private Position pos;
+    Strawberry fruit;
+    PacDot pacDot;
+    PowerPellet powerPellet;
 
     @BeforeEach
     public void initTest() {
         int x = 10;
         int y = 15;
         pos = new Position(x, y);
+        fruit = new Strawberry(pos);
+        pacDot =  new PacDot(pos);
+        powerPellet = new PowerPellet(pos);
     }
 
     @Test
     public void verifyTriggersEffect(){
-        Strawberry fruit = new Strawberry(pos);
         Assertions.assertEquals(fruit.triggersEffect(), CollectableTriggers.BONUS);
-        PacDot pacDot =  new PacDot(pos);
         Assertions.assertEquals(pacDot.triggersEffect(), CollectableTriggers.COLLECT);
-        PowerPellet powerPellet = new PowerPellet(pos);
         Assertions.assertEquals(powerPellet.triggersEffect(), CollectableTriggers.FRIGHTEN);
     }
 }

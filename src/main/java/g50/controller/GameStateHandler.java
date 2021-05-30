@@ -2,7 +2,7 @@ package g50.controller;
 
 import g50.model.Level;
 import g50.states.GameState;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class GameStateHandler {
@@ -19,7 +19,7 @@ public class GameStateHandler {
         this.frightenedFrames = 0;
         this.elapsedFrames = 0;
         this.gameController = gameController;
-        this.defaultFrightenedTime = levelInfo.getGhostFrightnedTime();
+        this.defaultFrightenedTime = levelInfo.getGhostFrightenedTime();
     }
 
     public void update(int framerate) {

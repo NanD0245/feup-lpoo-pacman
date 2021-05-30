@@ -67,4 +67,8 @@ public class PacManController extends Controller<PacMan> {
         } else if (orientations.contains(super.getModel().getOrientation()))
             super.getModel().move(super.getModel().getOrientation(), gameMap.getColumns(), gameMap.getLines());
     }
+
+    public Orientation getNextOrientation() {
+        return nextOrientation;
+    }
 }

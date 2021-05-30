@@ -33,6 +33,8 @@ public class InkyStrategy extends GhostStrategy {
 
         targetPos = new Position(2 * (targetPos.getX() - blinkyGhost.getPosition().getX()),
                 2 * (targetPos.getY() - blinkyGhost.getPosition().getY()));
+
+        targetPos = new Position(blinkyGhost.getPosition().getX() + targetPos.getX(), blinkyGhost.getPosition().getY() + targetPos.getY());
         return getBestOrientation(map, ghost, targetPos);
     }
 

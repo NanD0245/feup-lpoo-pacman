@@ -121,7 +121,7 @@ public class Application implements GUIObserver {
                 case IN_GAME:
                     if (!lastAppState.equals(AppState.PAUSE_MENU)) {
                         this.level = 1;
-                        this.game = new Game(highScore, level); // change level!!
+                        this.game = new Game(highScore, level);
                         this.controller = new GameController(gui, game);
                     }
                     break;
@@ -129,7 +129,7 @@ public class Application implements GUIObserver {
                     if (!lastAppState.equals(AppState.PAUSE_MENU)) {
                         this.level++;
                         int score = this.game.getScore();
-                        this.game = new Game(highScore, level,score); // change level!!
+                        this.game = new Game(highScore, level, score);
                         this.controller = new GameController(gui, game);
                     }
                     break;

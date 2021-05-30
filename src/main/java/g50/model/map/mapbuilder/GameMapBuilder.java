@@ -135,13 +135,13 @@ public abstract class GameMapBuilder {
                         ((Wall) map.get(i).get(j)).setBitmask(1);
                         ((Wall) map.get(i).get(j)).setBitmask(3);
                     } else {
-                        if (!(map.get(i - 1).get(j) instanceof Wall))
+                        if ((i == 0) || !(map.get(i - 1).get(j) instanceof Wall))
                             ((Wall) map.get(i).get(j)).setBitmask(1);
 
                         if (j==0 || !(map.get(i).get(j - 1) instanceof Wall))
                             ((Wall) map.get(i).get(j)).setBitmask(0);
 
-                        if (!(map.get(i + 1).get(j) instanceof Wall))
+                        if ((i == map.size()-1) || !(map.get(i + 1).get(j) instanceof Wall))
                             ((Wall) map.get(i).get(j)).setBitmask(3);
 
                         if ((j == map.get(i).size() - 1) || !(map.get(i).get(j + 1) instanceof Wall))

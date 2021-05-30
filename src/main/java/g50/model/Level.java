@@ -52,7 +52,7 @@ public class Level {
        put(4, Arrays.asList(7,20,7,20,5,1033,1));
     }};
 
-    private static final Map<Integer, Integer> ghostFrightnedTime = new HashMap<>() {{
+    private static final Map<Integer, Integer> ghostFrightenedTime = new HashMap<>() {{
         put(1, 6);
         put(2, 5);
         put(3, 4);
@@ -60,7 +60,7 @@ public class Level {
     }};
 
 
-    Level(int level){
+    public Level(int level){
         this.levelNumber = level;
     }
 
@@ -82,8 +82,8 @@ public class Level {
         return gameStateIntervals.getOrDefault(levelNumber,Arrays.asList(5,20,5,20,5,1037,1));
     }
 
-    public int getGhostFrightnedTime(){
-        return ghostFrightnedTime.getOrDefault(levelNumber, 2);
+    public int getGhostFrightenedTime(){
+        return ghostFrightenedTime.getOrDefault(levelNumber, 2);
     }
 
     public int getLevelNumber() {
