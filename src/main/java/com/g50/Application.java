@@ -3,6 +3,7 @@ package com.g50;
 import com.g50.controller.Controller;
 import com.g50.controller.GameController;
 import com.g50.controller.menu.*;
+import com.g50.gui.LanternaGUI;
 import com.g50.model.map.mapbuilder.DefaultGameMapBuilder;
 import com.g50.states.AppState;
 import com.g50.gui.GUI;
@@ -52,7 +53,8 @@ public class Application implements GUIObserver {
 
     public static void main(String[] args) throws IOException, URISyntaxException, FontFormatException {
         Application application =
-                new Application(new com.g50.gui.LanternaGUI(28,38, "fonts/pacman_font.otf"));
+                new Application(new LanternaGUI(28,38, "fonts/pacman_font.otf"));
+
         application.setUp(30);
     }
 
@@ -124,7 +126,7 @@ public class Application implements GUIObserver {
                 case IN_GAME:
                     if (!lastAppState.equals(AppState.PAUSE_MENU)) {
                         int score = (this.game == null) ? 0 : this.game.getScore();
-                        setGame(new Game(new DefaultGameMapBuilder().getBuild(), highScore, ++level, score));
+                        setGame(new Game(new DefaultGameMapBuilder().getBuild(), highScore, level++, score));
                         this.controller = new GameController(gui, game);
                     }
                     break;

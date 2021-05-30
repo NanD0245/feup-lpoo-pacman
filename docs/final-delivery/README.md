@@ -4,10 +4,10 @@
 
 A clone of the classic PacMan game played in the arcade machines of the good old days, spiced up with some easter eggs related to the package manager of your favorite Linux distro.
 <p align="center">
-  <img src="images/pacman-gif.gif" alt="PacMan com.g50.model.Game">
+  <img src="images/pacman-gif.gif" alt="PacMan" width="400">
 </p>
 
-Developed by Bruno Mendes (up20212121@fe.up.pt), Fernando Rego (up201905951@fe.up.pt) and Nuno Costa(up201906272@fe.up.pt).
+Developed by Bruno Mendes (up201906166@fe.up.pt), Fernando Rego (up201905951@fe.up.pt) and Nuno Costa(up201906272@fe.up.pt).
 
 ## Implemented Features
 
@@ -30,6 +30,7 @@ Developed by Bruno Mendes (up20212121@fe.up.pt), Fernando Rego (up201905951@fe.u
   - Animated level transition
 - Sound effects
 - Package manager easter eggs
+  - Manjaro fruit
 
 ## Architectural Design
 <p align="center">
@@ -65,6 +66,10 @@ To go around this issue, we created a builder class for generic map elements, wh
 
 ###### Implementation
 
+<p align="center">
+  <img src="images/builder.png" alt="Builder">
+</p>
+
 ###### Consequences
 This approach did allow to modularize the code and hide complicated implementation details (such as getting the wall character based on its surroundings), but could be improved by making the ElementViewerBuilder class a factory calling the appropriate builder, which would reduce the draw() method complexity even further.
 
@@ -77,6 +82,10 @@ Fetching actions from the GUI (in our case, only the keyboard input, but same co
 The GUI is responsible for informing all interested observers when it is time to update the game state and draw a new frame. In the game, the Application class adds itself to the list of GUI observers and delegates responsability to the appropriate controller, each frame, to update the game state and refresh the screen.
 
 ###### Implementation
+
+<p align="center">
+  <img src="images/observer.png" alt="Observer">
+</p>
 
 ###### Consequences
 An interrupt-like solution involved, as expected, some extra complexity and the possible raise of concurrency issues, but we found the extra precision given by the timer and the aspect of the code to compensate these concerns.
@@ -92,6 +101,10 @@ The next step for a ghost is determined by its strategy. The strategy is respons
 
 ###### Implementation
 
+<p align="center">
+  <img src="images/strategy.png" alt="Strategy">
+</p>
+
 ###### Consequences
 This approach allows ghosts to have any kind of personality, hiding the details from the controller, and presents no concerns.
 
@@ -104,6 +117,10 @@ It is desired that the game is correctly displayed on any terminal-based UI capa
 The GUI interface presents the user all important terminal methods, not depending on any particular framework. The LanternaGUI class implements the above interface, using the Lanterna Terminal Graphics framework in a way that's easily understandable and flexible to the view programmer, who does not need to worry about lower level Lanterna calls.
 
 ###### Implementation
+
+<p align="center">
+  <img src="images/facade.png" alt="Facade">
+</p>
 
 ###### Consequences
 This approach simplifies the viewer code and presents no concerns.
@@ -118,18 +135,29 @@ A game viewer class contains a board viewer and displays the extra information o
 
 ###### Implementation
 
+<p align="center">
+  <img src="images/decorator.png" alt="Decorator">
+</p>
+
 ###### Consequences
 This approach has the potential to expand the game functionality: if we ever need to include a back button or a settings wheel icon, only a new "view port" decorating the existing ones would be necessary. This, however, is not a solution for all kinds of problems: as of now, there is no easy way for decoupling the map position from the terminal screen position, which would require an intervention in all viewer classes.
 
 #### Controller composites
 
 ###### Problem in context
+It is not desirable that a "god" controller exists, and neither that a controller needs to intervene in models that don't belong to it.
 
+###### The pattern
+The compositions in the model are reflected in the controller: for example, the game controller holds the pacman controller and the four ghosts controllers.
 
+###### Implementation
 
-#### Ghost controller modularity
+<p align="center">
+  <img src="images/composite.png" alt="Composite">
+</p>
 
-###### Problem in context
+###### Consequences
+In a classic compositor pattern, the ability to add new parts is required. In our implementation, considering the restrictions of the game, only the pacman and the four ghosts are added, by the constructor. In a more generic fashion, more ghosts controllers could be added on the spot.
 
 
 ## Known Code Smells and Refactoring Suggestions
@@ -163,29 +191,57 @@ This problem can be solved if all the controllers add themselves to the observer
 
 ### Coverage/Mutations
 <p align="center">
-  <img src="images/pitest.png" alt="PiTest">
+  <img src="images/coverage-mutation.png" alt="PiTest">
 </p>
 
-## Design Problems and solutions (UML)
+## Highlighted Features
 
-### Multiple views
-Each game element shall be drawn on the screen with the appropriate character and color. While it isn’t feasible to include this data in the model (should we ever switch to a 3D-based viewer framework, that would be highly uncomfortable), it is also lazy to create a different viewer class for each element just to hold different data, and act exactly the same way. To solve this issue, we opted to let a builder create the correct element viewer instance given the class of the given drawable element.
+### Walls and Bitmask
+
+In the construction of the map, specifically of the walls of the map, instead of drawing a whole square for each one, we created 2 ^ 4 characters that correspond to all possibilities for each wall, with each side of the character corresponding to 1 bit of 4 sides. 
 
 <p align="center">
-  <img src="images/view.png" alt="Multiple Views">
+  <img src="images/wall-characters.png" alt="Wall Characters">
+  <br>
+  <img src="images/wall-bits.png" alt="Wall Bits">
 </p>
 
-### Polling from the GUI
-As seen in the classes, we could poll the input receiver (in our case, the GUI) for the last user action each frame and act upon it. However, with this approach we would lose some precision and possibly some key inputs. We found that the Lanterna framework provides methods for handling interrupts from the keyboard, and used this mechanism to inform any generic GUI observer of an action in “real time”. In our case, the game controller is the observer, acting upon the inputs to move the pacman.
+Thus, each wall was generated taking into account the elements in the adjacent positions (up, down, left, right) setting the bit corresponding to 1 if a wall is needed on that side of the character. The final result of the map was:
+
 
 <p align="center">
-  <img src="images/controller.png" alt="Polling from the GUI">
+  <img src="images/map.jpg" alt="Wall Map" width="200"/>
 </p>
 
-### com.g50.model.Game Map Builder
-To avoid long lines of hard coded insertions in the game map class, it makes sense to have a separate class to do this job in a generic way (read from a file) and return the assembled GameMap object.
+
+### Ghosts Personality
+
+As stated in the design problems, each ghost behaves differently. For Blinky, we use a grid-based optimized A-Star algorithm to calculate the best shortest path to the PacMan.
+
+### Transition Between Levels
+
+For the transition between levels, a small animation was created as in the original game with the pacman and one of the ghosts. The final result of the animation was:
 
 <p align="center">
-  <img src="images/mapbuilder.png" alt="com.g50.model.Game Map Builder">
+  <img src="images/level_transition.gif" alt="Level Transition" width="300"/>
 </p>
+
+### Sound Effects
+
+We added some of the original sound effects to our program, namely into the following situations:
+- eating ghost
+- eating power pellet
+- pacman dies
+- moving pacman
+- "ready to start" jingle
+
+Note: on some Linux machines we observed reliability problems, possibly due to the different file encoding audio formats or concurrency issues opening the same audio line.
+
+## Self-Evaluation
+
+Bruno Mendes: 33%
+
+Fernando Rego: 33%
+
+Nuno Costa: 33%
 
