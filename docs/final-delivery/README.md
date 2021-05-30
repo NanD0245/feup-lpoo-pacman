@@ -66,6 +66,10 @@ To go around this issue, we created a builder class for generic map elements, wh
 
 ###### Implementation
 
+<p align="center">
+  <img src="images/builder.png" alt="Builder">
+</p>
+
 ###### Consequences
 This approach did allow to modularize the code and hide complicated implementation details (such as getting the wall character based on its surroundings), but could be improved by making the ElementViewerBuilder class a factory calling the appropriate builder, which would reduce the draw() method complexity even further.
 
@@ -78,6 +82,10 @@ Fetching actions from the GUI (in our case, only the keyboard input, but same co
 The GUI is responsible for informing all interested observers when it is time to update the game state and draw a new frame. In the game, the Application class adds itself to the list of GUI observers and delegates responsability to the appropriate controller, each frame, to update the game state and refresh the screen.
 
 ###### Implementation
+
+<p align="center">
+  <img src="images/observer.png" alt="Observer">
+</p>
 
 ###### Consequences
 An interrupt-like solution involved, as expected, some extra complexity and the possible raise of concurrency issues, but we found the extra precision given by the timer and the aspect of the code to compensate these concerns.
@@ -93,6 +101,10 @@ The next step for a ghost is determined by its strategy. The strategy is respons
 
 ###### Implementation
 
+<p align="center">
+  <img src="images/strategy.png" alt="Strategy">
+</p>
+
 ###### Consequences
 This approach allows ghosts to have any kind of personality, hiding the details from the controller, and presents no concerns.
 
@@ -105,6 +117,10 @@ It is desired that the game is correctly displayed on any terminal-based UI capa
 The GUI interface presents the user all important terminal methods, not depending on any particular framework. The LanternaGUI class implements the above interface, using the Lanterna Terminal Graphics framework in a way that's easily understandable and flexible to the view programmer, who does not need to worry about lower level Lanterna calls.
 
 ###### Implementation
+
+<p align="center">
+  <img src="images/facade.png" alt="Facade">
+</p>
 
 ###### Consequences
 This approach simplifies the viewer code and presents no concerns.
@@ -119,6 +135,10 @@ A game viewer class contains a board viewer and displays the extra information o
 
 ###### Implementation
 
+<p align="center">
+  <img src="images/decorator.png" alt="Decorator">
+</p>
+
 ###### Consequences
 This approach has the potential to expand the game functionality: if we ever need to include a back button or a settings wheel icon, only a new "view port" decorating the existing ones would be necessary. This, however, is not a solution for all kinds of problems: as of now, there is no easy way for decoupling the map position from the terminal screen position, which would require an intervention in all viewer classes.
 
@@ -131,6 +151,10 @@ It is not desirable that a "god" controller exists, and neither that a controlle
 The compositions in the model are reflected in the controller: for example, the game controller holds the pacman controller and the four ghosts controllers.
 
 ###### Implementation
+
+<p align="center">
+  <img src="images/composite.png" alt="Composite">
+</p>
 
 ###### Consequences
 In a classic compositor pattern, the ability to add new parts is required. In our implementation, considering the restrictions of the game, only the pacman and the four ghosts are added, by the constructor. In a more generic fashion, more ghosts controllers could be added on the spot.
@@ -170,7 +194,6 @@ This problem can be solved if all the controllers add themselves to the observer
   <img src="images/pitest.png" alt="PiTest">
 </p>
 
-
 ## Highlighted Features
 
 ### Walls and Bitmask
@@ -191,6 +214,8 @@ Thus, each wall was generated taking into account the elements in the adjacent p
 
 
 ### Ghosts Personality
+
+As stated in the design problems, each ghost behaves differently. For Blinky, we use a grid-based optimized A-Star algorithm to calculate the best shortest path to the PacMan.
 
 ### Transition Between Levels
 
