@@ -70,6 +70,12 @@ To go around this issue, we created a builder class for generic map elements, wh
   <img src="images/builder.png" alt="Builder">
 </p>
 
+[GameMapViewer](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/c3121d3b31d1fb2c9c448e99c8bbff370a5b2a62/src/main/java/com/g50/view/GameMapViewer.java#L28-L46)
+[ElementViewerBuilder](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/c3121d3b31d1fb2c9c448e99c8bbff370a5b2a62/src/main/java/com/g50/view/builders/ElementViewerBuilder.java#L19-L28)
+[GhostViewerBuilder](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/c3121d3b31d1fb2c9c448e99c8bbff370a5b2a62/src/main/java/com/g50/view/builders/GhostViewerBuilder.java#L22-L37)
+[PacManViewerBuilder](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/c3121d3b31d1fb2c9c448e99c8bbff370a5b2a62/src/main/java/com/g50/view/builders/PacManViewerBuilder.java#L20-L29)
+[WallViewerBuilder](https://github.com/FEUP-LPOO-2021/lpoo-2021-g50/blob/c3121d3b31d1fb2c9c448e99c8bbff370a5b2a62/src/main/java/com/g50/view/builders/WallViewerBuilder.java#L20-L29)
+
 ###### Consequences
 This approach did allow to modularize the code and hide complicated implementation details (such as getting the wall character based on its surroundings), but could be improved by making the ElementViewerBuilder class a factory calling the appropriate builder, which would reduce the draw() method complexity even further.
 
