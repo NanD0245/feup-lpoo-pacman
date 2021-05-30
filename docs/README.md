@@ -7,7 +7,7 @@ A clone of the classic PacMan game played in the arcade machines of the good old
   <img src="images/pacman-gif.gif" alt="PacMan g50.model.Game">
 </p>
 
-Developed by Bruno Mendes (up20212121@fe.up.pt), Fernando Rego (up2123131@fe.up.pt) and Nuno Costa(up201906272@fe.up.pt).
+Developed by Bruno Mendes (up20212121@fe.up.pt), Fernando Rego (up201905951@fe.up.pt) and Nuno Costa(up201906272@fe.up.pt).
 
 ## Implemented Features
 
@@ -59,6 +59,33 @@ strategy pattern
 gui facade 
 decorator gamemapviewer
 composite de controladores
+
+## Known Code Smells and Regactoring Suggestions
+
+### Data Class
+
+> A data class refers to a class that contains only fields and crude methods for accessing them (getters and setters). These are simply containers for data used by other classes. These classes don’t contain any additional functionality and can’t independently operate on the data that they own.
+
+The Level class in the model is a data class because it contains only getters for the information at each level. This is a problem because classes are much more than just a "data bag" abstraction and we are using the class without any use of operations or transformations on that data.
+
+A way to improve this problem is creating a text file with all the information of the levels and the program will read it from the file.
+
+### Switch Statements
+
+> A Switch Statement code smell refers to a complex switch operator or sequence of if statements.
+
+In the Application class in the model, there is a large switch case that is used to get different data dependent on each state of the application. This can be a problem because when a new condition is added, we have to find and modify the switch case.
+
+This can be refactored using the state pattern and, consequently, it would no longer be necessary for the controllers to change the state of the application and the switch case itself ceases to exist.
+
+### Message Chains
+
+> In code you see a series of calls resembling $a->b()->c()->d()
+
+In our program there is a chain that receives input from the keyboard in the gui and then that input is passed in a chain, from the gui to the controllers of the various objects of the program. This may imply having to make changes to all relationships if there is any change at the bottom of the chain.
+
+This problem can be solved if all the controllers add themselves to the observers of the gui, and thus, the gui passed the input directly to each of the controllers.
+
 
 ## Testing
 
